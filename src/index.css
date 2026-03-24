@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Asap:wght@400&family=Nunito:wght@400;600;700&display=swap");
+@import "./theme/tokens.css";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+}
