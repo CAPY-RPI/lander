@@ -65,7 +65,16 @@ When iterating:
 - Verify no vertical scrolling on desktop
 - Verify all SVGs/icons remain non-distorted
 
-## Notes
+## Public Assets
 
-- Figma assets are stored locally in `public/assets/figma`.
-- Asset mapping is centralized in `src/data/content.ts`.
+- `public/assets/brand`: logo and brand marks
+- `public/assets/illustrations`: larger decorative illustrations
+- `public/assets/ui`: UI chrome shapes (pills and controls)
+- `public/assets/social`: social platform icons
+
+Canonical brand filenames:
+
+- `public/assets/brand/capy-full-white.svg`
+- `public/assets/brand/capy-full-primary.svg`
+
+Asset mapping is centralized in `src/data/content.ts`.

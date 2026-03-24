@@ -10,18 +10,18 @@ export type FeatureCardModel = {
 };
 
 export const assets = {
-  logo: "/assets/figma/logo.svg",
-  campusArt: "/assets/figma/campus-art.svg",
-  ctaSecondary: "/assets/figma/cta-secondary.svg",
-  emailPill: "/assets/figma/email-pill.svg",
-  navPill: "/assets/figma/nav-pill.svg",
-  capyVerticalMark: "/assets/figma/capy-vertical-mark.svg",
-  x: "/assets/figma/x.svg",
-  instagram: "/assets/figma/instagram.svg",
-  facebook: "/assets/figma/facebook.svg",
-  github: "/assets/figma/github.svg",
-  tiktok: "/assets/figma/tiktok.svg",
-  youtube: "/assets/figma/youtube.svg",
+  logo: "/assets/brand/capy-full-white.svg",
+  campusArt: "/assets/illustrations/campus-art.svg",
+  ctaSecondary: "/assets/ui/cta-secondary.svg",
+  emailPill: "/assets/ui/email-pill.svg",
+  navPill: "/assets/ui/nav-pill.svg",
+  capyVerticalMark: "/assets/brand/capy-full-primary.svg",
+  x: "/assets/social/x.svg",
+  instagram: "/assets/social/instagram.svg",
+  facebook: "/assets/social/facebook.svg",
+  github: "/assets/social/github.svg",
+  tiktok: "/assets/social/tiktok.svg",
+  youtube: "/assets/social/youtube.svg",
 };
 
 export const navItems: NavItem[] = [

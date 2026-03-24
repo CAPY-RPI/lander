@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatedPanel } from "../components/AnimatedPanel";
 import { AspectImage } from "../components/AspectImage";
 import { assets } from "../data/content";
 
@@ -13,52 +13,51 @@ const socialAssets = [
 
 export function CapyRailSection() {
   return (
-    <motion.section
-      className="panel capyRailPanel"
-      initial={{ opacity: 0, x: 24 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ amount: 0.25, once: true }}
-      transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <p className="railTop">experience hibernation</p>
-
+    <AnimatedPanel className="panel capyRailPanel" staggerIndex={4}>
       <div className="verticalMarkWrap" aria-hidden="true">
-        <AspectImage src={assets.capyVerticalMark} alt="" className="verticalMark" />
+        <img src={assets.capyVerticalMark} alt="" className="verticalMark" />
       </div>
 
-      <div className="railColumns">
-        <div>
-          <p className="columnTitle">team</p>
-          <p>about</p>
-          <p>brand</p>
-          <p>contribute</p>
-        </div>
-        <div>
-          <p className="columnTitle">resources</p>
-          <p>support</p>
-          <p>developers</p>
-          <p>feedback</p>
-        </div>
-        <div>
-          <p className="columnTitle">policies</p>
-          <p>terms</p>
-          <p>privacy</p>
-        </div>
-      </div>
+      <div className="railContent">
+        <p className="railTop">experience hibernation</p>
 
-      <div className="railSocial">
-        <p>social</p>
-        <div>
-          {socialAssets.map((item) => (
-            <a href="#" key={item.alt} aria-label={item.alt}>
-              <AspectImage src={item.src} alt={item.alt} />
-            </a>
-          ))}
-        </div>
-      </div>
+        <div className="railLinks">
+          <div className="railLinkBlock">
+            <p className="columnTitle">team</p>
+            <p>about</p>
+            <p>brand</p>
+            <p>contribute</p>
+          </div>
 
-      <p className="railStatus">all systems operational</p>
-      <p className="railFoot">capywrite 2026 // all rights reserved</p>
-    </motion.section>
+          <div className="railLinkRow">
+            <div className="railLinkBlock">
+              <p className="columnTitle">resources</p>
+              <p>support</p>
+              <p>developers</p>
+              <p>feedback</p>
+            </div>
+            <div className="railLinkBlock">
+              <p className="columnTitle">policies</p>
+              <p>terms</p>
+              <p>privacy</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="railSocial">
+          <p>social</p>
+          <div>
+            {socialAssets.map((item) => (
+              <a href="#" key={item.alt} aria-label={item.alt}>
+                <AspectImage src={item.src} alt={item.alt} />
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <p className="railStatus">all systems operational</p>
+        <p className="railFoot">capywrite 2026 // all rights reserved</p>
+      </div>
+    </AnimatedPanel>
   );
 }

@@ -13,21 +13,25 @@
   top: 29px;
   left: 42px;
   right: 42px;
+  width: calc(100vw - 84px);
   z-index: 20;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) minmax(280px, 438px) minmax(120px, 1fr);
   align-items: center;
   gap: var(--space-24);
 }
 
 .brandLogo {
+  justify-self: start;
   width: 153px;
   height: 37px;
   object-fit: contain;
 }
 
 .navPill {
-  margin-inline-start: auto;
-  width: 438px;
+  margin-inline-start: 0;
+  justify-self: center;
+  width: min(438px, 100%);
   min-height: 60px;
   border-radius: var(--radius-pill);
   border: 1px solid rgba(89, 178, 172, 0.7);
@@ -47,6 +51,7 @@
 }
 
 .pillButton {
+  justify-self: end;
   min-height: 60px;
   border-radius: var(--radius-pill);
   display: inline-flex;
@@ -77,6 +82,10 @@
   box-shadow: 0 10px 28px rgba(99, 30, 7, 0.35);
 }
 
+.navCta {
+  width: 141px;
+}
+
 .pillButton.subtle {
   width: 102px;
   color: var(--c-text-light);
@@ -104,7 +113,7 @@
   align-items: start;
   width: max-content;
   min-height: 100%;
-  padding: 121px var(--space-24) var(--space-24);
+  padding: 121px 160px var(--space-24) var(--space-24);
 }
 
 .panel {
@@ -291,14 +300,23 @@
 }
 
 .capyRailPanel {
+  position: relative;
+  overflow: hidden;
   width: 866px;
   background: var(--c-surface-light);
   border: 1px solid var(--c-surface-border);
   color: var(--c-text-deep);
-  padding: 40px 46px 42px;
+  padding: 0;
+}
+
+.railContent {
+  position: relative;
+  z-index: 1;
+  width: 420px;
+  margin: 40px 0 0 46px;
   display: grid;
-  grid-template-rows: auto auto 1fr auto auto;
-  gap: var(--space-24);
+  grid-template-rows: auto auto auto auto auto;
+  row-gap: 0;
 }
 
 .railTop {
@@ -307,26 +325,39 @@
 }
 
 .verticalMarkWrap {
+  position: absolute;
+  top: 10px;
+  right: -126px;
+  width: 178px;
+  height: 739px;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 290px;
+  pointer-events: none;
 }
 
 .verticalMark {
-  width: 178px;
-  height: 739px;
+  width: 739px;
+  height: 178px;
+  max-width: none;
+  transform: rotate(-90deg) scale(1.03);
+  transform-origin: center;
 }
 
-.railColumns {
+.railLinks {
   display: grid;
-  grid-template-columns: repeat(3, auto);
-  justify-content: space-between;
-  align-items: start;
-  max-width: 560px;
+  gap: 42px;
+  max-width: 380px;
+  margin-top: 84px;
 }
 
-.railColumns p {
+.railLinkRow {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 72px;
+}
+
+.railLinkBlock p {
   margin: 0;
   font: 400 16px/1.5 var(--font-body);
 }
@@ -338,6 +369,7 @@
 .railSocial {
   display: grid;
   gap: 12px;
+  margin-top: 58px;
 }
 
 .railSocial p {
@@ -361,10 +393,15 @@
 .railFoot {
   margin: 0;
   font: 400 16px/1.4 var(--font-body);
+  max-width: 420px;
 }
 
 .railStatus {
-  margin-top: auto;
+  margin-top: 34px;
+}
+
+.railFoot {
+  margin-top: 44px;
 }
 
 .aspectSafe {
@@ -381,6 +418,10 @@
     top: 0;
     left: 0;
     right: 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
     padding: 18px var(--space-16);
     margin: 0;
     background: rgba(0, 102, 98, 0.88);
@@ -388,7 +429,8 @@
   }
 
   .navPill {
-    width: auto;
+    width: min(100%, 438px);
+    justify-self: center;
     padding: 0 var(--space-16);
     gap: var(--space-16);
   }
@@ -398,8 +440,13 @@
   }
 
   .pillButton {
+    justify-self: auto;
     min-height: 48px;
     font-size: 18px;
+  }
+
+  .navCta {
+    width: 120px;
   }
 
   .heroCopy h1 {

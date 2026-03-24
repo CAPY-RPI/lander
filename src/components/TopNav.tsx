@@ -19,7 +19,7 @@ export function TopNav() {
         ))}
       </nav>
 
-      <a className="pillButton" href="#launch">
+      <a className="pillButton accent navCta" href="#launch">
         let&apos;s go
       </a>
     </motion.header>

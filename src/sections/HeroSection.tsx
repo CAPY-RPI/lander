@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
+import { AnimatedPanel } from "../components/AnimatedPanel";
 import { AspectImage } from "../components/AspectImage";
 import { assets } from "../data/content";
 
 export function HeroSection() {
   return (
-    <section className="panel heroPanel" id="launch">
+    <AnimatedPanel className="panel heroPanel" id="launch" staggerIndex={0}>
       <div className="heroCopy">
         <h1>
           <span>more sleep</span>
@@ -33,6 +34,6 @@ export function HeroSection() {
       >
         <AspectImage src={assets.campusArt} alt="Capy campus illustration" />
       </motion.div>
-    </section>
+    </AnimatedPanel>
   );
 }

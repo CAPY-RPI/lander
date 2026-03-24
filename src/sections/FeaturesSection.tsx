@@ -1,12 +1,19 @@
+import { AnimatedPanel } from "../components/AnimatedPanel";
 import { GlassCard } from "../components/GlassCard";
 import { primaryCards } from "../data/content";
 
 export function FeaturesSection() {
   return (
-    <section className="panel featuresPanel" id="features">
-      {primaryCards.map((card) => (
-        <GlassCard key={card.title} title={card.title} body={card.body} className={card.className} />
+    <AnimatedPanel className="panel featuresPanel" id="features" staggerIndex={1}>
+      {primaryCards.map((card, index) => (
+        <GlassCard
+          key={card.title}
+          title={card.title}
+          body={card.body}
+          className={card.className}
+          staggerIndex={index}
+        />
       ))}
-    </section>
+    </AnimatedPanel>
   );
 }
