@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { motion, useAnimationControls, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import { StaggerWords } from "./StaggerWords";
 
 type GlassCardProps = {
@@ -12,11 +12,11 @@ type GlassCardProps = {
 };
 
 export function GlassCard({ title, body, className, children, staggerIndex = 0 }: GlassCardProps) {
+  const triggerAmount = 0.36;
   const cardRef = useRef<HTMLElement | null>(null);
-  const inView = useInView(cardRef, { amount: 0.24 });
-  const controls = useAnimationControls();
   const [side, setSide] = useState<1 | -1>(1);
   const [verticalIndex, setVerticalIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const updateMotionMeta = () => {
@@ -24,15 +24,13 @@ export function GlassCard({ title, body, className, children, staggerIndex = 0 }
       if (!node) return;
 
       const rect = node.getBoundingClientRect();
-      const viewportCenter = window.innerWidth / 2;
+      const viewportWidth = window.innerWidth;
+      const viewportCenter = viewportWidth / 2;
       const elementCenter = rect.left + rect.width / 2;
 
-      if (rect.left >= window.innerWidth) {
+      if (rect.left >= viewportWidth) {
         setSide(1);
-        return;
-      }
-
-      if (rect.right <= 0) {
+      } else if (rect.right <= 0) {
         setSide(-1);
       } else {
         setSide(elementCenter < viewportCenter ? -1 : 1);
@@ -41,6 +39,15 @@ export function GlassCard({ title, body, className, children, staggerIndex = 0 }
       const verticalStep = 170;
       const computedVerticalIndex = Math.max(0, Math.round(rect.top / verticalStep));
       setVerticalIndex(computedVerticalIndex);
+
+      const visibleLeft = Math.max(rect.left, 0);
+      const visibleRight = Math.min(rect.right, viewportWidth);
+      const visibleWidth = Math.max(0, visibleRight - visibleLeft);
+      const maxVisibleWidth = Math.min(rect.width, viewportWidth);
+      const triggerDistance = Math.max(1, maxVisibleWidth * triggerAmount);
+      const nextProgress = Math.min(1, visibleWidth / triggerDistance);
+
+      setProgress((prev) => (Math.abs(prev - nextProgress) < 0.001 ? prev : nextProgress));
     };
 
     updateMotionMeta();
@@ -54,42 +61,41 @@ export function GlassCard({ title, body, className, children, staggerIndex = 0 }
       scrollTarget.removeEventListener("scroll", updateMotionMeta);
       window.removeEventListener("resize", updateMotionMeta);
     };
-  }, []);
-
-  useEffect(() => {
-    const outX = side * 52;
-    const compositeIndex = verticalIndex + staggerIndex * 0.2;
-    const enterDelay = compositeIndex * 0.08;
-    const exitDelay = compositeIndex * 0.05;
-    controls.start(
-      inView
-        ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
-        : { opacity: 0, x: outX, y: 8, scale: 0.975, filter: "blur(3px)" },
-      {
-        duration: inView ? 0.55 : 0.48,
-        ease: [0.645, 0.045, 0.355, 1],
-        delay: inView ? enterDelay : exitDelay,
-      },
-    );
-  }, [controls, inView, side, staggerIndex, verticalIndex]);
+  }, [triggerAmount]);
 
   const textBaseDelay = verticalIndex * 0.08 + staggerIndex * 0.02 + 0.06;
+  const progressOffset = Math.min(0.85, staggerIndex * 0.035);
+  const delayedProgress =
+    progress <= progressOffset ? 0 : (progress - progressOffset) / (1 - progressOffset);
+  const outX = side * 52;
+  const style = {
+    opacity: delayedProgress,
+    x: outX * (1 - delayedProgress),
+    y: 8 * (1 - delayedProgress),
+    scale: 0.975 + (1 - 0.975) * delayedProgress,
+    filter: `blur(${(3 * (1 - delayedProgress)).toFixed(2)}px)`,
+  };
+  const textInView = delayedProgress > 0.02;
 
   return (
     <motion.article
       ref={cardRef}
       className={`glassCard ${className ?? ""}`.trim()}
-      initial={{ opacity: 0, x: 0, y: 8, scale: 0.975, filter: "blur(3px)" }}
-      animate={controls}
+      style={style}
     >
       {title ? (
         <h3>
-          <StaggerWords text={title} inView={inView} baseDelay={textBaseDelay} stagger={0.032} />
+          <StaggerWords text={title} inView={textInView} baseDelay={textBaseDelay} stagger={0.032} />
         </h3>
       ) : null}
       {body ? (
         <p>
-          <StaggerWords text={body} inView={inView} baseDelay={textBaseDelay + 0.12} stagger={0.02} />
+          <StaggerWords
+            text={body}
+            inView={textInView}
+            baseDelay={textBaseDelay + 0.12}
+            stagger={0.02}
+          />
         </p>
       ) : null}
       {children}

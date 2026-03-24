@@ -144,10 +144,6 @@
   line-height: 0.92;
 }
 
-.heroCopy h1 span:last-child {
-  margin-left: 410px;
-}
-
 .heroCopy p {
   margin: 162px 0 0;
   max-width: 560px;
@@ -349,7 +345,7 @@
 .verticalMarkWrap {
   position: absolute;
   top: var(--rail-mark-vertical-inset);
-  left: 350px;
+  left: 375px;
   transform: none;
   width: 178px;
   height: calc(100% - var(--rail-mark-vertical-inset) * 2);

@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { motion, useAnimationControls, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 
 type AnimatedPanelProps = {
   className: string;
@@ -10,10 +10,10 @@ type AnimatedPanelProps = {
 };
 
 export function AnimatedPanel({ className, id, children, staggerIndex = 0 }: AnimatedPanelProps) {
+  const triggerAmount = 0.3;
   const panelRef = useRef<HTMLElement | null>(null);
-  const inView = useInView(panelRef, { amount: 0.2 });
-  const controls = useAnimationControls();
   const [side, setSide] = useState<1 | -1>(1);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const updateSide = () => {
@@ -21,20 +21,22 @@ export function AnimatedPanel({ className, id, children, staggerIndex = 0 }: Ani
       if (!node) return;
 
       const rect = node.getBoundingClientRect();
-      const viewportCenter = window.innerWidth / 2;
-      const elementCenter = rect.left + rect.width / 2;
+      const viewportWidth = window.innerWidth;
 
-      if (rect.left >= window.innerWidth) {
+      if (rect.left >= viewportWidth) {
         setSide(1);
-        return;
-      }
-
-      if (rect.right <= 0) {
+      } else if (rect.right <= 0) {
         setSide(-1);
-        return;
       }
 
-      setSide(elementCenter < viewportCenter ? -1 : 1);
+      const visibleLeft = Math.max(rect.left, 0);
+      const visibleRight = Math.min(rect.right, viewportWidth);
+      const visibleWidth = Math.max(0, visibleRight - visibleLeft);
+      const maxVisibleWidth = Math.min(rect.width, viewportWidth);
+      const triggerDistance = Math.max(1, maxVisibleWidth * triggerAmount);
+      const nextProgress = Math.min(1, visibleWidth / triggerDistance);
+
+      setProgress((prev) => (Math.abs(prev - nextProgress) < 0.001 ? prev : nextProgress));
     };
 
     updateSide();
@@ -48,31 +50,26 @@ export function AnimatedPanel({ className, id, children, staggerIndex = 0 }: Ani
       scrollTarget.removeEventListener("scroll", updateSide);
       window.removeEventListener("resize", updateSide);
     };
-  }, []);
+  }, [triggerAmount]);
 
-  useEffect(() => {
-    const outX = side * 84;
-    const enterDelay = staggerIndex * 0.07;
-    const exitDelay = staggerIndex * 0.05;
-    controls.start(
-      inView
-        ? { opacity: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)" }
-        : { opacity: 0, x: outX, y: 10, scale: 0.965, filter: "blur(4px)" },
-      {
-        duration: inView ? 0.62 : 0.52,
-        ease: [0.645, 0.045, 0.355, 1],
-        delay: inView ? enterDelay : exitDelay,
-      },
-    );
-  }, [controls, inView, side, staggerIndex]);
+  const progressOffset = Math.min(0.9, staggerIndex * 0.06);
+  const delayedProgress =
+    progress <= progressOffset ? 0 : (progress - progressOffset) / (1 - progressOffset);
+  const outX = side * 84;
+  const style = {
+    opacity: delayedProgress,
+    x: outX * (1 - delayedProgress),
+    y: 10 * (1 - delayedProgress),
+    scale: 0.965 + (1 - 0.965) * delayedProgress,
+    filter: `blur(${(4 * (1 - delayedProgress)).toFixed(2)}px)`,
+  };
 
   return (
     <motion.section
       ref={panelRef}
       id={id}
       className={className}
-      initial={{ opacity: 0, x: 0, y: 10, scale: 0.965, filter: "blur(4px)" }}
-      animate={controls}
+      style={style}
     >
       {children}
     </motion.section>
