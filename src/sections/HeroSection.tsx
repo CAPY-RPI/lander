@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { AnimatedPanel } from "../components/AnimatedPanel";
 import { AspectImage } from "../components/AspectImage";
+import { StaggerWords } from "../components/StaggerWords";
+import { TypewriterWord } from "../components/TypewriterWord";
 import { assets } from "../data/content";
 
 export function HeroSection() {
@@ -8,19 +10,26 @@ export function HeroSection() {
     <AnimatedPanel className="panel heroPanel" id="launch" staggerIndex={0}>
       <div className="heroCopy">
         <h1>
-          <span>more sleep</span>
-          <span>for you</span>
+          <span>
+            more <TypewriterWord words={["sleep", "growth", "fun"]} />
+          </span>
+          <span>
+            <StaggerWords text="for you" baseDelay={0.12} />
+          </span>
         </h1>
         <p>
-          your campus life, simplified. find your community, track your impact, and discover
-          opportunities. built by students, for students.
+          <StaggerWords
+            text="your campus life, simplified. find your community, track your impact, and discover opportunities. built by students, for students."
+            baseDelay={0.2}
+            stagger={0.018}
+          />
         </p>
         <div className="heroCtas">
           <a className="pillButton accent" href="#features">
-            absolutely
+            <StaggerWords text="absolutely" baseDelay={0.28} />
           </a>
           <a className="pillButton subtle" href="#features">
-            how
+            <StaggerWords text="how" baseDelay={0.34} />
           </a>
         </div>
       </div>

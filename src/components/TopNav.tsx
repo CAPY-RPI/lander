@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { StaggerWords } from "./StaggerWords";
 import { assets, navItems } from "../data/content";
 
 export function TopNav() {
@@ -14,13 +15,13 @@ export function TopNav() {
       <nav aria-label="Primary navigation" className="navPill">
         {navItems.map((item) => (
           <a key={item.label} href={item.href}>
-            {item.label}
+            <StaggerWords text={item.label} baseDelay={0.08} amount={0.1} />
           </a>
         ))}
       </nav>
 
       <a className="pillButton accent navCta" href="#launch">
-        let&apos;s go
+        <StaggerWords text="let's go" baseDelay={0.18} amount={0.1} />
       </a>
     </motion.header>
   );

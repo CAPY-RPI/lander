@@ -1,5 +1,6 @@
 import { AnimatedPanel } from "../components/AnimatedPanel";
 import { AspectImage } from "../components/AspectImage";
+import { StaggerWords } from "../components/StaggerWords";
 import { assets } from "../data/content";
 
 const socialAssets = [
@@ -19,33 +20,59 @@ export function CapyRailSection() {
       </div>
 
       <div className="railContent">
-        <p className="railTop">experience hibernation</p>
+        <p className="railTop">
+          <StaggerWords text="experience hibernation" baseDelay={0.08} />
+        </p>
 
         <div className="railLinks">
           <div className="railLinkBlock">
-            <p className="columnTitle">team</p>
-            <p>about</p>
-            <p>brand</p>
-            <p>contribute</p>
+            <p className="columnTitle">
+              <StaggerWords text="team" baseDelay={0.15} />
+            </p>
+            <p>
+              <StaggerWords text="about" baseDelay={0.17} />
+            </p>
+            <p>
+              <StaggerWords text="brand" baseDelay={0.19} />
+            </p>
+            <p>
+              <StaggerWords text="contribute" baseDelay={0.21} />
+            </p>
           </div>
 
           <div className="railLinkRow">
             <div className="railLinkBlock">
-              <p className="columnTitle">resources</p>
-              <p>support</p>
-              <p>developers</p>
-              <p>feedback</p>
+              <p className="columnTitle">
+                <StaggerWords text="resources" baseDelay={0.24} />
+              </p>
+              <p>
+                <StaggerWords text="support" baseDelay={0.26} />
+              </p>
+              <p>
+                <StaggerWords text="developers" baseDelay={0.28} />
+              </p>
+              <p>
+                <StaggerWords text="feedback" baseDelay={0.3} />
+              </p>
             </div>
             <div className="railLinkBlock">
-              <p className="columnTitle">policies</p>
-              <p>terms</p>
-              <p>privacy</p>
+              <p className="columnTitle">
+                <StaggerWords text="policies" baseDelay={0.32} />
+              </p>
+              <p>
+                <StaggerWords text="terms" baseDelay={0.34} />
+              </p>
+              <p>
+                <StaggerWords text="privacy" baseDelay={0.36} />
+              </p>
             </div>
           </div>
         </div>
 
         <div className="railSocial">
-          <p>social</p>
+          <p>
+            <StaggerWords text="social" baseDelay={0.38} />
+          </p>
           <div>
             {socialAssets.map((item) => (
               <a href="#" key={item.alt} aria-label={item.alt}>
@@ -55,8 +82,12 @@ export function CapyRailSection() {
           </div>
         </div>
 
-        <p className="railStatus">all systems operational</p>
-        <p className="railFoot">capywrite 2026 // all rights reserved</p>
+        <p className="railStatus">
+          <StaggerWords text="all systems operational" baseDelay={0.42} />
+        </p>
+        <p className="railFoot">
+          <StaggerWords text="capywrite 2026 // all rights reserved" baseDelay={0.46} />
+        </p>
       </div>
     </AnimatedPanel>
   );

@@ -1,11 +1,18 @@
 import { AnimatedPanel } from "../components/AnimatedPanel";
+import { StaggerWords } from "../components/StaggerWords";
 
 export function InterfaceSection() {
   return (
     <AnimatedPanel className="panel interfacePanel" staggerIndex={2}>
-      <h2>imagine our interface is here</h2>
-      <p className="interfaceSub">(and whatever you do, don&apos;t think about ramen)</p>
-      <p className="interfaceFoot">jokes aside, come back on May 1st</p>
+      <h2>
+        <StaggerWords text="imagine our interface is here" baseDelay={0.1} />
+      </h2>
+      <p className="interfaceSub">
+        <StaggerWords text="(and whatever you do, don't think about ramen)" baseDelay={0.24} />
+      </p>
+      <p className="interfaceFoot">
+        <StaggerWords text="jokes aside, come back on May 1st" baseDelay={0.36} />
+      </p>
     </AnimatedPanel>
   );
 }
