@@ -11,7 +11,7 @@ import "./App.css";
 
 function App() {
   const scrollerRef = useRef<HTMLElement | null>(null);
-  useHorizontalWheelScroll(scrollerRef);
+  useHorizontalWheelScroll(scrollerRef, { endCutoffPx: 220 });
 
   return (
     <div className="appRoot">
