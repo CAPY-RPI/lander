@@ -117,7 +117,7 @@
 }
 
 .panel {
-  height: 838px;
+  height: 100%;
   border-radius: var(--radius-card);
 }
 
@@ -165,11 +165,12 @@
 }
 
 .featuresPanel {
-  width: 1258px;
   display: grid;
   grid-template-columns: 525px 710px;
-  grid-template-rows: 251px 250px 391px;
+  grid-template-rows: repeat(6, minmax(0, 1fr));
   gap: var(--space-24);
+  height: 100%;
+  overflow: hidden;
 }
 
 .glassCard {
@@ -179,6 +180,7 @@
   box-shadow: var(--glass-shadow);
   backdrop-filter: blur(var(--glass-blur));
   padding: 42px 50px;
+  min-height: 0;
 }
 
 .glassCard h3 {
@@ -216,28 +218,29 @@
   font-weight: 500;
 }
 
-.cardTall {
+.card-col1-row1 {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+}
+
+.card-col2-row1 {
+  grid-column: 2;
   grid-row: 1 / span 2;
 }
 
-.cardWide {
+.card-col2-row2 {
   grid-column: 2;
+  grid-row: 3 / span 2;
 }
 
-.cardShort {
+.card-col1-row2-span2 {
   grid-column: 1;
+  grid-row: 4 / span 3;
 }
 
-.cardWideBottom {
+.card-col2-row3 {
   grid-column: 2;
-}
-
-.cardShort h3 {
-  max-width: 75%;
-}
-
-.cardWideBottom h3 {
-  max-width: 80%;
+  grid-row: 5 / span 2;
 }
 
 .interfacePanel,
