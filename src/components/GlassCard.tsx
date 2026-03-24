@@ -14,11 +14,14 @@ type GlassCardProps = {
 export function GlassCard({ title, body, className, children, staggerIndex = 0 }: GlassCardProps) {
   const triggerAmount = 0.36;
   const cardRef = useRef<HTMLElement | null>(null);
-  const [side, setSide] = useState<1 | -1>(1);
+  const [centerDelta, setCenterDelta] = useState(1);
   const [verticalIndex, setVerticalIndex] = useState(0);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    const scroller = cardRef.current?.closest(".horizontalScroller") as HTMLElement | null;
+    const scrollTarget: HTMLElement | Window = scroller ?? window;
+
     const updateMotionMeta = () => {
       const node = cardRef.current;
       if (!node) return;
@@ -27,14 +30,9 @@ export function GlassCard({ title, body, className, children, staggerIndex = 0 }
       const viewportWidth = window.innerWidth;
       const viewportCenter = viewportWidth / 2;
       const elementCenter = rect.left + rect.width / 2;
+      const nextCenterDelta = elementCenter - viewportCenter;
 
-      if (rect.left >= viewportWidth) {
-        setSide(1);
-      } else if (rect.right <= 0) {
-        setSide(-1);
-      } else {
-        setSide(elementCenter < viewportCenter ? -1 : 1);
-      }
+      setCenterDelta((prev) => (Math.abs(prev - nextCenterDelta) < 0.1 ? prev : nextCenterDelta));
 
       const verticalStep = 170;
       const computedVerticalIndex = Math.max(0, Math.round(rect.top / verticalStep));
@@ -51,9 +49,6 @@ export function GlassCard({ title, body, className, children, staggerIndex = 0 }
     };
 
     updateMotionMeta();
-    const scroller = cardRef.current?.closest(".horizontalScroller") as HTMLElement | null;
-    const scrollTarget: HTMLElement | Window = scroller ?? window;
-
     scrollTarget.addEventListener("scroll", updateMotionMeta, { passive: true });
     window.addEventListener("resize", updateMotionMeta);
 
@@ -64,9 +59,10 @@ export function GlassCard({ title, body, className, children, staggerIndex = 0 }
   }, [triggerAmount]);
 
   const textBaseDelay = verticalIndex * 0.08 + staggerIndex * 0.02 + 0.06;
-  const progressOffset = Math.min(0.85, staggerIndex * 0.035);
+  const progressOffset = Math.min(0.9, staggerIndex * 0.06);
   const delayedProgress =
     progress <= progressOffset ? 0 : (progress - progressOffset) / (1 - progressOffset);
+  const side: 1 | -1 = centerDelta >= 0 ? 1 : -1;
   const outX = side * 52;
   const style = {
     opacity: delayedProgress,

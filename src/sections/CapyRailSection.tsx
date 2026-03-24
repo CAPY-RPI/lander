@@ -1,6 +1,7 @@
 import { AnimatedPanel } from "../components/AnimatedPanel";
 import { AspectImage } from "../components/AspectImage";
 import { StaggerWords } from "../components/StaggerWords";
+import { TypewriterWord } from "../components/TypewriterWord";
 import { assets } from "../data/content";
 
 const socialAssets = [
@@ -21,7 +22,8 @@ export function CapyRailSection() {
 
       <div className="railContent">
         <p className="railTop">
-          <StaggerWords text="experience hibernation" baseDelay={0.08} />
+          <StaggerWords text="experience" baseDelay={0.08} />{" "}
+          <TypewriterWord words={["hibernation", "frictionlessness", "community"]} />
         </p>
 
         <div className="railLinks">

@@ -12,7 +12,7 @@ type AnimatedPanelProps = {
 export function AnimatedPanel({ className, id, children, staggerIndex = 0 }: AnimatedPanelProps) {
   const triggerAmount = 0.3;
   const panelRef = useRef<HTMLElement | null>(null);
-  const [side, setSide] = useState<1 | -1>(1);
+  const [centerDelta, setCenterDelta] = useState(1);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -22,12 +22,11 @@ export function AnimatedPanel({ className, id, children, staggerIndex = 0 }: Ani
 
       const rect = node.getBoundingClientRect();
       const viewportWidth = window.innerWidth;
+      const viewportCenter = viewportWidth / 2;
+      const elementCenter = rect.left + rect.width / 2;
+      const nextCenterDelta = elementCenter - viewportCenter;
 
-      if (rect.left >= viewportWidth) {
-        setSide(1);
-      } else if (rect.right <= 0) {
-        setSide(-1);
-      }
+      setCenterDelta((prev) => (Math.abs(prev - nextCenterDelta) < 0.1 ? prev : nextCenterDelta));
 
       const visibleLeft = Math.max(rect.left, 0);
       const visibleRight = Math.min(rect.right, viewportWidth);
@@ -52,9 +51,10 @@ export function AnimatedPanel({ className, id, children, staggerIndex = 0 }: Ani
     };
   }, [triggerAmount]);
 
-  const progressOffset = Math.min(0.9, staggerIndex * 0.06);
+  const progressOffset = Math.min(0.92, staggerIndex * 0.085);
   const delayedProgress =
     progress <= progressOffset ? 0 : (progress - progressOffset) / (1 - progressOffset);
+  const side: 1 | -1 = centerDelta >= 0 ? 1 : -1;
   const outX = side * 84;
   const style = {
     opacity: delayedProgress,
