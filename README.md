@@ -1,14 +1,23 @@
 # Capy Lander
 
-Premium, horizontal-first React landing page implementation based on Figma design `8:426`.
+Premium, horizontal-first React landing page based on Figma design `8:426`.
 
-## Stack
+---
 
-- React 19 + TypeScript + Vite
-- Framer Motion for reveal and premium interaction animation
-- CSS tokens + componentized sections for maintainability
+## 🏗️ Architecture
 
-## Run
+- **React 19 + TypeScript + Vite**
+- **Feature-based folders:**
+  - `src/sections/` — Page sections (feature-based)
+  - `src/components/` — Shared UI components
+  - `src/hooks/` — Custom React hooks
+  - `src/data/` — Static content/data
+  - `src/theme/tokens.css` — Design tokens (colors, spacing, typography)
+- **CSS Modules:** All components use local CSS modules for styling
+- **Design Tokens:** All colors, spacing, and typography use CSS custom properties from `tokens.css`
+- **Framer Motion:** For reveal and premium interaction animation
+
+## 🚀 Getting Started
 
 ```bash
 npm install
@@ -21,7 +30,7 @@ Production build:
 npm run build
 ```
 
-## Docker
+## 🐳 Docker
 
 Build and run the production image locally:
 
@@ -30,16 +39,16 @@ docker build -t capy-lander:local .
 docker run --rm -p 8080:80 capy-lander:local
 ```
 
-Open `http://localhost:8080`.
+Open [http://localhost:8080](http://localhost:8080).
 
-## Docker Compose
+## 🧩 Docker Compose
 
-This repo supports both common Compose modes:
+This repo supports both Compose modes:
 
 - `image:` mode for reproducible runs (default in `docker-compose.yml`)
 - `build:` mode for local development iteration (in `docker-compose.override.yml`)
 
-By default, Docker Compose automatically loads `docker-compose.override.yml`, so a local run builds from source:
+By default, Docker Compose loads `docker-compose.override.yml`, so a local run builds from source:
 
 ```bash
 docker compose up --build
@@ -51,13 +60,26 @@ To run a published registry image instead, disable overrides and set the image t
 CAPY_IMAGE=ghcr.io/<owner>/<repo>:latest docker compose -f docker-compose.yml up
 ```
 
-## GitHub Image Builder
+## 🛠️ Contributing
 
-GitHub Actions workflow: `.github/workflows/docker-image.yml`
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
 
-- Pull requests to `main`: lint, build, and container build validation (no push)
+- **Feature-based folders:** Place new features/sections in their own folder under `src/sections/` or `src/components/`.
+- **CSS Modules:** Use local CSS modules for all new components.
+- **Design Tokens:** Reference all colors, spacing, and typography via `src/theme/tokens.css`.
+- **JSDoc Comments:** Add clear JSDoc comments to all hooks and complex logic blocks, explaining _why_ the logic exists.
+
+## 🏭 GitHub Actions
+
+Workflow: `.github/workflows/docker-image.yml`
+
+- PRs to `main`: lint, build, and container build validation (no push)
 - Push to `main`: lint, build, build and push image to GHCR
 - Version tags (`v*`): lint, build, build and push versioned image tags
+
+---
+
+For questions, open an issue or start a discussion.
 
 Published image name:
 
