@@ -1,17 +1,17 @@
-import { useRef } from "react";
-import { motion } from "framer-motion";
-import { TopNav } from "./components/TopNav";
-import { useHorizontalWheelScroll } from "./hooks/useHorizontalWheelScroll";
-import { CapyRailSection } from "./sections/CapyRailSection";
-import { ContactSection } from "./sections/ContactSection";
-import { FeaturesSection } from "./sections/FeaturesSection";
-import { HeroSection } from "./sections/HeroSection";
-import { InterfaceSection } from "./sections/InterfaceSection";
-import "./App.css";
+import { useRef } from 'react'
+import { motion } from 'framer-motion'
+import { TopNav } from './components/TopNav'
+import { useHorizontalWheelScroll } from './hooks/useHorizontalWheelScroll'
+import { CapyRailSection } from './sections/CapyRailSection'
+import { ContactSection } from './sections/ContactSection'
+import { FeaturesSection } from './sections/FeaturesSection'
+import { HeroSection } from './sections/HeroSection'
+import { InterfaceSection } from './sections/InterfaceSection'
+import './App.css'
 
 function App() {
-  const scrollerRef = useRef<HTMLElement | null>(null);
-  useHorizontalWheelScroll(scrollerRef, { endCutoffPx: 300 });
+  const scrollerRef = useRef<HTMLElement | null>(null)
+  useHorizontalWheelScroll(scrollerRef, { endCutoffPx: 300 })
 
   return (
     <div className="appRoot">
@@ -32,7 +32,7 @@ function App() {
         </motion.div>
       </main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

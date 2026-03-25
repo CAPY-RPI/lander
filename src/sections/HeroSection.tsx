@@ -1,6 +1,6 @@
-import { AnimatedPanel } from "../components/AnimatedPanel";
-import { StaggerWords } from "../components/StaggerWords";
-import { TypewriterWord } from "../components/TypewriterWord";
+import { AnimatedPanel } from '../components/AnimatedPanel'
+import { StaggerWords } from '../components/StaggerWords'
+import { TypewriterWord } from '../components/TypewriterWord'
 
 export function HeroSection() {
   return (
@@ -9,7 +9,7 @@ export function HeroSection() {
         <div className="heroRowTitle">
           <h1>
             <span>
-              more <TypewriterWord words={["sleep", "growth", "fun"]} />
+              more <TypewriterWord words={['sleep', 'growth', 'fun']} />
             </span>
             <span>
               <StaggerWords text="for you" baseDelay={0.12} />
@@ -19,11 +19,7 @@ export function HeroSection() {
         <div className="heroRowBottom">
           <div className="heroDescription">
             <p>
-              <StaggerWords
-                text="your campus life, simplified."
-                baseDelay={0.2}
-                stagger={0.018}
-              />
+              <StaggerWords text="your campus life, simplified." baseDelay={0.2} stagger={0.018} />
             </p>
             <p>
               <StaggerWords
@@ -41,7 +37,7 @@ export function HeroSection() {
             </p>
           </div>
           <div className="heroCtas">
-            <a className="pillButton accent" href="#features">
+            <a className="pillButton accent" href="https://capyrpi.org/app">
               <StaggerWords text="absolutely" baseDelay={0.28} />
             </a>
             <a className="pillButton subtle" href="#features">
@@ -51,5 +47,5 @@ export function HeroSection() {
         </div>
       </div>
     </AnimatedPanel>
-  );
+  )
 }

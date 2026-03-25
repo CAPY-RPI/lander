@@ -1,5 +1,5 @@
-import { AnimatedPanel } from "../components/AnimatedPanel";
-import { StaggerWords } from "../components/StaggerWords";
+import { AnimatedPanel } from '../components/AnimatedPanel'
+import { StaggerWords } from '../components/StaggerWords'
 
 export function ContactSection() {
   return (
@@ -21,5 +21,5 @@ export function ContactSection() {
         </p>
       </div>
     </AnimatedPanel>
-  );
+  )
 }

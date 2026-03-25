@@ -1,17 +1,17 @@
-import { AnimatedPanel } from "../components/AnimatedPanel";
-import { AspectImage } from "../components/AspectImage";
-import { StaggerWords } from "../components/StaggerWords";
-import { TypewriterWord } from "../components/TypewriterWord";
-import { assets } from "../data/content";
+import { AnimatedPanel } from '../components/AnimatedPanel'
+import { AspectImage } from '../components/AspectImage'
+import { StaggerWords } from '../components/StaggerWords'
+import { TypewriterWord } from '../components/TypewriterWord'
+import { assets } from '../data/content'
 
 const socialAssets = [
-  { src: assets.x, alt: "X" },
-  { src: assets.instagram, alt: "Instagram" },
-  { src: assets.facebook, alt: "Facebook" },
-  { src: assets.github, alt: "GitHub" },
-  { src: assets.tiktok, alt: "TikTok" },
-  { src: assets.youtube, alt: "YouTube" },
-];
+  { src: assets.x, alt: 'X' },
+  { src: assets.instagram, alt: 'Instagram' },
+  { src: assets.facebook, alt: 'Facebook' },
+  { src: assets.github, alt: 'GitHub' },
+  { src: assets.tiktok, alt: 'TikTok' },
+  { src: assets.youtube, alt: 'YouTube' },
+]
 
 export function CapyRailSection() {
   return (
@@ -22,8 +22,8 @@ export function CapyRailSection() {
 
       <div className="railContent">
         <p className="railTop">
-          <StaggerWords text="experience" baseDelay={0.08} />{" "}
-          <TypewriterWord words={["hibernation", "frictionlessness", "community"]} />
+          <StaggerWords text="experience" baseDelay={0.08} />{' '}
+          <TypewriterWord words={['hibernation', 'frictionlessness', 'community']} />
         </p>
 
         <div className="railLinks">
@@ -93,5 +93,5 @@ export function CapyRailSection() {
         </div>
       </div>
     </AnimatedPanel>
-  );
+  )
 }

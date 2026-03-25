@@ -21,6 +21,52 @@ Production build:
 npm run build
 ```
 
+## Docker
+
+Build and run the production image locally:
+
+```bash
+docker build -t capy-lander:local .
+docker run --rm -p 8080:80 capy-lander:local
+```
+
+Open `http://localhost:8080`.
+
+## Docker Compose
+
+This repo supports both common Compose modes:
+
+- `image:` mode for reproducible runs (default in `docker-compose.yml`)
+- `build:` mode for local development iteration (in `docker-compose.override.yml`)
+
+By default, Docker Compose automatically loads `docker-compose.override.yml`, so a local run builds from source:
+
+```bash
+docker compose up --build
+```
+
+To run a published registry image instead, disable overrides and set the image tag:
+
+```bash
+CAPY_IMAGE=ghcr.io/<owner>/<repo>:latest docker compose -f docker-compose.yml up
+```
+
+## GitHub Image Builder
+
+GitHub Actions workflow: `.github/workflows/docker-image.yml`
+
+- Pull requests to `main`: lint, build, and container build validation (no push)
+- Push to `main`: lint, build, build and push image to GHCR
+- Version tags (`v*`): lint, build, build and push versioned image tags
+
+Published image name:
+
+```text
+ghcr.io/<owner>/<repo>
+```
+
+Tags include branch/PR refs, commit SHA, semver (for `v*` tags), and `latest` on the default branch.
+
 ## Architecture
 
 - `src/App.tsx`: app shell + panel composition + horizontal scroll container

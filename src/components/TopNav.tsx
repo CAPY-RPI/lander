@@ -1,341 +1,341 @@
-import { useEffect, useRef, useState } from "react";
-import type { MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
-import { motion } from "framer-motion";
-import { StaggerWords } from "./StaggerWords";
-import { assets, navItems } from "../data/content";
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type { MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from 'react'
+import { motion } from 'framer-motion'
+import { StaggerWords } from './StaggerWords'
+import { assets, navItems } from '../data/content'
 
 type SnapCandidate = {
-  href: string;
-  x: number;
-  width: number;
-  targetLeft: number;
-};
+  href: string
+  x: number
+  width: number
+  targetLeft: number
+}
+
+const easeInOutQuart = (t: number) =>
+  t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2
 
 export function TopNav() {
-  const navRef = useRef<HTMLElement | null>(null);
-  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
-  const isProgrammaticScrollRef = useRef(false);
-  const isBubbleDraggingRef = useRef(false);
-  const navPointerIdRef = useRef<number | null>(null);
-  const bubbleDragStartClientXRef = useRef(0);
-  const bubbleDragStartXRef = useRef(0);
-  const pendingScrollLeftRef = useRef<number | null>(null);
-  const releaseTimerRef = useRef<number | null>(null);
-  const scrollRafRef = useRef<number | null>(null);
-  const [activeHref, setActiveHref] = useState(navItems[0]?.href ?? "#launch");
-  const [bubbleX, setBubbleX] = useState(0);
-  const [bubbleWidth, setBubbleWidth] = useState(0);
-  const [dragBubbleX, setDragBubbleX] = useState<number | null>(null);
-  const [bubbleDragging, setBubbleDragging] = useState(false);
-  const [bubbleReady, setBubbleReady] = useState(false);
-
-  const easeInOutQuart = (t: number) =>
-    t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
+  const navRef = useRef<HTMLElement | null>(null)
+  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({})
+  const isProgrammaticScrollRef = useRef(false)
+  const isBubbleDraggingRef = useRef(false)
+  const navPointerIdRef = useRef<number | null>(null)
+  const bubbleDragStartClientXRef = useRef(0)
+  const bubbleDragStartXRef = useRef(0)
+  const pendingScrollLeftRef = useRef<number | null>(null)
+  const releaseTimerRef = useRef<number | null>(null)
+  const scrollRafRef = useRef<number | null>(null)
+  const [activeHref, setActiveHref] = useState(navItems[0]?.href ?? '#launch')
+  const [bubbleX, setBubbleX] = useState(0)
+  const [bubbleWidth, setBubbleWidth] = useState(0)
+  const [dragBubbleX, setDragBubbleX] = useState<number | null>(null)
+  const [bubbleDragging, setBubbleDragging] = useState(false)
+  const [bubbleReady, setBubbleReady] = useState(false)
 
   const getNavSnapCandidates = (scroller: HTMLElement): SnapCandidate[] => {
-    const maxLeft = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
+    const maxLeft = Math.max(0, scroller.scrollWidth - scroller.clientWidth)
 
     return navItems
       .map((item) => {
-        const link = linkRefs.current[item.href];
-        if (!link) return null;
+        const link = linkRefs.current[item.href]
+        if (!link) return null
 
-        const section = document.getElementById(item.href.replace("#", ""));
-        if (!section) return null;
+        const section = document.getElementById(item.href.replace('#', ''))
+        if (!section) return null
 
-        const sectionCenter = section.offsetLeft + section.offsetWidth / 2;
-        const rawLeft = sectionCenter - scroller.clientWidth / 2;
-        const targetLeft = Math.max(0, Math.min(rawLeft, maxLeft));
+        const sectionCenter = section.offsetLeft + section.offsetWidth / 2
+        const rawLeft = sectionCenter - scroller.clientWidth / 2
+        const targetLeft = Math.max(0, Math.min(rawLeft, maxLeft))
 
         return {
           href: item.href,
           x: link.offsetLeft,
           width: link.offsetWidth,
           targetLeft,
-        };
+        }
       })
       .filter((value): value is SnapCandidate => value != null)
-      .sort((a, b) => a.x - b.x);
-  };
+      .sort((a, b) => a.x - b.x)
+  }
 
   const mapBubbleXToScrollLeft = (x: number, candidates: SnapCandidate[]) => {
-    if (candidates.length === 0) return 0;
-    if (candidates.length === 1) return candidates[0].targetLeft;
+    if (candidates.length === 0) return 0
+    if (candidates.length === 1) return candidates[0].targetLeft
 
-    if (x <= candidates[0].x) return candidates[0].targetLeft;
-    if (x >= candidates[candidates.length - 1].x) return candidates[candidates.length - 1].targetLeft;
+    if (x <= candidates[0].x) return candidates[0].targetLeft
+    if (x >= candidates[candidates.length - 1].x)
+      return candidates[candidates.length - 1].targetLeft
 
     for (let i = 0; i < candidates.length - 1; i += 1) {
-      const left = candidates[i];
-      const right = candidates[i + 1];
-      if (x < left.x || x > right.x) continue;
+      const left = candidates[i]
+      const right = candidates[i + 1]
+      if (x < left.x || x > right.x) continue
 
-      const span = Math.max(1, right.x - left.x);
-      const t = (x - left.x) / span;
-      return left.targetLeft + (right.targetLeft - left.targetLeft) * t;
+      const span = Math.max(1, right.x - left.x)
+      const t = (x - left.x) / span
+      return left.targetLeft + (right.targetLeft - left.targetLeft) * t
     }
 
-    return candidates[candidates.length - 1].targetLeft;
-  };
+    return candidates[candidates.length - 1].targetLeft
+  }
 
   useEffect(() => {
     const updateActiveFromScroll = () => {
-      const scroller = document.querySelector(".horizontalScroller") as HTMLElement | null;
-      if (!scroller) return;
+      const scroller = document.querySelector('.horizontalScroller') as HTMLElement | null
+      if (!scroller) return
 
       if (isBubbleDraggingRef.current) {
-        return;
+        return
       }
 
       if (isProgrammaticScrollRef.current) {
-        const pendingLeft = pendingScrollLeftRef.current;
+        const pendingLeft = pendingScrollLeftRef.current
         if (pendingLeft == null || Math.abs(scroller.scrollLeft - pendingLeft) > 2) {
-          return;
+          return
         }
 
-        isProgrammaticScrollRef.current = false;
-        pendingScrollLeftRef.current = null;
+        isProgrammaticScrollRef.current = false
+        pendingScrollLeftRef.current = null
       }
 
-      const viewportCenter = scroller.scrollLeft + scroller.clientWidth / 2;
-      let nextActive = navItems[0]?.href ?? "#launch";
-      let smallestDelta = Number.POSITIVE_INFINITY;
+      const viewportCenter = scroller.scrollLeft + scroller.clientWidth / 2
+      let nextActive = navItems[0]?.href ?? '#launch'
+      let smallestDelta = Number.POSITIVE_INFINITY
 
       for (const item of navItems) {
-        const id = item.href.replace("#", "");
-        const section = document.getElementById(id);
-        if (!section) continue;
+        const id = item.href.replace('#', '')
+        const section = document.getElementById(id)
+        if (!section) continue
 
-        const sectionCenter = section.offsetLeft + section.offsetWidth / 2;
-        const delta = Math.abs(sectionCenter - viewportCenter);
+        const sectionCenter = section.offsetLeft + section.offsetWidth / 2
+        const delta = Math.abs(sectionCenter - viewportCenter)
         if (delta < smallestDelta) {
-          smallestDelta = delta;
-          nextActive = item.href;
+          smallestDelta = delta
+          nextActive = item.href
         }
       }
 
-      setActiveHref((prev) => (prev === nextActive ? prev : nextActive));
-    };
+      setActiveHref((prev) => (prev === nextActive ? prev : nextActive))
+    }
 
-    updateActiveFromScroll();
-    const scroller = document.querySelector(".horizontalScroller") as HTMLElement | null;
-    scroller?.addEventListener("scroll", updateActiveFromScroll, { passive: true });
-    window.addEventListener("resize", updateActiveFromScroll);
+    updateActiveFromScroll()
+    const scroller = document.querySelector('.horizontalScroller') as HTMLElement | null
+    scroller?.addEventListener('scroll', updateActiveFromScroll, { passive: true })
+    window.addEventListener('resize', updateActiveFromScroll)
 
     return () => {
-      scroller?.removeEventListener("scroll", updateActiveFromScroll);
-      window.removeEventListener("resize", updateActiveFromScroll);
+      scroller?.removeEventListener('scroll', updateActiveFromScroll)
+      window.removeEventListener('resize', updateActiveFromScroll)
       if (releaseTimerRef.current != null) {
-        window.clearTimeout(releaseTimerRef.current);
+        window.clearTimeout(releaseTimerRef.current)
       }
       if (scrollRafRef.current != null) {
-        window.cancelAnimationFrame(scrollRafRef.current);
+        window.cancelAnimationFrame(scrollRafRef.current)
       }
-    };
-  }, []);
+    }
+  }, [])
 
   useEffect(() => {
     const updateBubble = () => {
-      const navNode = navRef.current;
-      const activeNode = linkRefs.current[activeHref];
+      const navNode = navRef.current
+      const activeNode = linkRefs.current[activeHref]
       if (!navNode || !activeNode) {
-        setBubbleReady(false);
-        return;
+        setBubbleReady(false)
+        return
       }
 
-      const nextX = activeNode.offsetLeft;
-      const nextWidth = activeNode.offsetWidth;
-      setBubbleX(nextX);
-      setBubbleWidth(nextWidth);
-      setBubbleReady(true);
-    };
+      const nextX = activeNode.offsetLeft
+      const nextWidth = activeNode.offsetWidth
+      setBubbleX(nextX)
+      setBubbleWidth(nextWidth)
+      setBubbleReady(true)
+    }
 
-    updateBubble();
-    window.addEventListener("resize", updateBubble);
-    return () => window.removeEventListener("resize", updateBubble);
-  }, [activeHref]);
+    updateBubble()
+    window.addEventListener('resize', updateBubble)
+    return () => window.removeEventListener('resize', updateBubble)
+  }, [activeHref])
 
-  const navigateToHref = (href: string) => {
-    const targetId = href.replace("#", "");
-    const scroller = document.querySelector(".horizontalScroller") as HTMLElement | null;
-    const target = document.getElementById(targetId);
+  const navigateToHref = useCallback((href: string) => {
+    const targetId = href.replace('#', '')
+    const scroller = document.querySelector('.horizontalScroller') as HTMLElement | null
+    const target = document.getElementById(targetId)
 
     if (!scroller || !target) {
-      window.location.hash = href;
-      return;
+      window.location.assign(href)
+      return
     }
 
-    const targetCenter = target.offsetLeft + target.offsetWidth / 2;
-    const rawLeft = targetCenter - scroller.clientWidth / 2;
-    const maxLeft = Math.max(0, scroller.scrollWidth - scroller.clientWidth);
-    const targetLeft = Math.max(0, Math.min(rawLeft, maxLeft));
-    const startLeft = scroller.scrollLeft;
-    const distance = targetLeft - startLeft;
+    const targetCenter = target.offsetLeft + target.offsetWidth / 2
+    const rawLeft = targetCenter - scroller.clientWidth / 2
+    const maxLeft = Math.max(0, scroller.scrollWidth - scroller.clientWidth)
+    const targetLeft = Math.max(0, Math.min(rawLeft, maxLeft))
+    const startLeft = scroller.scrollLeft
+    const distance = targetLeft - startLeft
 
     if (Math.abs(distance) < 1) {
-      scroller.scrollLeft = targetLeft;
-      setActiveHref(href);
-      return;
+      scroller.scrollLeft = targetLeft
+      setActiveHref(href)
+      return
     }
 
-    isProgrammaticScrollRef.current = true;
-    pendingScrollLeftRef.current = targetLeft;
+    isProgrammaticScrollRef.current = true
+    pendingScrollLeftRef.current = targetLeft
 
     if (scrollRafRef.current != null) {
-      window.cancelAnimationFrame(scrollRafRef.current);
-      scrollRafRef.current = null;
+      window.cancelAnimationFrame(scrollRafRef.current)
+      scrollRafRef.current = null
     }
 
     if (releaseTimerRef.current != null) {
-      window.clearTimeout(releaseTimerRef.current);
+      window.clearTimeout(releaseTimerRef.current)
     }
 
-    const durationMs = Math.min(560, Math.max(220, Math.abs(distance) * 0.4));
-    const startedAt = performance.now();
+    const durationMs = Math.min(560, Math.max(220, Math.abs(distance) * 0.4))
+    let startedAt: number | null = null
 
     const tick = (now: number) => {
-      const elapsed = now - startedAt;
-      const t = Math.min(1, elapsed / durationMs);
-      const eased = easeInOutQuart(t);
+      if (startedAt == null) {
+        startedAt = now
+      }
 
-      scroller.scrollLeft = startLeft + distance * eased;
+      const elapsed = now - startedAt
+      const t = Math.min(1, elapsed / durationMs)
+      const eased = easeInOutQuart(t)
+
+      scroller.scrollLeft = startLeft + distance * eased
 
       if (t < 1) {
-        scrollRafRef.current = window.requestAnimationFrame(tick);
-        return;
+        scrollRafRef.current = window.requestAnimationFrame(tick)
+        return
       }
 
-      scroller.scrollLeft = targetLeft;
-      isProgrammaticScrollRef.current = false;
-      pendingScrollLeftRef.current = null;
-      scrollRafRef.current = null;
-    };
+      scroller.scrollLeft = targetLeft
+      isProgrammaticScrollRef.current = false
+      pendingScrollLeftRef.current = null
+      scrollRafRef.current = null
+    }
 
     releaseTimerRef.current = window.setTimeout(() => {
-      isProgrammaticScrollRef.current = false;
-      pendingScrollLeftRef.current = null;
+      isProgrammaticScrollRef.current = false
+      pendingScrollLeftRef.current = null
       if (scrollRafRef.current != null) {
-        window.cancelAnimationFrame(scrollRafRef.current);
-        scrollRafRef.current = null;
+        window.cancelAnimationFrame(scrollRafRef.current)
+        scrollRafRef.current = null
       }
-    }, durationMs + 120);
+    }, durationMs + 120)
 
-    scrollRafRef.current = window.requestAnimationFrame(tick);
-    setActiveHref(href);
-  };
+    scrollRafRef.current = window.requestAnimationFrame(tick)
+    setActiveHref(href)
+  }, [])
 
   const handleNavigate = (href: string) => (event: ReactMouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    navigateToHref(href);
-  };
+    event.preventDefault()
+    navigateToHref(href)
+  }
 
   const onNavPointerDownCapture = (event: ReactPointerEvent<HTMLElement>) => {
-    if (event.button !== 0) return;
+    if (event.button !== 0) return
 
-    const navNode = event.currentTarget;
-    const navRect = navNode.getBoundingClientRect();
-    const localX = event.clientX - navRect.left;
-    const visualBubbleX = dragBubbleX ?? bubbleX;
-    const isInsideBubble = localX >= visualBubbleX && localX <= visualBubbleX + bubbleWidth;
-    if (!isInsideBubble) return;
+    const navNode = event.currentTarget
+    const navRect = navNode.getBoundingClientRect()
+    const localX = event.clientX - navRect.left
+    const visualBubbleX = dragBubbleX ?? bubbleX
+    const isInsideBubble = localX >= visualBubbleX && localX <= visualBubbleX + bubbleWidth
+    if (!isInsideBubble) return
 
-    navNode.setPointerCapture(event.pointerId);
-    navPointerIdRef.current = event.pointerId;
-    bubbleDragStartClientXRef.current = event.clientX;
-    bubbleDragStartXRef.current = visualBubbleX;
-    isBubbleDraggingRef.current = true;
-    setBubbleDragging(true);
-    setDragBubbleX(visualBubbleX);
+    navNode.setPointerCapture(event.pointerId)
+    navPointerIdRef.current = event.pointerId
+    bubbleDragStartClientXRef.current = event.clientX
+    bubbleDragStartXRef.current = visualBubbleX
+    isBubbleDraggingRef.current = true
+    setBubbleDragging(true)
+    setDragBubbleX(visualBubbleX)
 
     if (scrollRafRef.current != null) {
-      window.cancelAnimationFrame(scrollRafRef.current);
-      scrollRafRef.current = null;
+      window.cancelAnimationFrame(scrollRafRef.current)
+      scrollRafRef.current = null
     }
     if (releaseTimerRef.current != null) {
-      window.clearTimeout(releaseTimerRef.current);
-      releaseTimerRef.current = null;
+      window.clearTimeout(releaseTimerRef.current)
+      releaseTimerRef.current = null
     }
 
-    isProgrammaticScrollRef.current = true;
-    pendingScrollLeftRef.current = null;
-    event.preventDefault();
-  };
+    isProgrammaticScrollRef.current = true
+    pendingScrollLeftRef.current = null
+    event.preventDefault()
+  }
 
   useEffect(() => {
     const onPointerMove = (event: globalThis.PointerEvent) => {
       if (!isBubbleDraggingRef.current || navPointerIdRef.current !== event.pointerId) {
-        return;
+        return
       }
 
-      const navNode = navRef.current;
-      const scroller = document.querySelector(".horizontalScroller") as HTMLElement | null;
-      if (!navNode || !scroller) return;
+      const navNode = navRef.current
+      const scroller = document.querySelector('.horizontalScroller') as HTMLElement | null
+      if (!navNode || !scroller) return
 
-      const candidates = getNavSnapCandidates(scroller);
-      if (candidates.length === 0) return;
+      const candidates = getNavSnapCandidates(scroller)
+      if (candidates.length === 0) return
 
-      const minX = candidates[0].x;
-      const maxX = candidates[candidates.length - 1].x;
-      const proposedX = bubbleDragStartXRef.current + (event.clientX - bubbleDragStartClientXRef.current);
-      const clampedX = Math.max(
-        minX,
-        Math.min(
-          maxX,
-          proposedX,
-        ),
-      );
+      const minX = candidates[0].x
+      const maxX = candidates[candidates.length - 1].x
+      const proposedX =
+        bubbleDragStartXRef.current + (event.clientX - bubbleDragStartClientXRef.current)
+      const clampedX = Math.max(minX, Math.min(maxX, proposedX))
 
-      setDragBubbleX(clampedX);
+      setDragBubbleX(clampedX)
 
-      const nextScrollLeft = mapBubbleXToScrollLeft(clampedX, candidates);
-      scroller.scrollLeft = nextScrollLeft;
-      event.preventDefault();
-    };
+      const nextScrollLeft = mapBubbleXToScrollLeft(clampedX, candidates)
+      scroller.scrollLeft = nextScrollLeft
+      event.preventDefault()
+    }
 
     const endPointerDrag = (event: globalThis.PointerEvent) => {
       if (!isBubbleDraggingRef.current || navPointerIdRef.current !== event.pointerId) {
-        return;
+        return
       }
 
-      const scroller = document.querySelector(".horizontalScroller") as HTMLElement | null;
+      const scroller = document.querySelector('.horizontalScroller') as HTMLElement | null
       if (scroller) {
-        const candidates = getNavSnapCandidates(scroller);
+        const candidates = getNavSnapCandidates(scroller)
         if (candidates.length > 0) {
-          const currentX = dragBubbleX ?? bubbleX;
-          let nearest = candidates[0];
+          const currentX = dragBubbleX ?? bubbleX
+          let nearest = candidates[0]
           for (const candidate of candidates) {
             if (Math.abs(candidate.x - currentX) < Math.abs(nearest.x - currentX)) {
-              nearest = candidate;
+              nearest = candidate
             }
           }
 
-          setActiveHref(nearest.href);
-          navigateToHref(nearest.href);
+          setActiveHref(nearest.href)
+          navigateToHref(nearest.href)
         }
       }
 
-      isBubbleDraggingRef.current = false;
-      navPointerIdRef.current = null;
-      setBubbleDragging(false);
-      setDragBubbleX(null);
-      isProgrammaticScrollRef.current = false;
-      pendingScrollLeftRef.current = null;
+      isBubbleDraggingRef.current = false
+      navPointerIdRef.current = null
+      setBubbleDragging(false)
+      setDragBubbleX(null)
+      isProgrammaticScrollRef.current = false
+      pendingScrollLeftRef.current = null
 
-      const navNode = navRef.current;
+      const navNode = navRef.current
       if (navNode && navNode.hasPointerCapture(event.pointerId)) {
-        navNode.releasePointerCapture(event.pointerId);
+        navNode.releasePointerCapture(event.pointerId)
       }
-    };
+    }
 
-    window.addEventListener("pointermove", onPointerMove, { passive: false });
-    window.addEventListener("pointerup", endPointerDrag);
-    window.addEventListener("pointercancel", endPointerDrag);
+    window.addEventListener('pointermove', onPointerMove, { passive: false })
+    window.addEventListener('pointerup', endPointerDrag)
+    window.addEventListener('pointercancel', endPointerDrag)
     return () => {
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerup", endPointerDrag);
-      window.removeEventListener("pointercancel", endPointerDrag);
-    };
-  }, [bubbleWidth, bubbleX, dragBubbleX]);
+      window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('pointerup', endPointerDrag)
+      window.removeEventListener('pointercancel', endPointerDrag)
+    }
+  }, [bubbleWidth, bubbleX, dragBubbleX, navigateToHref])
 
   return (
     <motion.header
@@ -348,12 +348,12 @@ export function TopNav() {
 
       <nav
         aria-label="Primary navigation"
-        className={`navPill ${bubbleDragging ? "isDragging" : ""}`}
+        className={`navPill ${bubbleDragging ? 'isDragging' : ''}`}
         ref={navRef}
         onPointerDownCapture={onNavPointerDownCapture}
       >
         <motion.span
-          className={`navBubble ${bubbleDragging ? "isDragging" : ""}`}
+          className={`navBubble ${bubbleDragging ? 'isDragging' : ''}`}
           aria-hidden="true"
           initial={false}
           animate={{
@@ -361,21 +361,25 @@ export function TopNav() {
             width: bubbleWidth,
             opacity: bubbleReady ? 1 : 0,
           }}
-          transition={bubbleDragging ? { duration: 0 } : {
-            type: "spring",
-            stiffness: 320,
-            damping: 20,
-            mass: 0.8,
-          }}
+          transition={
+            bubbleDragging
+              ? { duration: 0 }
+              : {
+                  type: 'spring',
+                  stiffness: 320,
+                  damping: 20,
+                  mass: 0.8,
+                }
+          }
         />
         {navItems.map((item) => (
           <a
             key={item.label}
             href={item.href}
             ref={(node) => {
-              linkRefs.current[item.href] = node;
+              linkRefs.current[item.href] = node
             }}
-            className={activeHref === item.href ? "isActive" : undefined}
+            className={activeHref === item.href ? 'isActive' : undefined}
             onClick={handleNavigate(item.href)}
             onDragStart={(event) => event.preventDefault()}
           >
@@ -384,9 +388,9 @@ export function TopNav() {
         ))}
       </nav>
 
-      <a className="pillButton accent navCta" href="#launch">
+      <a className="pillButton accent navCta" href="https://capyrpi.org/app">
         <StaggerWords text="let's go" baseDelay={0.18} amount={0.1} />
       </a>
     </motion.header>
-  );
+  )
 }
