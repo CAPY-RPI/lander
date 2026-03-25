@@ -3,6 +3,7 @@ import type { MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent }
 import { motion } from 'framer-motion'
 import { StaggerWords } from './StaggerWords'
 import { assets, navItems } from '../data/content'
+import { useExitNavigation } from '../hooks/useExitNavigation'
 
 type SnapCandidate = {
   href: string
@@ -15,6 +16,7 @@ const easeInOutQuart = (t: number) =>
   t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2
 
 export function TopNav() {
+  const navigateWithExit = useExitNavigation()
   const navRef = useRef<HTMLElement | null>(null)
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({})
   const isProgrammaticScrollRef = useRef(false)
@@ -234,6 +236,10 @@ export function TopNav() {
     navigateToHref(href)
   }
 
+  const onAppCtaClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
+    navigateWithExit(event, 'https://capyrpi.org/app')
+  }
+
   const onNavPointerDownCapture = (event: ReactPointerEvent<HTMLElement>) => {
     if (event.button !== 0) return
 
@@ -388,7 +394,11 @@ export function TopNav() {
         ))}
       </nav>
 
-      <a className="pillButton accent navCta" href="https://capyrpi.org/app">
+      <a
+        className="pillButton accent navCta"
+        href="https://capyrpi.org/app"
+        onClick={onAppCtaClick}
+      >
         <StaggerWords text="let's go" baseDelay={0.18} amount={0.1} />
       </a>
     </motion.header>

@@ -8,6 +8,45 @@
   overflow: hidden;
 }
 
+.topNav,
+.panelTrack {
+  transition:
+    opacity 280ms var(--ease-premium),
+    transform 320ms var(--ease-premium),
+    filter 280ms var(--ease-premium);
+}
+
+@keyframes exitDipSpring {
+  0% {
+    transform: none;
+    filter: none;
+  }
+
+  100% {
+    transform: scale(140%);
+    filter: blur(5px);
+  }
+}
+
+body.is-exiting .appRoot {
+  pointer-events: none;
+  animation: exitDipSpring 500ms cubic-bezier(0.68, 0, 0.94, 0.18) forwards;
+}
+
+.exitOverlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--c-bg, #006662);
+  opacity: 0;
+  transition: opacity 220ms var(--ease-premium);
+  transition-delay: 280ms;
+}
+body.is-exiting .exitOverlay {
+  opacity: 1;
+}
+
 .topNav {
   position: fixed;
   top: clamp(14px, 2.6vw, 29px);
@@ -237,6 +276,55 @@
   gap: 18px;
   justify-content: flex-start;
   margin: 30px 10px 0;
+}
+
+.howModalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 32, 30, 0.58);
+  backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.howModalCard {
+  width: min(640px, calc(100vw - 40px));
+  border-radius: 28px;
+  border: 1px solid rgba(140, 222, 215, 0.55);
+  background: linear-gradient(180deg, rgba(17, 97, 92, 0.95), rgba(9, 75, 71, 0.95));
+  box-shadow: 0 24px 60px rgba(0, 20, 18, 0.45);
+  padding: 26px;
+  color: var(--c-text-light);
+}
+
+.howModalText {
+  margin: 0;
+  font: 400 clamp(17px, 2.2vw, 22px) / 1.45 var(--font-body);
+}
+
+.howModalText a {
+  color: var(--c-accent);
+  text-decoration: none;
+}
+
+.howModalText a:hover,
+.howModalText a:focus-visible {
+  color: #ffd8c8;
+  text-decoration: none;
+}
+
+.howModalClose {
+  margin-top: 20px;
+  min-height: 44px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(165, 232, 226, 0.7);
+  background: linear-gradient(180deg, rgba(72, 176, 167, 0.24), rgba(44, 132, 126, 0.2));
+  color: var(--c-text-light);
+  font: 400 18px/1 var(--font-body);
+  padding: 0 20px;
+  cursor: pointer;
 }
 
 .featuresPanel {
