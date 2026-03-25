@@ -1,0 +1,108 @@
+.capyRailPanel {
+  position: relative;
+  overflow: hidden;
+  --rail-mark-vertical-inset: 24px;
+  width: 866px;
+  background: var(--c-surface-light);
+  border: 1px solid var(--c-surface-border);
+  color: var(--c-text-deep);
+  padding: 0;
+}
+
+.railContent {
+  position: relative;
+  z-index: 1;
+  width: 420px;
+  margin: 40px 0 40px 46px;
+  height: calc(100% - 80px);
+  display: flex;
+  flex-direction: column;
+}
+
+.railTop {
+  margin: 0;
+  font: 400 24px/1.25 var(--font-body);
+}
+
+.verticalMarkWrap {
+  position: absolute;
+  top: var(--rail-mark-vertical-inset);
+  left: 375px;
+  transform: none;
+  width: 178px;
+  height: calc(100% - var(--rail-mark-vertical-inset) * 2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.verticalMark {
+  width: 739px;
+  height: 178px;
+  max-width: none;
+  transform: rotate(-90deg) scale(1);
+  transform-origin: center;
+}
+
+.railLinks {
+  display: grid;
+  gap: 62px;
+  max-width: 380px;
+  margin-top: 132px;
+}
+
+.railLinkRow {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 72px;
+}
+
+.railLinkBlock p {
+  margin: 0;
+  font: 400 16px/1.5 var(--font-body);
+}
+
+.columnTitle {
+  color: var(--c-bg-mid);
+}
+
+.railSocial {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 42px;
+}
+
+.railSocial p {
+  margin: 0;
+  color: var(--c-bg-mid);
+  font: 400 16px/1.5 var(--font-body);
+}
+
+.railSocial div {
+  display: flex;
+  gap: var(--space-16);
+}
+
+.railSocial a {
+  width: 25px;
+  height: 25px;
+  display: inline-flex;
+}
+
+.railStatus,
+.railFoot {
+  margin: 0;
+  font: 400 16px/1.4 var(--font-body);
+  max-width: 420px;
+}
+
+.railMeta {
+  margin-top: auto;
+  display: grid;
+  row-gap: 4px;
+}
+
+.railMeta .railSocial {
+  margin-top: 0;
+}

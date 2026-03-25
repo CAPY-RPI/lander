@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Asap:wght@400&family=Nunito:wght@400;600;700&display=swap');
-@import './theme/tokens.css';
+@import './shared/theme/tokens.css';
 
 * {
   box-sizing: border-box;

@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
+import styles from './StaggerWords.module.css'
 
 type StaggerWordsProps = {
   text: string
@@ -25,11 +26,11 @@ export function StaggerWords({
   const words = text.trim().split(/\s+/)
 
   return (
-    <span ref={containerRef} className={`staggerWords ${className ?? ''}`.trim()}>
+    <span ref={containerRef} className={`${styles.staggerWords} ${className ?? ''}`.trim()}>
       {words.map((word, index) => (
         <motion.span
           key={`${word}-${index}`}
-          className="staggerWord"
+          className={styles.staggerWord}
           initial={false}
           animate={
             isVisible

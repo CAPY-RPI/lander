@@ -4,6 +4,8 @@ import { motion } from 'framer-motion'
 import { StaggerWords } from './StaggerWords'
 import { assets, navItems } from '../data/content'
 import { useExitNavigation } from '../hooks/useExitNavigation'
+import buttonStyles from './Button.module.css'
+import styles from './TopNav.module.css'
 
 type SnapCandidate = {
   href: string
@@ -83,7 +85,7 @@ export function TopNav() {
 
   useEffect(() => {
     const updateActiveFromScroll = () => {
-      const scroller = document.querySelector('.horizontalScroller') as HTMLElement | null
+      const scroller = document.getElementById('scroller') as HTMLElement | null
       if (!scroller) return
 
       if (isBubbleDraggingRef.current) {
@@ -121,7 +123,7 @@ export function TopNav() {
     }
 
     updateActiveFromScroll()
-    const scroller = document.querySelector('.horizontalScroller') as HTMLElement | null
+    const scroller = document.getElementById('scroller') as HTMLElement | null
     scroller?.addEventListener('scroll', updateActiveFromScroll, { passive: true })
     window.addEventListener('resize', updateActiveFromScroll)
 
@@ -160,7 +162,7 @@ export function TopNav() {
 
   const navigateToHref = useCallback((href: string) => {
     const targetId = href.replace('#', '')
-    const scroller = document.querySelector('.horizontalScroller') as HTMLElement | null
+    const scroller = document.getElementById('scroller') as HTMLElement | null
     const target = document.getElementById(targetId)
 
     if (!scroller || !target) {
@@ -237,7 +239,7 @@ export function TopNav() {
   }
 
   const onAppCtaClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
-    navigateWithExit(event, 'https://capyrpi.org/app')
+    navigateWithExit(event, '/app')
   }
 
   const onNavPointerDownCapture = (event: ReactPointerEvent<HTMLElement>) => {
@@ -279,7 +281,7 @@ export function TopNav() {
       }
 
       const navNode = navRef.current
-      const scroller = document.querySelector('.horizontalScroller') as HTMLElement | null
+      const scroller = document.getElementById('scroller') as HTMLElement | null
       if (!navNode || !scroller) return
 
       const candidates = getNavSnapCandidates(scroller)
@@ -303,7 +305,7 @@ export function TopNav() {
         return
       }
 
-      const scroller = document.querySelector('.horizontalScroller') as HTMLElement | null
+      const scroller = document.getElementById('scroller') as HTMLElement | null
       if (scroller) {
         const candidates = getNavSnapCandidates(scroller)
         if (candidates.length > 0) {
@@ -345,21 +347,21 @@ export function TopNav() {
 
   return (
     <motion.header
-      className="topNav"
+      className={styles.topNav}
       initial={{ opacity: 0, y: -12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      <img src={assets.logo} alt="Capy logo" className="brandLogo" />
+      <img src={assets.logo} alt="Capy logo" className={styles.brandLogo} />
 
       <nav
         aria-label="Primary navigation"
-        className={`navPill ${bubbleDragging ? 'isDragging' : ''}`}
+        className={`${styles.navPill} ${bubbleDragging ? styles.isDragging : ''}`}
         ref={navRef}
         onPointerDownCapture={onNavPointerDownCapture}
       >
         <motion.span
-          className={`navBubble ${bubbleDragging ? 'isDragging' : ''}`}
+          className={`${styles.navBubble} ${bubbleDragging ? styles.isDragging : ''}`}
           aria-hidden="true"
           initial={false}
           animate={{
@@ -385,7 +387,7 @@ export function TopNav() {
             ref={(node) => {
               linkRefs.current[item.href] = node
             }}
-            className={activeHref === item.href ? 'isActive' : undefined}
+            className={activeHref === item.href ? styles.isActive : undefined}
             onClick={handleNavigate(item.href)}
             onDragStart={(event) => event.preventDefault()}
           >
@@ -395,8 +397,8 @@ export function TopNav() {
       </nav>
 
       <a
-        className="pillButton accent navCta"
-        href="https://capyrpi.org/app"
+        className={`${buttonStyles.pillButton} ${buttonStyles.accent} ${styles.navCta}`}
+        href="/app"
         onClick={onAppCtaClick}
       >
         <StaggerWords text="let's go" baseDelay={0.18} amount={0.1} />

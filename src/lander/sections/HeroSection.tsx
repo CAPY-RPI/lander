@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { AnimatedPanel } from '../components/AnimatedPanel'
-import { useExitNavigation } from '../hooks/useExitNavigation'
-import { StaggerWords } from '../components/StaggerWords'
-import { TypewriterWord } from '../components/TypewriterWord'
+import { AnimatedPanel } from '../../shared/components/AnimatedPanel'
+import { useExitNavigation } from '../../shared/hooks/useExitNavigation'
+import { StaggerWords } from '../../shared/components/StaggerWords'
+import { TypewriterWord } from '../../shared/components/TypewriterWord'
+import buttonStyles from '../../shared/components/Button.module.css'
+import styles from './HeroSection.module.css'
 
 export function HeroSection() {
   const [howModalOpen, setHowModalOpen] = useState(false)
@@ -29,16 +31,16 @@ export function HeroSection() {
   }
 
   const onAppCtaClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    navigateWithExit(event, 'https://capyrpi.org/app')
+    navigateWithExit(event, '/app')
   }
 
   const closeHowModal = () => setHowModalOpen(false)
 
   return (
     <>
-      <AnimatedPanel className="panel heroPanel" id="launch" staggerIndex={0}>
-        <div className="heroRows">
-          <div className="heroRowTitle">
+      <AnimatedPanel className={`panel ${styles.heroPanel}`} id="launch" staggerIndex={0}>
+        <div className={styles.heroRows}>
+          <div className={styles.heroRowTitle}>
             <h1>
               <span>
                 more <TypewriterWord words={['sleep', 'growth', 'fun']} />
@@ -48,8 +50,8 @@ export function HeroSection() {
               </span>
             </h1>
           </div>
-          <div className="heroRowBottom">
-            <div className="heroDescription">
+          <div className={styles.heroRowBottom}>
+            <div className={styles.heroDescription}>
               <p>
                 <StaggerWords
                   text="your campus life, simplified."
@@ -72,15 +74,19 @@ export function HeroSection() {
                 />
               </p>
             </div>
-            <div className="heroCtas">
+            <div className={styles.heroCtas}>
               <a
-                className="pillButton accent"
-                href="https://capyrpi.org/app"
+                className={`${buttonStyles.pillButton} ${buttonStyles.accent}`}
+                href="/app"
                 onClick={onAppCtaClick}
               >
                 <StaggerWords text="absolutely" baseDelay={0.28} />
               </a>
-              <a className="pillButton subtle" href="#features" onClick={openHowModal}>
+              <a
+                className={`${buttonStyles.pillButton} ${buttonStyles.subtle}`}
+                href="#features"
+                onClick={openHowModal}
+              >
                 <StaggerWords text="how" baseDelay={0.34} />
               </a>
             </div>
@@ -91,7 +97,7 @@ export function HeroSection() {
       <AnimatePresence>
         {howModalOpen ? (
           <motion.div
-            className="howModalBackdrop"
+            className={styles.howModalBackdrop}
             onClick={closeHowModal}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -99,7 +105,7 @@ export function HeroSection() {
             transition={{ duration: reduceMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.div
-              className="howModalCard"
+              className={styles.howModalCard}
               role="dialog"
               aria-modal="true"
               aria-label="Demo update"
@@ -119,14 +125,14 @@ export function HeroSection() {
               }
               transition={{ duration: reduceMotion ? 0 : 0.24, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="howModalText">
+              <p className={styles.howModalText}>
                 we're working on the demo video (and sleeping!). in the meantime, reach out at{' '}
                 <a href="mailto:hello@capyrpi.org">hello@capyrpi.org</a> for a demo, or{' '}
-                <a href="https://capyrpi.org/app" onClick={onAppCtaClick}>
+                <a href="/app" onClick={onAppCtaClick}>
                   get started right away!
                 </a>
               </p>
-              <button type="button" className="howModalClose" onClick={closeHowModal}>
+              <button type="button" className={styles.howModalClose} onClick={closeHowModal}>
                 close
               </button>
             </motion.div>

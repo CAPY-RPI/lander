@@ -1,6 +1,7 @@
-import { AnimatedPanel } from '../components/AnimatedPanel'
-import { GlassCard } from '../components/GlassCard'
-import { primaryCards } from '../data/content'
+import { AnimatedPanel } from '../../shared/components/AnimatedPanel'
+import { GlassCard } from '../../shared/components/GlassCard'
+import { primaryCards } from '../../shared/data/content'
+import styles from './FeaturesSection.module.css'
 
 const cardPositions = [
   'card-col1-row1',
@@ -12,13 +13,13 @@ const cardPositions = [
 
 export function FeaturesSection() {
   return (
-    <AnimatedPanel className="panel featuresPanel" id="features" staggerIndex={1}>
+    <AnimatedPanel className={`panel ${styles.featuresPanel}`} id="features" staggerIndex={1}>
       {primaryCards.map((card, index) => (
         <GlassCard
           key={card.title}
           title={card.title}
           body={card.body}
-          className={cardPositions[index] || ''}
+          className={styles[cardPositions[index]] || ''}
           staggerIndex={index}
         />
       ))}

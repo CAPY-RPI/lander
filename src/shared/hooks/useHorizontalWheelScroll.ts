@@ -6,6 +6,14 @@ type HorizontalWheelOptions = {
   endCutoffPx?: number
 }
 
+/**
+ * Enables smooth horizontal scrolling for a container element using mouse wheel or drag interactions.
+ *
+ * @param scrollerRef - A React RefObject pointing to the scrollable container HTMLElement.
+ * @param options - Configuration options for the scrolling behavior.
+ * @param options.speed - The multiplier for scroll speed when using the mouse wheel (default: 1.1).
+ * @param options.endCutoffPx - The number of pixels from the end of the scroll width to treat as the maximum scroll threshold (default: 180).
+ */
 export function useHorizontalWheelScroll(
   scrollerRef: RefObject<HTMLElement | null>,
   options: HorizontalWheelOptions = {},

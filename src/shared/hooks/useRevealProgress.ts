@@ -30,7 +30,7 @@ export function useRevealProgress<T extends HTMLElement = HTMLElement>(triggerAm
       setProgress((prev) => (Math.abs(prev - nextProgress) < 0.001 ? prev : nextProgress))
     }
     update()
-    const scroller = ref.current?.closest('.horizontalScroller') as HTMLElement | null
+    const scroller = ref.current?.closest('#scroller') as HTMLElement | null
     const scrollTarget: HTMLElement | Window = scroller ?? window
     scrollTarget.addEventListener('scroll', update, { passive: true })
     window.addEventListener('resize', update)

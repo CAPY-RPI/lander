@@ -1,8 +1,9 @@
-import { AnimatedPanel } from '../components/AnimatedPanel'
-import { AspectImage } from '../components/AspectImage'
-import { StaggerWords } from '../components/StaggerWords'
-import { TypewriterWord } from '../components/TypewriterWord'
-import { assets } from '../data/content'
+import { AnimatedPanel } from '../../shared/components/AnimatedPanel'
+import { AspectImage } from '../../shared/components/AspectImage'
+import { StaggerWords } from '../../shared/components/StaggerWords'
+import { TypewriterWord } from '../../shared/components/TypewriterWord'
+import { assets } from '../../shared/data/content'
+import styles from './CapyRailSection.module.css'
 
 const socialAssets = [
   { src: assets.x, alt: 'X' },
@@ -15,20 +16,20 @@ const socialAssets = [
 
 export function CapyRailSection() {
   return (
-    <AnimatedPanel className="panel capyRailPanel" id="more" staggerIndex={4}>
-      <div className="verticalMarkWrap" aria-hidden="true">
-        <img src={assets.capyVerticalMark} alt="" className="verticalMark" />
+    <AnimatedPanel className={`panel ${styles.capyRailPanel}`} id="more" staggerIndex={4}>
+      <div className={styles.verticalMarkWrap} aria-hidden="true">
+        <img src={assets.capyVerticalMark} alt="" className={styles.verticalMark} />
       </div>
 
-      <div className="railContent">
-        <p className="railTop">
+      <div className={styles.railContent}>
+        <p className={styles.railTop}>
           <StaggerWords text="experience" baseDelay={0.08} />{' '}
           <TypewriterWord words={['hibernation', 'frictionlessness', 'community']} />
         </p>
 
-        <div className="railLinks">
-          <div className="railLinkBlock">
-            <p className="columnTitle">
+        <div className={styles.railLinks}>
+          <div className={styles.railLinkBlock}>
+            <p className={styles.columnTitle}>
               <StaggerWords text="team" baseDelay={0.15} />
             </p>
             <p>
@@ -42,9 +43,9 @@ export function CapyRailSection() {
             </p>
           </div>
 
-          <div className="railLinkRow">
-            <div className="railLinkBlock">
-              <p className="columnTitle">
+          <div className={styles.railLinkRow}>
+            <div className={styles.railLinkBlock}>
+              <p className={styles.columnTitle}>
                 <StaggerWords text="resources" baseDelay={0.24} />
               </p>
               <p>
@@ -57,8 +58,8 @@ export function CapyRailSection() {
                 <StaggerWords text="feedback" baseDelay={0.3} />
               </p>
             </div>
-            <div className="railLinkBlock">
-              <p className="columnTitle">
+            <div className={styles.railLinkBlock}>
+              <p className={styles.columnTitle}>
                 <StaggerWords text="policies" baseDelay={0.32} />
               </p>
               <p>
@@ -71,8 +72,8 @@ export function CapyRailSection() {
           </div>
         </div>
 
-        <div className="railMeta">
-          <div className="railSocial">
+        <div className={styles.railMeta}>
+          <div className={styles.railSocial}>
             <p>
               <StaggerWords text="social" baseDelay={0.38} />
             </p>
@@ -84,10 +85,10 @@ export function CapyRailSection() {
               ))}
             </div>
           </div>
-          <p className="railStatus">
+          <p className={styles.railStatus}>
             <StaggerWords text="all systems operational" baseDelay={0.42} />
           </p>
-          <p className="railFoot">
+          <p className={styles.railFoot}>
             <StaggerWords text="capywrite 2026 // all rights reserved" baseDelay={0.46} />
           </p>
         </div>

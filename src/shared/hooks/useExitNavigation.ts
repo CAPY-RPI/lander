@@ -1,8 +1,10 @@
 import { useCallback, useRef, useEffect } from 'react'
 import type { MouseEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export function useExitNavigation(delayMs = 340) {
   const isExitingRef = useRef(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handler = () => {
@@ -24,9 +26,13 @@ export function useExitNavigation(delayMs = 340) {
       document.body.classList.add('is-exiting')
 
       window.setTimeout(() => {
-        window.location.assign(url)
+        if (url.startsWith('http')) {
+          window.location.assign(url)
+        } else {
+          navigate(url)
+        }
       }, delayMs)
     },
-    [delayMs],
+    [delayMs, navigate],
   )
 }

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
+import styles from './TypewriterWord.module.css'
 
 type TypewriterWordProps = {
   words: string[]
@@ -52,10 +53,10 @@ export function TypewriterWord({
     safeWords.length > 0 ? safeWords[wordIndex % safeWords.length].slice(0, charCount) : ''
 
   return (
-    <span className={`typewriterWrap ${className ?? ''}`.trim()}>
+    <span className={`${styles.typewriterWrap} ${className ?? ''}`.trim()}>
       <span>{displayWord}</span>
       <motion.span
-        className="typewriterCaret"
+        className={styles.typewriterCaret}
         aria-hidden="true"
         animate={{ opacity: [0.2, 1, 0.2] }}
         transition={{ duration: 0.9, repeat: Infinity, ease: 'easeInOut' }}

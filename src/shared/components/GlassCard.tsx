@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { StaggerWords } from './StaggerWords'
 import { useRevealProgress } from '../hooks/useRevealProgress'
+import styles from './GlassCard.module.css'
 
 type GlassCardProps = {
   title?: string
@@ -22,7 +23,7 @@ export function GlassCard({ title, body, className, children, staggerIndex = 0 }
     const rect = node.getBoundingClientRect()
     const verticalStep = 170
     setVerticalIndex(Math.max(0, Math.round(rect.top / verticalStep)))
-  }, [])
+  }, [cardRef])
 
   const textBaseDelay = verticalIndex * 0.08 + staggerIndex * 0.02 + 0.06
   const animationDuration = 0.25 // 25% of viewport width per card
@@ -47,7 +48,11 @@ export function GlassCard({ title, body, className, children, staggerIndex = 0 }
   const textInView = delayedProgress > 0.02
 
   return (
-    <motion.article ref={cardRef} className={`glassCard ${className ?? ''}`.trim()} style={style}>
+    <motion.article
+      ref={cardRef}
+      className={`${styles.glassCard} ${className ?? ''}`.trim()}
+      style={style}
+    >
       {title ? (
         <h3>
           <StaggerWords
@@ -59,7 +64,7 @@ export function GlassCard({ title, body, className, children, staggerIndex = 0 }
         </h3>
       ) : null}
       {body ? (
-        <p className="glassCardBody">
+        <p className={styles.glassCardBody}>
           <StaggerWords
             text={body}
             inView={textInView}

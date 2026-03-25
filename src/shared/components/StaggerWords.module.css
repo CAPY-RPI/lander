@@ -1,0 +1,8 @@
+.staggerWords {
+  display: inline;
+}
+
+.staggerWord {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}

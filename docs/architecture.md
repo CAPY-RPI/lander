@@ -1,0 +1,19 @@
+# Capy Architecture
+
+## Overview
+
+The capy application is divided into two distinct sub-applications served from a single React SPA via `react-router-dom`:
+
+- **Lander (`/`)**: A promotional landing page showcasing features and collecting interest. Resides in `src/lander/`.
+- **App (`/app`)**: The main functioning application. Resides in `src/app/`.
+
+## Directory Structure
+
+- `src/lander/`: Contains Lander-specific entry point (`Lander.tsx`), sections (e.g., `HeroSection.tsx`), and tightly scoped CSS modules.
+- `src/app/`: Contains App-specific entry point (`App.tsx`) and application routes/components.
+- `src/shared/`: Contains components (e.g., `TopNav`, `GlassCard`), hooks, theme, and data shared between both sub-applications.
+
+## Styling
+
+Global styles are limited to resetting the box model and defining variables in `src/index.css`.
+All component styling uses CSS Modules (e.g., `HeroSection.module.css`) to prevent global style leaks. Use `import styles from './Component.module.css'` and assign via `className={styles.className}`.
