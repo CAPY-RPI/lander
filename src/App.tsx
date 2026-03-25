@@ -15,7 +15,19 @@ function App() {
 
   // Remove 'is-exiting' class from body on mount (prevents overlay persisting on back navigation)
   useEffect(() => {
+    // Remove 'is-exiting' on mount
     document.body.classList.remove('is-exiting')
+
+    // Remove 'is-exiting' if page is restored from bfcache (back/forward navigation)
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) {
+        document.body.classList.remove('is-exiting')
+      }
+    }
+    window.addEventListener('pageshow', handlePageShow)
+    return () => {
+      window.removeEventListener('pageshow', handlePageShow)
+    }
   }, [])
 
   return (
