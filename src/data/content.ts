@@ -11,10 +11,6 @@ export type FeatureCardModel = {
 
 export const assets = {
   logo: '/assets/brand/capy-full-white.svg',
-  campusArt: '/assets/illustrations/campus-art.svg',
-  ctaSecondary: '/assets/ui/cta-secondary.svg',
-  emailPill: '/assets/ui/email-pill.svg',
-  navPill: '/assets/ui/nav-pill.svg',
   capyVerticalMark: '/assets/brand/capy-full-primary.svg',
   x: '/assets/social/x.svg',
   instagram: '/assets/social/instagram.svg',

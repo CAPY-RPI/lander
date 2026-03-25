@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
-import type { ReactNode } from 'react'
 import { motion } from 'framer-motion'
+import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 import { StaggerWords } from './StaggerWords'
+import { useRevealProgress } from '../hooks/useRevealProgress'
 
 type GlassCardProps = {
   title?: string
@@ -12,50 +13,16 @@ type GlassCardProps = {
 }
 
 export function GlassCard({ title, body, className, children, staggerIndex = 0 }: GlassCardProps) {
-  const triggerAmount = 0.36
-  const cardRef = useRef<HTMLElement | null>(null)
-  const [centerDelta, setCenterDelta] = useState(1)
+  const [cardRef, { centerDelta, progress }] = useRevealProgress<HTMLElement>(0.36)
+  // Estimate vertical index for stagger based on top offset (optional, can be improved)
   const [verticalIndex, setVerticalIndex] = useState(0)
-  const [progress, setProgress] = useState(0)
-
   useEffect(() => {
-    const scroller = cardRef.current?.closest('.horizontalScroller') as HTMLElement | null
-    const scrollTarget: HTMLElement | Window = scroller ?? window
-
-    const updateMotionMeta = () => {
-      const node = cardRef.current
-      if (!node) return
-
-      const rect = node.getBoundingClientRect()
-      const viewportWidth = window.innerWidth
-      const viewportCenter = viewportWidth / 2
-      const elementCenter = rect.left + rect.width / 2
-      const nextCenterDelta = elementCenter - viewportCenter
-
-      setCenterDelta((prev) => (Math.abs(prev - nextCenterDelta) < 0.1 ? prev : nextCenterDelta))
-
-      const verticalStep = 170
-      const computedVerticalIndex = Math.max(0, Math.round(rect.top / verticalStep))
-      setVerticalIndex(computedVerticalIndex)
-
-      const visibleLeft = Math.max(rect.left, 0)
-      const visibleRight = Math.min(rect.right, viewportWidth)
-      const visibleWidth = Math.max(0, visibleRight - visibleLeft)
-      const triggerDistance = viewportWidth * 0.25
-      const nextProgress = Math.min(1, visibleWidth / triggerDistance)
-
-      setProgress((prev) => (Math.abs(prev - nextProgress) < 0.001 ? prev : nextProgress))
-    }
-
-    updateMotionMeta()
-    scrollTarget.addEventListener('scroll', updateMotionMeta, { passive: true })
-    window.addEventListener('resize', updateMotionMeta)
-
-    return () => {
-      scrollTarget.removeEventListener('scroll', updateMotionMeta)
-      window.removeEventListener('resize', updateMotionMeta)
-    }
-  }, [triggerAmount])
+    const node = cardRef.current
+    if (!node) return
+    const rect = node.getBoundingClientRect()
+    const verticalStep = 170
+    setVerticalIndex(Math.max(0, Math.round(rect.top / verticalStep)))
+  }, [])
 
   const textBaseDelay = verticalIndex * 0.08 + staggerIndex * 0.02 + 0.06
   const animationDuration = 0.25 // 25% of viewport width per card
