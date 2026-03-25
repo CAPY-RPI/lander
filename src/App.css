@@ -43,6 +43,12 @@ body.is-exiting .appRoot {
   transition: opacity 220ms var(--ease-premium);
   transition-delay: 280ms;
 }
+
+body.fading-back .exitOverlay {
+  opacity: 0;
+  transition: opacity 320ms var(--ease-premium);
+  transition-delay: 0ms;
+}
 body.is-exiting .exitOverlay {
   opacity: 1;
 }

@@ -18,10 +18,14 @@ function App() {
     // Remove 'is-exiting' on mount
     document.body.classList.remove('is-exiting')
 
-    // Remove 'is-exiting' if page is restored from bfcache (back/forward navigation)
+    // Animate fading back if page is restored from bfcache (back/forward navigation)
     const handlePageShow = (event: PageTransitionEvent) => {
       if (event.persisted) {
         document.body.classList.remove('is-exiting')
+        document.body.classList.add('fading-back')
+        setTimeout(() => {
+          document.body.classList.remove('fading-back')
+        }, 350) // match fade duration in CSS
       }
     }
     window.addEventListener('pageshow', handlePageShow)
