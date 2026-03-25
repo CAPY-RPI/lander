@@ -47,13 +47,88 @@ export function useHorizontalWheelScroll(
       clampScrollPosition();
     };
 
+    let isMouseDragging = false;
+    let hasActivatedDrag = false;
+    let suppressNextClick = false;
+    let dragStartX = 0;
+    let dragStartScrollLeft = 0;
+    const dragThresholdPx = 6;
+
+    const onMouseDown = (event: MouseEvent) => {
+      if (event.button !== 0) return;
+
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("button, input, textarea, select, label")) return;
+
+      isMouseDragging = true;
+      hasActivatedDrag = false;
+      dragStartX = event.clientX;
+      dragStartScrollLeft = scroller.scrollLeft;
+    };
+
+    const onMouseMove = (event: MouseEvent) => {
+      if (!isMouseDragging) return;
+
+      const deltaX = event.clientX - dragStartX;
+      if (!hasActivatedDrag && Math.abs(deltaX) < dragThresholdPx) {
+        return;
+      }
+
+      if (!hasActivatedDrag) {
+        hasActivatedDrag = true;
+        scroller.classList.add("is-dragging");
+      }
+
+      const maxScrollLeft = getMaxScrollLeft();
+      const next = dragStartScrollLeft - deltaX;
+      scroller.scrollLeft = Math.min(maxScrollLeft, Math.max(0, next));
+      event.preventDefault();
+    };
+
+    const endMouseDrag = () => {
+      if (!isMouseDragging) return;
+
+      if (hasActivatedDrag) {
+        suppressNextClick = true;
+      }
+
+      isMouseDragging = false;
+      hasActivatedDrag = false;
+      scroller.classList.remove("is-dragging");
+    };
+
+    const onClickCapture = (event: MouseEvent) => {
+      if (!suppressNextClick) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      suppressNextClick = false;
+    };
+
+    const onNativeDragStart = (event: DragEvent) => {
+      if (isMouseDragging) {
+        event.preventDefault();
+      }
+    };
+
     clampScrollPosition();
 
     scroller.addEventListener("wheel", onWheel, { passive: false });
     scroller.addEventListener("scroll", onScroll, { passive: true });
+    scroller.addEventListener("mousedown", onMouseDown);
+    scroller.addEventListener("dragstart", onNativeDragStart);
+    scroller.addEventListener("click", onClickCapture, true);
+    window.addEventListener("mousemove", onMouseMove, { passive: false });
+    window.addEventListener("mouseup", endMouseDrag);
     return () => {
       scroller.removeEventListener("wheel", onWheel);
       scroller.removeEventListener("scroll", onScroll);
+      scroller.removeEventListener("mousedown", onMouseDown);
+      scroller.removeEventListener("dragstart", onNativeDragStart);
+      scroller.removeEventListener("click", onClickCapture, true);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", endMouseDrag);
+      scroller.classList.remove("is-dragging");
     };
   }, [scrollerRef, speed, endCutoffPx]);
 }

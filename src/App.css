@@ -39,6 +39,7 @@
   border: 1px solid rgba(89, 178, 172, 0.7);
   display: inline-flex;
   position: relative;
+  isolation: isolate;
   align-items: center;
   justify-content: center;
   gap: clamp(8px, 2vw, var(--space-32));
@@ -60,12 +61,22 @@
   box-shadow: 0 8px 20px rgba(0, 26, 24, 0.26);
   backdrop-filter: blur(var(--glass-blur-soft));
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
+}
+
+.navPill {
+  user-select: none;
+  cursor: grab;
+}
+
+.navPill.isDragging,
+.navBubble.isDragging {
+  cursor: grabbing;
 }
 
 .navPill a {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   min-height: clamp(34px, 4vw, 42px);
   padding: 0 clamp(4px, 0.8vw, 8px);
   border-radius: var(--radius-pill);
@@ -75,6 +86,8 @@
   font: 400 clamp(15px, 1.65vw, 20px)/1 var(--font-body);
   text-decoration: none;
   transition: color 200ms var(--ease-premium);
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .navPill a.isActive {
@@ -130,6 +143,11 @@
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
+  cursor: grab;
+}
+
+.horizontalScroller.is-dragging {
+  cursor: grabbing;
 }
 
 .horizontalScroller::-webkit-scrollbar {
