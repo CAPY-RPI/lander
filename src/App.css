@@ -112,6 +112,7 @@
   gap: var(--space-24);
   align-items: start;
   width: max-content;
+  height: 100%;
   min-height: 100%;
   padding: 121px var(--space-24) var(--space-24) var(--space-24);
 }
@@ -126,42 +127,66 @@
   border: 1px solid var(--c-surface-border);
   background: linear-gradient(180deg, rgba(56, 171, 162, 0.2), rgba(43, 137, 130, 0.16));
   backdrop-filter: blur(var(--glass-blur));
-  padding: 192px 50px 50px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: end;
+  padding: 210px 100px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   box-shadow: var(--glass-shadow);
 }
 
-.heroCopy h1 {
+.heroRows {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.heroRowTitle h1 {
   margin: 0;
   display: grid;
   gap: var(--space-8);
   font-family: var(--font-display);
-  font-size: 160px;
+  font-size: 180px;
   font-weight: 700;
   letter-spacing: 0.2px;
   line-height: 0.92;
 }
 
-.heroCopy p {
-  margin: 162px 0 0;
-  max-width: 560px;
+.heroRowTitle h1 span:last-child {
+  justify-self: end;
+  text-align: right;
+}
+
+.heroDescription {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  max-width: 360px;
+  border: 1px solid var(--c-surface-border);
+  background: linear-gradient(180deg, rgba(72, 176, 167, 0.24), rgba(44, 132, 126, 0.2));
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--radius-card);
+  padding: 36px;
+}
+
+.heroDescription p {
+  margin: 0;
   font: 400 18px/1.35 var(--font-body);
 }
 
-.heroCtas {
-  margin-top: 34px;
+.heroRowBottom {
   display: flex;
-  gap: 18px;
-  justify-content: flex-end;
-  max-width: 760px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.heroCampusArt {
-  width: 350px;
-  height: 149px;
-  margin-bottom: 34px;
+.heroCtas {
+  display: flex;
+  gap: 18px;
+  justify-content: flex-start;
+  margin: 30px 10px 0;
 }
 
 .featuresPanel {
@@ -174,12 +199,16 @@
 }
 
 .glassCard {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-self: stretch;
+  height: 100%;
   border-radius: var(--radius-card);
   border: 1px solid var(--c-surface-border);
   background: linear-gradient(180deg, rgba(72, 176, 167, 0.24), rgba(44, 132, 126, 0.2));
   box-shadow: var(--glass-shadow);
   backdrop-filter: blur(var(--glass-blur));
-  padding: 42px 50px;
+  padding: 42px 30% 42px 42px;
   min-height: 0;
 }
 
@@ -191,10 +220,15 @@
 }
 
 .glassCard p {
-  margin: 32px 0 0;
+  margin: 0;
   color: var(--c-text-light);
   font: 400 18px/1.35 var(--font-body);
   max-width: 96%;
+}
+
+.glassCardBody {
+  align-self: end;
+  padding-top: 32px;
 }
 
 .staggerWords {
@@ -269,6 +303,12 @@
   font-size: 96px;
 }
 
+.interfaceContent {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+}
+
 .interfaceSub {
   margin-top: 24px;
   color: var(--c-bg-mid);
@@ -276,7 +316,7 @@
 }
 
 .interfaceFoot {
-  margin-top: 247px;
+  margin: 0 0 12px;
   text-align: right;
   color: var(--c-text-deep);
   font: 400 16px/1.2 var(--font-body);
@@ -291,6 +331,17 @@
 .contactPanel h2 {
   font-size: 96px;
   color: var(--c-text-light);
+}
+
+.contactContent {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.contactPrimary {
+  display: flex;
+  flex-direction: column;
 }
 
 .contactLead {
@@ -315,7 +366,7 @@
 }
 
 .contactMeta {
-  margin-top: 211px;
+  margin: 0 0 12px;
   font: 400 16px/1.35 var(--font-body);
 }
 
@@ -334,10 +385,10 @@
   position: relative;
   z-index: 1;
   width: 420px;
-  margin: 40px 0 0 46px;
-  display: grid;
-  grid-template-rows: auto auto auto auto auto;
-  row-gap: 0;
+  margin: 40px 0 40px 46px;
+  height: calc(100% - 80px);
+  display: flex;
+  flex-direction: column;
 }
 
 .railTop {
@@ -368,9 +419,9 @@
 
 .railLinks {
   display: grid;
-  gap: 42px;
+  gap: 62px;
   max-width: 380px;
-  margin-top: 84px;
+  margin-top: 132px;
 }
 
 .railLinkRow {
@@ -390,8 +441,8 @@
 
 .railSocial {
   display: grid;
-  gap: 12px;
-  margin-top: 58px;
+  gap: 4px;
+  margin-bottom: 42px;
 }
 
 .railSocial p {
@@ -418,12 +469,14 @@
   max-width: 420px;
 }
 
-.railStatus {
-  margin-top: 34px;
+.railMeta {
+  margin-top: auto;
+  display: grid;
+  row-gap: 4px;
 }
 
-.railFoot {
-  margin-top: 44px;
+.railMeta .railSocial {
+  margin-top: 0;
 }
 
 .aspectSafe {
@@ -471,11 +524,11 @@
     width: 120px;
   }
 
-  .heroCopy h1 {
+  .heroRowTitle h1 {
     font-size: clamp(72px, 18vw, 128px);
   }
 
-  .heroCopy h1 span:last-child {
+  .heroRowTitle h1 span:last-child {
     margin-left: 0;
   }
 

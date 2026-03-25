@@ -71,25 +71,26 @@ export function CapyRailSection() {
           </div>
         </div>
 
-        <div className="railSocial">
-          <p>
-            <StaggerWords text="social" baseDelay={0.38} />
-          </p>
-          <div>
-            {socialAssets.map((item) => (
-              <a href="#" key={item.alt} aria-label={item.alt}>
-                <AspectImage src={item.src} alt={item.alt} />
-              </a>
-            ))}
+        <div className="railMeta">
+          <div className="railSocial">
+            <p>
+              <StaggerWords text="social" baseDelay={0.38} />
+            </p>
+            <div>
+              {socialAssets.map((item) => (
+                <a href="#" key={item.alt} aria-label={item.alt}>
+                  <AspectImage src={item.src} alt={item.alt} />
+                </a>
+              ))}
+            </div>
           </div>
+          <p className="railStatus">
+            <StaggerWords text="all systems operational" baseDelay={0.42} />
+          </p>
+          <p className="railFoot">
+            <StaggerWords text="capywrite 2026 // all rights reserved" baseDelay={0.46} />
+          </p>
         </div>
-
-        <p className="railStatus">
-          <StaggerWords text="all systems operational" baseDelay={0.42} />
-        </p>
-        <p className="railFoot">
-          <StaggerWords text="capywrite 2026 // all rights reserved" baseDelay={0.46} />
-        </p>
       </div>
     </AnimatedPanel>
   );

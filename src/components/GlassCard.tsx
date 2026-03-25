@@ -41,8 +41,7 @@ export function GlassCard({ title, body, className, children, staggerIndex = 0 }
       const visibleLeft = Math.max(rect.left, 0);
       const visibleRight = Math.min(rect.right, viewportWidth);
       const visibleWidth = Math.max(0, visibleRight - visibleLeft);
-      const maxVisibleWidth = Math.min(rect.width, viewportWidth);
-      const triggerDistance = Math.max(1, maxVisibleWidth * triggerAmount);
+      const triggerDistance = viewportWidth * 0.25;
       const nextProgress = Math.min(1, visibleWidth / triggerDistance);
 
       setProgress((prev) => (Math.abs(prev - nextProgress) < 0.001 ? prev : nextProgress));
@@ -59,9 +58,12 @@ export function GlassCard({ title, body, className, children, staggerIndex = 0 }
   }, [triggerAmount]);
 
   const textBaseDelay = verticalIndex * 0.08 + staggerIndex * 0.02 + 0.06;
-  const progressOffset = Math.min(0.9, staggerIndex * 0.06);
+  const animationDuration = 0.25; // 25% of viewport width per card
+  const staggerOffset = staggerIndex * 0.15; // Each card starts 5% later
+  const progressStart = staggerOffset;
+  const progressEnd = progressStart + animationDuration;
   const delayedProgress =
-    progress <= progressOffset ? 0 : (progress - progressOffset) / (1 - progressOffset);
+    progress < progressStart ? 0 : progress > progressEnd ? 1 : (progress - progressStart) / animationDuration;
   const side: 1 | -1 = centerDelta >= 0 ? 1 : -1;
   const outX = side * 52;
   const style = {
@@ -85,7 +87,7 @@ export function GlassCard({ title, body, className, children, staggerIndex = 0 }
         </h3>
       ) : null}
       {body ? (
-        <p>
+        <p className="glassCardBody">
           <StaggerWords
             text={body}
             inView={textInView}
