@@ -25,10 +25,10 @@ export const assets = {
 };
 
 export const navItems: NavItem[] = [
-  { label: "tools", href: "#tools" },
-  { label: "connect", href: "#connect" },
-  { label: "contribute", href: "#contribute" },
-  { label: "our why", href: "#why" },
+  { label: "home", href: "#launch" },
+  { label: "features", href: "#features" },
+  { label: "interface", href: "#interface" },
+  { label: "contact", href: "#contact" },
 ];
 
 export const primaryCards: FeatureCardModel[] = [

@@ -15,7 +15,7 @@ const socialAssets = [
 
 export function CapyRailSection() {
   return (
-    <AnimatedPanel className="panel capyRailPanel" staggerIndex={4}>
+    <AnimatedPanel className="panel capyRailPanel" id="more" staggerIndex={4}>
       <div className="verticalMarkWrap" aria-hidden="true">
         <img src={assets.capyVerticalMark} alt="" className="verticalMark" />
       </div>

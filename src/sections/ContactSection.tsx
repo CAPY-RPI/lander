@@ -3,7 +3,7 @@ import { StaggerWords } from "../components/StaggerWords";
 
 export function ContactSection() {
   return (
-    <AnimatedPanel className="panel contactPanel" staggerIndex={3}>
+    <AnimatedPanel className="panel contactPanel" id="contact" staggerIndex={3}>
       <div className="contactContent">
         <div className="contactPrimary">
           <h2>

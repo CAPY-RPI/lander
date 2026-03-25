@@ -3,7 +3,7 @@ import { StaggerWords } from "../components/StaggerWords";
 
 export function InterfaceSection() {
   return (
-    <AnimatedPanel className="panel interfacePanel" staggerIndex={2}>
+    <AnimatedPanel className="panel interfacePanel" id="interface" staggerIndex={2}>
       <div className="interfaceContent">
         <h2>
           <StaggerWords text="imagine our interface is here" baseDelay={0.1} />
