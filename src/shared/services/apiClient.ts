@@ -15,6 +15,7 @@ export class ApiClient {
     const config: RequestInit = {
       ...options,
       headers,
+      credentials: 'include',
     }
 
     const response = await fetch(url, config)

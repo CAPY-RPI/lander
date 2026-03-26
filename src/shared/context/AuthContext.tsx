@@ -14,7 +14,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshUser = useCallback(async () => {
     try {
-      const data = await apiClient.get<User>('/auth/me')
+      const data = await apiClient.get<User>('/auth/me', { cache: 'no-store' })
       setUser(data)
     } catch {
       setUser(null)
@@ -54,6 +54,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await apiClient.post('/auth/logout')
     } finally {
       setUser(null)
+
+      // Clear localStorage and sessionStorage
+      localStorage.clear()
+      sessionStorage.clear()
+
+      // Clear accessible cookies
+      document.cookie.split(';').forEach((c) => {
+        document.cookie = c
+          .replace(/^ +/, '')
+          .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`)
+      })
+
+      // Clear Cache API storage
+      if ('caches' in window) {
+        caches.keys().then((names) => {
+          names.forEach((name) => caches.delete(name))
+        })
+      }
     }
   }
 
