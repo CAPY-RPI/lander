@@ -7,13 +7,13 @@ import type { User } from '../types/auth'
  */
 export const normalizeUser = (data: User): User => {
   return {
-    ...data,
-    rcsid: data.rcsid || data.email.split('@')[0],
-    organizations: data.organizations || [],
-    class_year: data.class_year || '',
-    major: data.major || '',
-    phone_number: data.phone_number || '',
-    rin: data.rin || '',
-    interests: data.interests || '',
+    uid: data.uid,
+    first_name: data.first_name || '',
+    last_name: data.last_name || '',
+    grad_year: typeof data.grad_year === 'number' ? data.grad_year : 0,
+    personal_email: data.personal_email || '',
+    school_email: data.school_email || '',
+    phone: data.phone || '',
+    role: data.role || '',
   }
 }

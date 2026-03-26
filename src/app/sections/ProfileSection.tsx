@@ -1,87 +1,97 @@
 import { useEffect, useMemo, useState } from 'react'
-import type { ChangeEvent } from 'react'
-import { AnimatedPanel } from '@/shared/components/AnimatedPanel'
+import { ProfileField } from './ProfileField'
 import { useAuth } from '@/shared/context/AuthContext'
-import buttonStyles from '@/shared/components/Button.module.css'
+import { AnimatedPanel } from '@/shared/components/AnimatedPanel'
 import styles from './ProfileSection.module.css'
+import buttonStyles from '@/shared/components/Button.module.css'
 
 export function ProfileSection() {
   const { user, isAuthed, saveProfile } = useAuth()
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    classYear: '',
-    phoneNumber: '',
+    first_name: '',
+    last_name: '',
+    grad_year: '',
+    personal_email: '',
+    school_email: '',
+    phone: '',
+    role: '',
   })
   const [isSaving, setIsSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
-  const displayName = form.name.trim() || 'Campus User'
-  const initials =
-    displayName
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase() ?? '')
-      .join('') || 'CU'
 
   useEffect(() => {
     if (!user) {
       setForm({
-        name: '',
-        email: '',
-        classYear: '',
-        phoneNumber: '',
+        first_name: '',
+        last_name: '',
+        grad_year: '',
+        personal_email: '',
+        school_email: '',
+        phone: '',
+        role: '',
       })
       return
     }
-
     setForm({
-      name: `${user.first_name} ${user.last_name}`.trim(),
-      email: user.email,
-      classYear: user.class_year ?? '',
-      phoneNumber: user.phone_number ?? '',
+      first_name: user.first_name || '',
+      last_name: user.last_name || '',
+      grad_year: user.grad_year ? String(user.grad_year) : '',
+      personal_email: user.personal_email || '',
+      school_email: user.school_email || '',
+      phone: user.phone || '',
+      role: user.role || '',
     })
   }, [user])
 
   const initialForm = useMemo(() => {
     if (!user) return null
     return {
-      name: `${user.first_name} ${user.last_name}`.trim(),
-      email: user.email,
-      classYear: user.class_year ?? '',
-      phoneNumber: user.phone_number ?? '',
+      first_name: user.first_name || '',
+      last_name: user.last_name || '',
+      grad_year: user.grad_year ? String(user.grad_year) : '',
+      personal_email: user.personal_email || '',
+      school_email: user.school_email || '',
+      phone: user.phone || '',
+      role: user.role || '',
     }
   }, [user])
 
   const isDirty =
     initialForm != null &&
-    (form.name !== initialForm.name ||
-      form.email !== initialForm.email ||
-      form.classYear !== initialForm.classYear ||
-      form.phoneNumber !== initialForm.phoneNumber)
+    (form.first_name !== initialForm.first_name ||
+      form.last_name !== initialForm.last_name ||
+      form.grad_year !== initialForm.grad_year ||
+      form.personal_email !== initialForm.personal_email ||
+      form.school_email !== initialForm.school_email ||
+      form.phone !== initialForm.phone ||
+      form.role !== initialForm.role)
+
+  const displayName = `${form.first_name} ${form.last_name}`.trim() || 'Campus User'
+  const initials =
+    [form.first_name, form.last_name]
+      .filter(Boolean)
+      .map((part) => part[0]?.toUpperCase() ?? '')
+      .join('') || 'CU'
 
   const handleFieldChange =
-    (field: keyof typeof form) => (event: ChangeEvent<HTMLInputElement>) => {
+    (field: keyof typeof form) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setForm((current) => ({ ...current, [field]: event.target.value }))
     }
 
   const handleSave = async () => {
     if (!user || !isDirty) return
 
-    const trimmedName = form.name.trim()
-    const nameParts = trimmedName.split(/\s+/).filter(Boolean)
-    const firstName = nameParts[0] ?? ''
-    const lastName = nameParts.slice(1).join(' ')
-
     setIsSaving(true)
     setSaveError(null)
     try {
       await saveProfile({
-        email: form.email.trim(),
-        first_name: firstName,
-        last_name: lastName,
-        class_year: form.classYear.trim(),
-        phone_number: form.phoneNumber.trim(),
+        first_name: form.first_name.trim(),
+        last_name: form.last_name.trim(),
+        grad_year: Number(form.grad_year),
+        personal_email: form.personal_email.trim(),
+        school_email: form.school_email.trim(),
+        phone: form.phone.trim(),
+        role: form.role.trim(),
       })
     } catch {
       setSaveError('Could not save changes. Check the update route payload and try again.')
@@ -105,42 +115,57 @@ export function ProfileSection() {
             </div>
 
             <div className={styles.formGrid}>
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Name</span>
-                <input
-                  className={styles.input}
-                  type="text"
-                  value={form.name}
-                  onChange={handleFieldChange('name')}
-                />
-              </label>
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Email</span>
-                <input
-                  className={styles.input}
-                  type="email"
-                  value={form.email}
-                  onChange={handleFieldChange('email')}
-                />
-              </label>
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Class Year</span>
-                <input
-                  className={styles.input}
-                  type="text"
-                  value={form.classYear}
-                  onChange={handleFieldChange('classYear')}
-                />
-              </label>
-              <label className={styles.field}>
-                <span className={styles.fieldLabel}>Phone Number</span>
-                <input
-                  className={styles.input}
-                  type="tel"
-                  value={form.phoneNumber}
-                  onChange={handleFieldChange('phoneNumber')}
-                />
-              </label>
+              <ProfileField
+                label="First Name"
+                value={form.first_name}
+                onChange={handleFieldChange('first_name')}
+              />
+              <ProfileField
+                label="Last Name"
+                value={form.last_name}
+                onChange={handleFieldChange('last_name')}
+              />
+              <ProfileField
+                label="Graduation Year"
+                type="number"
+                value={form.grad_year}
+                onChange={handleFieldChange('grad_year')}
+              />
+              <ProfileField
+                label="Personal Email"
+                type="email"
+                value={form.personal_email}
+                onChange={handleFieldChange('personal_email')}
+              />
+              <ProfileField
+                label="School Email"
+                type="email"
+                value={form.school_email}
+                onChange={handleFieldChange('school_email')}
+              />
+              <ProfileField
+                label="Phone"
+                type="tel"
+                value={form.phone}
+                onChange={handleFieldChange('phone')}
+              />
+              <ProfileField label="Role" value={form.role} onChange={handleFieldChange('role')} />
+              {isDirty ? (
+                <div className={`${styles.confirmBar} ${styles.fieldWide}`}>
+                  <span className={styles.confirmText}>Unsaved changes</span>
+                  <button
+                    type="button"
+                    className={`${buttonStyles.pillButton} ${buttonStyles.accent} ${styles.confirmButton}`}
+                    onClick={handleSave}
+                    disabled={isSaving}
+                  >
+                    {isSaving ? 'saving...' : 'confirm'}
+                  </button>
+                </div>
+              ) : null}
+              {saveError ? (
+                <p className={`${styles.errorText} ${styles.fieldWide}`}>{saveError}</p>
+              ) : null}
             </div>
 
             {isDirty ? (
