@@ -37,6 +37,9 @@ export class ErrorBoundary extends Component<Props, State> {
 
       // Hard redirect to the dedicated error page.
       // This ensures a fresh React state.
+      if (window.location.pathname !== '/error') {
+        sessionStorage.setItem('last_attempted_path', window.location.pathname)
+      }
       window.location.assign('/error')
       return null
     }

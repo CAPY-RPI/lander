@@ -83,7 +83,7 @@
 }
 
 /* Ensure sections match the panel styling */
-:global(.panel) {
+.horizontalScroller :global(.panel) {
   width: calc(100vw - calc(var(--space-24) * 2));
   flex-shrink: 0;
   scroll-snap-align: center;

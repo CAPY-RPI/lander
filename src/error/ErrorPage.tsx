@@ -14,7 +14,8 @@ export default function ErrorPage() {
   }
 
   const handleReload = () => {
-    window.location.reload()
+    const lastPath = sessionStorage.getItem('last_attempted_path') || '/'
+    window.location.assign(lastPath)
   }
 
   return (

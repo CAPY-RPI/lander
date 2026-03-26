@@ -16,7 +16,7 @@ import styles from './App.module.css'
  */
 export default function AppMain() {
   const scrollerRef = useRef<HTMLElement | null>(null)
-  useHorizontalWheelScroll(scrollerRef, { endCutoffPx: 0, snap: true })
+  useHorizontalWheelScroll(scrollerRef, { endCutoffPx: 0 })
 
   useEffect(() => {
     // Remove 'is-exiting' on mount

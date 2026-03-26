@@ -15,6 +15,7 @@ export class ApiClient {
     const config: RequestInit = {
       ...options,
       headers,
+      credentials: 'include',
     }
 
     const response = await fetch(url, config)
@@ -57,4 +58,5 @@ export class ApiClient {
   }
 }
 
-export const apiClient = new ApiClient('/api/v1')
+export const API_VERSION = import.meta.env.VITE_API_VERSION || '/api/v1'
+export const apiClient = new ApiClient(API_VERSION)

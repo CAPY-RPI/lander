@@ -6,7 +6,7 @@ import buttonStyles from '@/shared/components/Button.module.css'
 import styles from './ProfileSection.module.css'
 
 export function ProfileSection() {
-  const { user, isAuthed, login, saveProfile } = useAuth()
+  const { user, isAuthed, saveProfile } = useAuth()
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -160,13 +160,10 @@ export function ProfileSection() {
           </section>
         ) : (
           <section className={styles.formStack}>
-            <button
-              type="button"
-              className={`${buttonStyles.pillButton} ${buttonStyles.accent} ${styles.signInButton}`}
-              onClick={login}
-            >
-              sign in with google
-            </button>
+            <div className={styles.signInPrompt}>
+              <h2 className={styles.promptTitle}>please sign in</h2>
+              <p className={styles.promptDescription}>you're not you when you're signed out</p>
+            </div>
           </section>
         )}
       </div>

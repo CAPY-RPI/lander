@@ -196,12 +196,14 @@ export function TopNav({
 
     if (Math.abs(distance) < 1) {
       scroller.scrollLeft = targetLeft
+      scroller.style.scrollSnapType = ''
       setActiveHref(href)
       return
     }
 
     isProgrammaticScrollRef.current = true
     pendingScrollLeftRef.current = targetLeft
+    scroller.style.scrollSnapType = 'none'
 
     if (scrollRafRef.current != null) {
       window.cancelAnimationFrame(scrollRafRef.current)
@@ -232,6 +234,7 @@ export function TopNav({
       }
 
       scroller.scrollLeft = targetLeft
+      scroller.style.scrollSnapType = ''
       isProgrammaticScrollRef.current = false
       pendingScrollLeftRef.current = null
       scrollRafRef.current = null
@@ -244,6 +247,7 @@ export function TopNav({
         window.cancelAnimationFrame(scrollRafRef.current)
         scrollRafRef.current = null
       }
+      scroller.style.scrollSnapType = ''
     }, durationMs + 120)
 
     scrollRafRef.current = window.requestAnimationFrame(tick)
@@ -309,6 +313,10 @@ export function TopNav({
 
     isProgrammaticScrollRef.current = true
     pendingScrollLeftRef.current = null
+
+    const scroller = document.getElementById('scroller') as HTMLElement | null
+    if (scroller) scroller.style.scrollSnapType = 'none'
+
     event.preventDefault()
   }
 
@@ -357,6 +365,8 @@ export function TopNav({
 
           setActiveHref(nearest.href)
           navigateToHref(nearest.href)
+        } else {
+          scroller.style.scrollSnapType = ''
         }
       }
 
