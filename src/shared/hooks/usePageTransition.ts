@@ -12,13 +12,15 @@ interface PageTransitionOptions {
  * - Optionally triggers a `fading-back` class for a smooth fade-in animation.
  */
 export function usePageTransition(options: PageTransitionOptions = { fadingBack: true }) {
+  const { fadingBack = true } = options
+
   useEffect(() => {
     document.body.classList.remove('is-exiting')
 
     const handlePageShow = (event: PageTransitionEvent) => {
       if (event.persisted) {
         document.body.classList.remove('is-exiting')
-        if (options.fadingBack) {
+        if (fadingBack) {
           document.body.classList.add('fading-back')
           setTimeout(() => {
             document.body.classList.remove('fading-back')
@@ -29,5 +31,5 @@ export function usePageTransition(options: PageTransitionOptions = { fadingBack:
 
     window.addEventListener('pageshow', handlePageShow)
     return () => window.removeEventListener('pageshow', handlePageShow)
-  }, [])
+  }, [fadingBack])
 }
