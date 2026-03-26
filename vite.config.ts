@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig(() => {
-  const proxyTarget = 'https://dev.capyrpi.org'
+  const proxyTarget = 'http://localhost:8080'
 
   return {
     plugins: [react()],
