@@ -23,7 +23,9 @@
 .errorCard {
   max-width: 600px;
   width: 100%;
-  padding: var(--space-40) !important; /* Override GlassCard's asymmetric padding */
+  height: auto;
+  align-self: center;
+  padding: var(--space-40);
 }
 
 .errorContent {

@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async'
-import { TopNav } from '@/shared/components/TopNav'
+
 import { GlassCard } from '@/shared/components/GlassCard'
 import { StaggerWords } from '@/shared/components/StaggerWords'
 import { useExitNavigation } from '@/shared/hooks/useExitNavigation'
@@ -22,9 +22,6 @@ export default function ErrorPage() {
       <Helmet>
         <title>Oops! - CAPY Error</title>
       </Helmet>
-
-      <TopNav />
-
       <main className={styles.main}>
         <GlassCard className={styles.errorCard}>
           <div className={styles.errorContent}>

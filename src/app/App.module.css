@@ -22,6 +22,7 @@
     transform: none;
     filter: none;
   }
+
   100% {
     transform: scale(140%);
     filter: blur(5px);
@@ -49,6 +50,7 @@
   transition: opacity 320ms var(--ease-premium);
   transition-delay: 0ms;
 }
+
 :global(body.is-exiting) .exitOverlay {
   opacity: 1;
 }
