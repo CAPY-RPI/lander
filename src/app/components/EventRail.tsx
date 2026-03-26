@@ -79,6 +79,8 @@ export function EventRail({ title, events, carouselLabel }: EventRailProps) {
           className={styles.carousel}
           data-reveal-scroller
           aria-label={carouselLabel}
+          data-can-scroll-back={canScrollBack}
+          data-can-scroll-forward={canScrollForward}
         >
           {events.map((event) => (
             <EventCard key={getEventKey(event)} event={event} />

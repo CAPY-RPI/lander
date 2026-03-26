@@ -60,7 +60,8 @@
 }
 
 .carousel {
-  --edge-fade: 72px;
+  --left-edge-fade: 72px;
+  --right-edge-fade: 72px;
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(320px, 440px);
@@ -76,17 +77,25 @@
   mask-image: linear-gradient(
     90deg,
     transparent 0,
-    rgba(0, 0, 0, 0.9) var(--edge-fade),
-    #000 calc(100% - var(--edge-fade)),
+    rgba(0, 0, 0, 0.9) var(--left-edge-fade),
+    #000 calc(100% - var(--right-edge-fade)),
     transparent 100%
   );
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent 0,
-    rgba(0, 0, 0, 0.9) var(--edge-fade),
-    #000 calc(100% - var(--edge-fade)),
+    rgba(0, 0, 0, 0.9) var(--left-edge-fade),
+    #000 calc(100% - var(--right-edge-fade)),
     transparent 100%
   );
+}
+
+.carousel[data-can-scroll-back='false'] {
+  --left-edge-fade: 0px;
+}
+
+.carousel[data-can-scroll-forward='false'] {
+  --right-edge-fade: 0px;
 }
 
 .carousel::-webkit-scrollbar {
@@ -125,7 +134,8 @@
   }
 
   .carousel {
-    --edge-fade: 36px;
+    --left-edge-fade: 36px;
+    --right-edge-fade: 36px;
     grid-auto-columns: minmax(260px, 78vw);
   }
 }
