@@ -93,8 +93,8 @@ export function ProfileSection() {
         phone: form.phone.trim(),
         role: form.role.trim(),
       })
-    } catch {
-      setSaveError('Could not save changes. Check the update route payload and try again.')
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : 'Could not save changes. Please try again.')
     } finally {
       setIsSaving(false)
     }
