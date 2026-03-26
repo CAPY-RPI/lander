@@ -18,22 +18,7 @@ export class ApiClient {
       credentials: 'include',
     }
 
-    // Debug: Log endpoint, method, and payload
-    console.debug('[ApiClient] Request:', {
-      url,
-      method: config.method || 'GET',
-      body: config.body,
-      headers: config.headers,
-    })
-
     const response = await fetch(url, config)
-
-    // Debug: Log response status
-    console.debug('[ApiClient] Response:', {
-      url,
-      status: response.status,
-      statusText: response.statusText,
-    })
 
     if (!response.ok) {
       console.error(`API call error: ${response.status} ${response.statusText}`)

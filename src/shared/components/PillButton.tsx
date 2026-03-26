@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 import { motion } from 'framer-motion'
-import buttonStyles from './Button.module.css'
+import buttonStyles from './PillButton.module.css'
 
 type ButtonOrAnchor = 'button' | 'a'
 type ButtonProps = React.ComponentPropsWithoutRef<'button'>
@@ -35,3 +35,4 @@ export const PillButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Pill
     )
   },
 )
+PillButton.displayName = 'PillButton'

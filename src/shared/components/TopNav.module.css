@@ -90,7 +90,7 @@
 }
 
 .navPill a.isActive {
-  color: #ffffff;
+  color: var(--c-white);
 }
 
 .navCta {

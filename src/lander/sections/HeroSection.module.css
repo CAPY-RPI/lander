@@ -98,20 +98,8 @@
 
 .howModalText a:hover,
 .howModalText a:focus-visible {
-  color: #ffd8c8;
+  color: var(--c-accent-hover);
   text-decoration: none;
-}
-
-.howModalClose {
-  margin-top: 20px;
-  min-height: 44px;
-  border-radius: var(--radius-pill);
-  border: 1px solid rgba(165, 232, 226, 0.7);
-  background: linear-gradient(180deg, rgba(72, 176, 167, 0.24), rgba(44, 132, 126, 0.2));
-  color: var(--c-text-light);
-  font: 400 18px/1 var(--font-body);
-  padding: 0 20px;
-  cursor: pointer;
 }
 
 @media (max-width: 1200px) {

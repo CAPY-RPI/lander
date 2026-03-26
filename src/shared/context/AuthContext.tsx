@@ -19,7 +19,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const authMe = await apiClient.get<{ uid: string }>(`/auth/me`, { cache: 'no-store' })
       const uid = authMe?.uid
       if (!uid) throw new Error('No UID available')
-      localStorage.setItem('uid', uid)
       const data = await apiClient.get<User>(`/users/${uid}`, { cache: 'no-store' })
       setUser(normalizeUser(data))
     } catch {

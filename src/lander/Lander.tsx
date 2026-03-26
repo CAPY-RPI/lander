@@ -15,7 +15,7 @@ import styles from './Lander.module.css'
  * Serves as the landing page for capy, featuring scrolling sections and product details.
  * Contains the Hero, Features, Interface, Contact, and Rail sections.
  */
-function App() {
+function Lander() {
   const scrollerRef = useRef<HTMLElement | null>(null)
   useHorizontalWheelScroll(scrollerRef, { endCutoffPx: 300 })
 
@@ -72,4 +72,4 @@ function App() {
     </>
   )
 }
-export default App
+export default Lander
