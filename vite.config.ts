@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => {
               cookieDomainRewrite: 'localhost',
               configure: (proxy) => {
                 proxy.on('proxyReq', (proxyReq) => {
-                  proxyReq.setHeader('x-forwarded-proto', 'http')
+                  proxyReq.setHeader('X-Dev-Host', 'localhost:5173')
                 })
               },
             },

@@ -47,14 +47,14 @@
     "vite": "^8.0.1"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
+    "*.{js,jsx,ts,tsx,cjs,mjs}": [
       "prettier --write",
       "eslint --fix"
     ],
     "*.{css,scss,md,json,yml,yaml,html}": [
       "prettier --write"
     ],
-    "src/**/*.{js,jsx,ts,tsx}": [
+    "src/**/*.{js,jsx,ts,tsx,cjs,mjs}": [
       "jest --config jest.config.cjs --bail --findRelatedTests --passWithNoTests"
     ]
   },
