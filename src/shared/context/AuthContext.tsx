@@ -3,6 +3,7 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 import type { ReactNode } from 'react'
 import { apiClient, API_VERSION } from '../services/apiClient'
 import type { User, AuthContextType } from '../types/auth'
+import { normalizeUser } from '../models/user'
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
@@ -15,7 +16,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refreshUser = useCallback(async () => {
     try {
       const data = await apiClient.get<User>('/auth/me', { cache: 'no-store' })
-      setUser(data)
+      setUser(normalizeUser(data))
     } catch {
       setUser(null)
     } finally {
@@ -57,8 +58,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  const saveProfile = useCallback<AuthContextType['saveProfile']>(
+    async (profile) => {
+      if (!user) return
+
+      const gradYear = Number.parseInt(profile.class_year ?? '', 10)
+      await apiClient.put(`/users/${user.uid}`, {
+        first_name: profile.first_name,
+        last_name: profile.last_name,
+        personal_email: user.email,
+        school_email: profile.email,
+        phone: profile.phone_number,
+        grad_year: Number.isNaN(gradYear) ? null : gradYear,
+      })
+
+      // Refresh the user to get the source of truth from the backend
+      await refreshUser()
+    },
+    [user, refreshUser],
+  )
+
   return (
-    <AuthContext.Provider value={{ user, isAuthed, isLoading, login, logout, refreshUser }}>
+    <AuthContext.Provider
+      value={{ user, isAuthed, isLoading, login, logout, refreshUser, saveProfile }}
+    >
       {children}
     </AuthContext.Provider>
   )

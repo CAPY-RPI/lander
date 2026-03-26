@@ -1,44 +1,178 @@
 .profilePanel {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 8rem 4rem;
 }
 
-.header {
-  margin-bottom: 4rem;
+.shell {
+  display: grid;
+  gap: 1.25rem;
+  width: min(560px, 100%);
 }
 
-.title {
-  font: 600 40px/1 var(--font-display);
-  text-transform: lowercase;
-  margin-bottom: 2rem;
+.confirmText,
+.fieldLabel,
+.errorText {
   color: var(--c-text-light);
 }
 
-.header p {
+.confirmText {
   font: 400 18px/1.35 var(--font-body);
+}
+
+.formStack {
+  display: grid;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.profileHeader {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 28px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, rgba(241, 96, 47, 0.95), rgba(197, 74, 32, 0.88));
+  box-shadow: 0 18px 36px rgba(81, 28, 11, 0.28);
   color: var(--c-text-light);
+  font: 700 2rem/1 var(--font-display);
+  text-transform: uppercase;
 }
 
-.userInfo {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.headerText {
+  min-width: 0;
 }
 
-.email {
-  color: var(--color-text-secondary);
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+.profileName {
+  margin: 0;
+  color: var(--c-text-light);
+  font: 700 clamp(2.2rem, 5vw, 4rem) / 0.98 var(--font-display);
+  letter-spacing: -0.03em;
 }
 
-.roleTag {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  background: var(--color-accent);
-  border-radius: 100px;
-  font-size: 0.8rem;
-  font-weight: 600;
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+.fieldLabel {
+  color: rgba(249, 250, 250, 0.66);
+  font: 600 0.92rem/1 var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.input {
+  min-height: 58px;
+  width: 100%;
+  padding: 0 1rem;
+  border-radius: 22px;
+  border: 1px solid rgba(180, 241, 235, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--c-text-light);
+  font: 400 1rem/1.2 var(--font-body);
+  transition:
+    border-color 180ms var(--ease-premium),
+    box-shadow 180ms var(--ease-premium),
+    background 180ms var(--ease-premium);
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(235, 250, 248, 0.55);
+  box-shadow: 0 0 0 3px rgba(212, 252, 249, 0.12);
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.input:disabled {
+  opacity: 0.7;
+}
+
+.confirmBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 190, 164, 0.22);
+  background: rgba(241, 96, 47, 0.12);
+}
+
+.confirmText {
+  margin: 0;
+}
+
+.confirmButton {
+  min-width: 140px;
+}
+
+.errorText {
+  margin: 0;
+  color: rgba(255, 214, 198, 0.96);
+  font: 500 0.95rem/1.3 var(--font-body);
+}
+
+.signInPrompt {
+  display: grid;
+  gap: 0.75rem;
+  padding: 3rem 2rem;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(180, 241, 235, 0.12);
+  text-align: center;
+}
+
+.promptTitle {
+  margin: 0;
+  color: var(--c-text-light);
+  font: 700 1.5rem/1.2 var(--font-display);
+}
+
+.promptDescription {
+  margin: 0;
+  color: rgba(249, 250, 250, 0.6);
+  font: 400 1.1rem/1.5 var(--font-body);
+  max-width: 320px;
+  margin-inline: auto;
+}
+
+@media (max-width: 720px) {
+  .profilePanel {
+    padding: 6rem 1.25rem 2rem;
+  }
+
+  .profileHeader {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .confirmBar {
+    align-items: stretch;
+    flex-direction: column;
+  }
 }
