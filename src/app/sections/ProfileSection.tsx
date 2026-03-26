@@ -167,21 +167,6 @@ export function ProfileSection() {
                 <p className={`${styles.errorText} ${styles.fieldWide}`}>{saveError}</p>
               ) : null}
             </div>
-
-            {isDirty ? (
-              <div className={styles.confirmBar}>
-                <span className={styles.confirmText}>Unsaved changes</span>
-                <button
-                  type="button"
-                  className={`${buttonStyles.pillButton} ${buttonStyles.accent} ${styles.confirmButton}`}
-                  onClick={handleSave}
-                  disabled={isSaving}
-                >
-                  {isSaving ? 'saving...' : 'confirm'}
-                </button>
-              </div>
-            ) : null}
-            {saveError ? <p className={styles.errorText}>{saveError}</p> : null}
           </section>
         ) : (
           <section className={styles.formStack}>
