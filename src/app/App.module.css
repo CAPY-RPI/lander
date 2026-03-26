@@ -34,27 +34,6 @@
   animation: exitDipSpring 500ms cubic-bezier(0.68, 0, 0.94, 0.18) forwards;
 }
 
-.exitOverlay {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: var(--c-bg, #006662);
-  opacity: 0;
-  transition: opacity 220ms var(--ease-premium);
-  transition-delay: 280ms;
-}
-
-:global(body.fading-back) .exitOverlay {
-  opacity: 0;
-  transition: opacity 320ms var(--ease-premium);
-  transition-delay: 0ms;
-}
-
-:global(body.is-exiting) .exitOverlay {
-  opacity: 1;
-}
-
 .horizontalScroller {
   width: 100vw;
   height: 100vh;

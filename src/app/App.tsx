@@ -2,7 +2,9 @@ import { useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 import { AppTopNav } from '@/app/components/AppTopNav'
+import { ExitOverlay } from '@/shared/components/ExitOverlay'
 import { useHorizontalWheelScroll } from '@/shared/hooks/useHorizontalWheelScroll'
+import { usePageTransition } from '@/shared/hooks/usePageTransition'
 
 import { HomeSection } from './sections/HomeSection'
 import { ProfileSection } from './sections/ProfileSection'
@@ -18,10 +20,9 @@ export default function AppMain() {
   const scrollerRef = useRef<HTMLElement | null>(null)
   useHorizontalWheelScroll(scrollerRef, { endCutoffPx: 0 })
 
-  useEffect(() => {
-    // Remove 'is-exiting' on mount
-    document.body.classList.remove('is-exiting')
+  usePageTransition()
 
+  useEffect(() => {
     // Initial scroll to home (since it's now second in the list)
     setTimeout(() => {
       const homeSection = document.getElementById('home')
@@ -29,17 +30,6 @@ export default function AppMain() {
         scrollerRef.current.scrollLeft = homeSection.offsetLeft
       }
     }, 10)
-
-    // Animate fading back if page is restored from bfcache
-    const handlePageShow = (event: PageTransitionEvent) => {
-      if (event.persisted) {
-        document.body.classList.remove('is-exiting')
-      }
-    }
-    window.addEventListener('pageshow', handlePageShow)
-    return () => {
-      window.removeEventListener('pageshow', handlePageShow)
-    }
   }, [])
 
   return (
@@ -66,8 +56,7 @@ export default function AppMain() {
           </motion.div>
         </main>
       </div>
-      {/* Exit overlay for seamless background */}
-      <div className={styles.exitOverlay} aria-hidden="true" />
+      <ExitOverlay />
     </>
   )
 }

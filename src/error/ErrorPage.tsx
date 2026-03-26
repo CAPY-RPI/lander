@@ -3,11 +3,14 @@ import { Helmet } from 'react-helmet-async'
 import { GlassCard } from '@/shared/components/GlassCard'
 import { StaggerWords } from '@/shared/components/StaggerWords'
 import { useExitNavigation } from '@/shared/hooks/useExitNavigation'
+import { usePageTransition } from '@/shared/hooks/usePageTransition'
 import { PillButton } from '@/shared/components/PillButton'
+import { ExitOverlay } from '@/shared/components/ExitOverlay'
 import styles from './ErrorPage.module.css'
 
 export default function ErrorPage() {
   const navigateWithExit = useExitNavigation()
+  usePageTransition()
 
   const handleGoHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
     navigateWithExit(event, '/')
@@ -52,7 +55,7 @@ export default function ErrorPage() {
         </GlassCard>
       </main>
 
-      <div className={styles.exitOverlay} aria-hidden="true" />
+      <ExitOverlay />
     </div>
   )
 }

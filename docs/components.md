@@ -5,6 +5,14 @@ All shared, reusable components for Capy-Lander and Capy-App reside in `src/shar
 
 ## Available Components
 
+### `ExitOverlay`
+
+A shared overlay `<div>` that provides seamless background transitions when navigating between routes. Used by `Lander`, `App`, and `ErrorPage`.
+
+- **Activation:** Triggered by the `is-exiting` class on `document.body` (set by `useExitNavigation`).
+- **Fade-back:** Supports the `fading-back` class for bfcache restoration animations.
+- **Usage:** Drop `<ExitOverlay />` as the last child inside your route root. Pair with `usePageTransition()` for lifecycle management.
+
 ### `TopNav`
 
 The primary navigation bar.

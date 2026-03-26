@@ -1,7 +1,9 @@
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { TopNav } from '@/shared/components/TopNav'
+import { ExitOverlay } from '@/shared/components/ExitOverlay'
 import { useHorizontalWheelScroll } from '@/shared/hooks/useHorizontalWheelScroll'
+import { usePageTransition } from '@/shared/hooks/usePageTransition'
 import { CapyRailSection } from './sections/CapyRailSection'
 import { ContactSection } from './sections/ContactSection'
 import { FeaturesSection } from './sections/FeaturesSection'
@@ -19,26 +21,7 @@ function Lander() {
   const scrollerRef = useRef<HTMLElement | null>(null)
   useHorizontalWheelScroll(scrollerRef, { endCutoffPx: 300 })
 
-  // Remove 'is-exiting' class from body on mount (prevents overlay persisting on back navigation)
-  useEffect(() => {
-    // Remove 'is-exiting' on mount
-    document.body.classList.remove('is-exiting')
-
-    // Animate fading back if page is restored from bfcache (back/forward navigation)
-    const handlePageShow = (event: PageTransitionEvent) => {
-      if (event.persisted) {
-        document.body.classList.remove('is-exiting')
-        document.body.classList.add('fading-back')
-        setTimeout(() => {
-          document.body.classList.remove('fading-back')
-        }, 350) // match fade duration in CSS
-      }
-    }
-    window.addEventListener('pageshow', handlePageShow)
-    return () => {
-      window.removeEventListener('pageshow', handlePageShow)
-    }
-  }, [])
+  usePageTransition()
 
   return (
     <>
@@ -67,8 +50,7 @@ function Lander() {
           </motion.div>
         </main>
       </div>
-      {/* Exit overlay for seamless background */}
-      <div className={styles.exitOverlay} aria-hidden="true" />
+      <ExitOverlay />
     </>
   )
 }
