@@ -15,6 +15,14 @@ export function ProfileSection() {
   })
   const [isSaving, setIsSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
+  const displayName = form.name.trim() || 'Campus User'
+  const initials =
+    displayName
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase() ?? '')
+      .join('') || 'CU'
 
   useEffect(() => {
     if (!user) {
@@ -86,15 +94,15 @@ export function ProfileSection() {
     <AnimatedPanel className={`panel ${styles.profilePanel}`} id="profile" staggerIndex={1}>
       <div className={styles.shell}>
         {isAuthed && user ? (
-          <section className={styles.primaryCard}>
-            <div className={styles.cardHeader}>
-              <span className={styles.cardEyebrow}>account</span>
-              <h2 className={styles.cardTitle}>Profile information</h2>
+          <section className={styles.formStack}>
+            <div className={styles.profileHeader}>
+              <div className={styles.avatar} aria-hidden="true">
+                {initials}
+              </div>
+              <div className={styles.headerText}>
+                <h1 className={styles.profileName}>{displayName}</h1>
+              </div>
             </div>
-
-            <p className={styles.cardBody}>
-              Update your profile inline using the fields supported by the user update route.
-            </p>
 
             <div className={styles.formGrid}>
               <label className={styles.field}>
@@ -151,14 +159,7 @@ export function ProfileSection() {
             {saveError ? <p className={styles.errorText}>{saveError}</p> : null}
           </section>
         ) : (
-          <section className={styles.primaryCard}>
-            <div className={styles.cardHeader}>
-              <span className={styles.cardEyebrow}>access</span>
-              <h2 className={styles.cardTitle}>Sign in to view your profile</h2>
-            </div>
-            <p className={styles.cardBody}>
-              This page shows the editable profile fields supported by the backend update route.
-            </p>
+          <section className={styles.formStack}>
             <button
               type="button"
               className={`${buttonStyles.pillButton} ${buttonStyles.accent} ${styles.signInButton}`}
