@@ -1,0 +1,72 @@
+.eventGroup {
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: start;
+  gap: 14px;
+  overflow: hidden;
+  padding-bottom: 12px;
+  min-height: 390px;
+}
+
+.groupHeader {
+  display: grid;
+  gap: 0;
+  padding-right: 64px;
+}
+
+.groupTitle {
+  margin: 0;
+  color: var(--c-text-light);
+  font: 600 28px/1 var(--font-display);
+  text-transform: lowercase;
+}
+
+.carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(320px, 42%);
+  gap: var(--space-24);
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 4px 64px 12px 0;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  align-items: stretch;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.82);
+  outline-offset: 6px;
+}
+
+@media (max-width: 1200px) {
+  .groupHeader,
+  .carousel {
+    padding-right: 44px;
+  }
+}
+
+@media (max-width: 720px) {
+  .eventGroup {
+    min-height: auto;
+  }
+
+  .groupTitle {
+    font-size: 24px;
+  }
+
+  .groupHeader,
+  .carousel {
+    padding-right: 24px;
+  }
+
+  .carousel {
+    grid-auto-columns: minmax(260px, 78vw);
+  }
+}
