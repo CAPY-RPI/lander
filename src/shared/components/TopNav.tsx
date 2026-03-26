@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { StaggerWords } from './StaggerWords'
 import { assets, navItems } from '../data/content'
 import { useExitNavigation } from '../hooks/useExitNavigation'
-import buttonStyles from './Button.module.css'
+import { PillButton } from './PillButton'
 import styles from './TopNav.module.css'
 
 type SnapCandidate = {
@@ -447,22 +447,27 @@ export function TopNav({
       </nav>
 
       {showCta && (
-        <AnimatePresence mode="wait">
-          <motion.a
-            key={ctaLabel}
-            className={`${buttonStyles.pillButton} ${buttonStyles.accent} ${styles.navCta}`}
-            href={ctaHref}
-            onClick={onAppCtaClick}
-            whileHover={{ y: -1, transition: { duration: 0.2 } }}
-            whileTap={{ scale: 0.96 }}
-            initial={{ opacity: 0, scale: 0.9, filter: 'blur(4px)' }}
-            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 0.95, filter: 'blur(2px)' }}
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <StaggerWords text={ctaLabel} baseDelay={0.05} amount={0.1} />
-          </motion.a>
-        </AnimatePresence>
+        <PillButton
+          as="a"
+          accent
+          className={styles.navCta}
+          href={ctaHref}
+          onClick={onAppCtaClick}
+          style={{ filter: undefined }}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={ctaLabel}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+              style={{ display: 'inline-block' }}
+            >
+              <StaggerWords text={ctaLabel} baseDelay={0.05} amount={0.1} />
+            </motion.span>
+          </AnimatePresence>
+        </PillButton>
       )}
     </motion.header>
   )

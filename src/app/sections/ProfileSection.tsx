@@ -3,7 +3,7 @@ import { ProfileField } from './ProfileField'
 import { useAuth } from '@/shared/context/AuthContext'
 import { AnimatedPanel } from '@/shared/components/AnimatedPanel'
 import styles from './ProfileSection.module.css'
-import buttonStyles from '@/shared/components/Button.module.css'
+import { PillButton } from '@/shared/components/PillButton'
 
 export function ProfileSection() {
   const { user, isAuthed, saveProfile } = useAuth()
@@ -153,14 +153,15 @@ export function ProfileSection() {
               {isDirty ? (
                 <div className={`${styles.confirmBar} ${styles.fieldWide}`}>
                   <span className={styles.confirmText}>Unsaved changes</span>
-                  <button
+                  <PillButton
                     type="button"
-                    className={`${buttonStyles.pillButton} ${buttonStyles.accent} ${styles.confirmButton}`}
+                    accent
+                    className={styles.confirmButton}
                     onClick={handleSave}
                     disabled={isSaving}
                   >
                     {isSaving ? 'saving...' : 'confirm'}
-                  </button>
+                  </PillButton>
                 </div>
               ) : null}
               {saveError ? (

@@ -4,7 +4,7 @@ import { AnimatedPanel } from '@/shared/components/AnimatedPanel'
 import { useExitNavigation } from '@/shared/hooks/useExitNavigation'
 import { StaggerWords } from '@/shared/components/StaggerWords'
 import { TypewriterWord } from '@/shared/components/TypewriterWord'
-import buttonStyles from '@/shared/components/Button.module.css'
+import { PillButton } from '@/shared/components/PillButton'
 import styles from './HeroSection.module.css'
 
 export function HeroSection() {
@@ -76,20 +76,12 @@ export function HeroSection() {
               </p>
             </div>
             <div className={styles.heroCtas}>
-              <a
-                className={`${buttonStyles.pillButton} ${buttonStyles.accent}`}
-                href="/app"
-                onClick={onAppCtaClick}
-              >
+              <PillButton as="a" href="/app" accent onClick={onAppCtaClick}>
                 <StaggerWords text="absolutely" baseDelay={0.28} />
-              </a>
-              <a
-                className={`${buttonStyles.pillButton} ${buttonStyles.subtle}`}
-                href="#features"
-                onClick={openHowModal}
-              >
+              </PillButton>
+              <PillButton as="a" href="#features" subtle onClick={openHowModal}>
                 <StaggerWords text="how" baseDelay={0.34} />
-              </a>
+              </PillButton>
             </div>
           </div>
         </div>
@@ -133,9 +125,9 @@ export function HeroSection() {
                   get started right away!
                 </a>
               </p>
-              <button type="button" className={styles.howModalClose} onClick={closeHowModal}>
+              <PillButton type="button" accent onClick={closeHowModal}>
                 close
-              </button>
+              </PillButton>
             </motion.div>
           </motion.div>
         ) : null}

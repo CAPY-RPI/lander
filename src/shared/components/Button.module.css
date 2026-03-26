@@ -12,7 +12,17 @@
   border: 1px solid transparent;
   transition:
     transform 220ms var(--ease-premium),
-    box-shadow 220ms var(--ease-premium);
+    box-shadow 220ms var(--ease-premium),
+    background 220ms var(--ease-premium),
+    filter 220ms var(--ease-premium);
+  cursor: pointer;
+  will-change: transform, box-shadow, background, filter;
+}
+
+.pillButton:active {
+  transform: scale(0.96) translateY(1.5px);
+  filter: brightness(0.97) saturate(1.2);
+  box-shadow: 0 2px 8px rgba(99, 30, 7, 0.18);
 }
 
 .pillButton:hover,

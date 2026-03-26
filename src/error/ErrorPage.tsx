@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 import { GlassCard } from '@/shared/components/GlassCard'
 import { StaggerWords } from '@/shared/components/StaggerWords'
 import { useExitNavigation } from '@/shared/hooks/useExitNavigation'
-import buttonStyles from '@/shared/components/Button.module.css'
+import { PillButton } from '@/shared/components/PillButton'
 import styles from './ErrorPage.module.css'
 
 export default function ErrorPage() {
@@ -41,19 +41,12 @@ export default function ErrorPage() {
             </p>
 
             <div className={styles.actions}>
-              <a
-                href="/"
-                onClick={handleGoHome}
-                className={`${buttonStyles.pillButton} ${buttonStyles.accent}`}
-              >
+              <PillButton as="a" href="/" accent onClick={handleGoHome}>
                 <StaggerWords text="return home" baseDelay={0.6} />
-              </a>
-              <button
-                onClick={handleReload}
-                className={`${buttonStyles.pillButton} ${buttonStyles.subtle}`}
-              >
+              </PillButton>
+              <PillButton onClick={handleReload} subtle>
                 <StaggerWords text="try again" baseDelay={0.7} />
-              </button>
+              </PillButton>
             </div>
           </div>
         </GlassCard>
