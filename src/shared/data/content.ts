@@ -21,10 +21,17 @@ export const assets = {
 }
 
 export const navItems: NavItem[] = [
-  { label: 'home', href: '#launch' },
+  { label: 'home', href: '#home' },
   { label: 'features', href: '#features' },
   { label: 'interface', href: '#interface' },
   { label: 'contact', href: '#contact' },
+]
+
+export const appNavItems: NavItem[] = [
+  { label: 'profile', href: '#profile' },
+  { label: 'home', href: '#home' },
+  { label: 'events', href: '#events' },
+  { label: 'orgs', href: '#orgs' },
 ]
 
 export const primaryCards: FeatureCardModel[] = [

@@ -11,6 +11,7 @@ export function HeroSection() {
   const [howModalOpen, setHowModalOpen] = useState(false)
   const reduceMotion = useReducedMotion()
   const navigateWithExit = useExitNavigation()
+  const HERO_WORDS = ['sleep', 'growth', 'fun']
 
   useEffect(() => {
     if (!howModalOpen) return
@@ -38,12 +39,12 @@ export function HeroSection() {
 
   return (
     <>
-      <AnimatedPanel className={`panel ${styles.heroPanel}`} id="launch" staggerIndex={0}>
+      <AnimatedPanel className={`panel ${styles.heroPanel}`} id="home" staggerIndex={0}>
         <div className={styles.heroRows}>
           <div className={styles.heroRowTitle}>
             <h1>
               <span>
-                more <TypewriterWord words={['sleep', 'growth', 'fun']} />
+                more <TypewriterWord words={HERO_WORDS} />
               </span>
               <span>
                 <StaggerWords text="for you" baseDelay={0.12} />

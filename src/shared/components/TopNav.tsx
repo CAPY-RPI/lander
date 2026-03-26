@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from 'react'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { StaggerWords } from './StaggerWords'
 import { assets, navItems } from '../data/content'
 import { useExitNavigation } from '../hooks/useExitNavigation'
@@ -14,10 +14,24 @@ type SnapCandidate = {
   targetLeft: number
 }
 
+interface TopNavProps {
+  items?: typeof navItems
+  showCta?: boolean
+  ctaLabel?: string
+  ctaHref?: string
+  onCtaClickOverride?: (event: ReactMouseEvent<HTMLAnchorElement>) => void
+}
+
 const easeInOutQuart = (t: number) =>
   t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2
 
-export function TopNav() {
+export function TopNav({
+  items = navItems,
+  showCta = true,
+  ctaLabel = "let's go",
+  ctaHref = '/app',
+  onCtaClickOverride,
+}: TopNavProps) {
   const navigateWithExit = useExitNavigation()
   const navRef = useRef<HTMLElement | null>(null)
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({})
@@ -29,38 +43,41 @@ export function TopNav() {
   const pendingScrollLeftRef = useRef<number | null>(null)
   const releaseTimerRef = useRef<number | null>(null)
   const scrollRafRef = useRef<number | null>(null)
-  const [activeHref, setActiveHref] = useState(navItems[0]?.href ?? '#launch')
+  const [activeHref, setActiveHref] = useState(items[0]?.href ?? '#home')
   const [bubbleX, setBubbleX] = useState(0)
   const [bubbleWidth, setBubbleWidth] = useState(0)
   const [dragBubbleX, setDragBubbleX] = useState<number | null>(null)
   const [bubbleDragging, setBubbleDragging] = useState(false)
   const [bubbleReady, setBubbleReady] = useState(false)
 
-  const getNavSnapCandidates = (scroller: HTMLElement): SnapCandidate[] => {
-    const maxLeft = Math.max(0, scroller.scrollWidth - scroller.clientWidth)
+  const getNavSnapCandidates = useCallback(
+    (scroller: HTMLElement): SnapCandidate[] => {
+      const maxLeft = Math.max(0, scroller.scrollWidth - scroller.clientWidth)
 
-    return navItems
-      .map((item) => {
-        const link = linkRefs.current[item.href]
-        if (!link) return null
+      return items
+        .map((item) => {
+          const link = linkRefs.current[item.href]
+          if (!link) return null
 
-        const section = document.getElementById(item.href.replace('#', ''))
-        if (!section) return null
+          const section = document.getElementById(item.href.replace('#', ''))
+          if (!section) return null
 
-        const sectionCenter = section.offsetLeft + section.offsetWidth / 2
-        const rawLeft = sectionCenter - scroller.clientWidth / 2
-        const targetLeft = Math.max(0, Math.min(rawLeft, maxLeft))
+          const sectionCenter = section.offsetLeft + section.offsetWidth / 2
+          const rawLeft = sectionCenter - scroller.clientWidth / 2
+          const targetLeft = Math.max(0, Math.min(rawLeft, maxLeft))
 
-        return {
-          href: item.href,
-          x: link.offsetLeft,
-          width: link.offsetWidth,
-          targetLeft,
-        }
-      })
-      .filter((value): value is SnapCandidate => value != null)
-      .sort((a, b) => a.x - b.x)
-  }
+          return {
+            href: item.href,
+            x: link.offsetLeft,
+            width: link.offsetWidth,
+            targetLeft,
+          }
+        })
+        .filter((value): value is SnapCandidate => value != null)
+        .sort((a, b) => a.x - b.x)
+    },
+    [items],
+  )
 
   const mapBubbleXToScrollLeft = (x: number, candidates: SnapCandidate[]) => {
     if (candidates.length === 0) return 0
@@ -103,10 +120,10 @@ export function TopNav() {
       }
 
       const viewportCenter = scroller.scrollLeft + scroller.clientWidth / 2
-      let nextActive = navItems[0]?.href ?? '#launch'
+      let nextActive = items[0]?.href ?? '#home'
       let smallestDelta = Number.POSITIVE_INFINITY
 
-      for (const item of navItems) {
+      for (const item of items) {
         const id = item.href.replace('#', '')
         const section = document.getElementById(id)
         if (!section) continue
@@ -137,7 +154,7 @@ export function TopNav() {
         window.cancelAnimationFrame(scrollRafRef.current)
       }
     }
-  }, [])
+  }, [items])
 
   useEffect(() => {
     const updateBubble = () => {
@@ -233,13 +250,34 @@ export function TopNav() {
     setActiveHref(href)
   }, [])
 
+  const onBrandClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
+    if (window.location.pathname === '/') {
+      event.preventDefault()
+      const homeSection = document.getElementById('home')
+      if (homeSection) {
+        homeSection.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    } else {
+      navigateWithExit(event, '/')
+    }
+  }
+
   const handleNavigate = (href: string) => (event: ReactMouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()
     navigateToHref(href)
   }
 
   const onAppCtaClick = (event: ReactMouseEvent<HTMLAnchorElement>) => {
-    navigateWithExit(event, '/app')
+    if (onCtaClickOverride) {
+      onCtaClickOverride(event)
+      return
+    }
+
+    if (ctaHref.startsWith('/') && !ctaHref.startsWith('/api')) {
+      navigateWithExit(event, ctaHref)
+    }
   }
 
   const onNavPointerDownCapture = (event: ReactPointerEvent<HTMLElement>) => {
@@ -343,7 +381,7 @@ export function TopNav() {
       window.removeEventListener('pointerup', endPointerDrag)
       window.removeEventListener('pointercancel', endPointerDrag)
     }
-  }, [bubbleWidth, bubbleX, dragBubbleX, navigateToHref])
+  }, [bubbleWidth, bubbleX, dragBubbleX, navigateToHref, getNavSnapCandidates])
 
   return (
     <motion.header
@@ -352,7 +390,9 @@ export function TopNav() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      <img src={assets.logo} alt="Capy logo" className={styles.brandLogo} />
+      <a href="/" onClick={onBrandClick} className={styles.brandLink}>
+        <img src={assets.logo} alt="Capy logo" className={styles.brandLogo} />
+      </a>
 
       <nav
         aria-label="Primary navigation"
@@ -380,7 +420,7 @@ export function TopNav() {
                 }
           }
         />
-        {navItems.map((item) => (
+        {items.map((item) => (
           <a
             key={item.label}
             href={item.href}
@@ -396,13 +436,24 @@ export function TopNav() {
         ))}
       </nav>
 
-      <a
-        className={`${buttonStyles.pillButton} ${buttonStyles.accent} ${styles.navCta}`}
-        href="/app"
-        onClick={onAppCtaClick}
-      >
-        <StaggerWords text="let's go" baseDelay={0.18} amount={0.1} />
-      </a>
+      {showCta && (
+        <AnimatePresence mode="wait">
+          <motion.a
+            key={ctaLabel}
+            className={`${buttonStyles.pillButton} ${buttonStyles.accent} ${styles.navCta}`}
+            href={ctaHref}
+            onClick={onAppCtaClick}
+            whileHover={{ y: -1, transition: { duration: 0.2 } }}
+            whileTap={{ scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.9, filter: 'blur(4px)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.95, filter: 'blur(2px)' }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <StaggerWords text={ctaLabel} baseDelay={0.05} amount={0.1} />
+          </motion.a>
+        </AnimatePresence>
+      )}
     </motion.header>
   )
 }

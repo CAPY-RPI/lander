@@ -4,7 +4,11 @@ import type { RefObject } from 'react'
 type HorizontalWheelOptions = {
   speed?: number
   endCutoffPx?: number
+  snap?: boolean
 }
+
+const easeInOutQuart = (t: number) =>
+  t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2
 
 /**
  * Enables smooth horizontal scrolling for a container element using mouse wheel or drag interactions.
@@ -18,11 +22,70 @@ export function useHorizontalWheelScroll(
   scrollerRef: RefObject<HTMLElement | null>,
   options: HorizontalWheelOptions = {},
 ): void {
-  const { speed = 1.1, endCutoffPx = 180 } = options
+  const { speed = 1.1, endCutoffPx = 180, snap = false } = options
 
   useEffect(() => {
     const scroller = scrollerRef.current
     if (!scroller) return
+
+    let scrollRaf: number | null = null
+    let snapTimer: number | null = null
+    let isProgrammatic = false
+
+    const animateTo = (targetLeft: number) => {
+      if (scrollRaf != null) cancelAnimationFrame(scrollRaf)
+      isProgrammatic = true
+
+      const startLeft = scroller.scrollLeft
+      const distance = targetLeft - startLeft
+      const duration = Math.min(560, Math.max(320, Math.abs(distance) * 0.4))
+      let startTime: number | null = null
+
+      const step = (now: number) => {
+        if (startTime === null) startTime = now
+        const elapsed = now - startTime
+        const t = Math.min(1, elapsed / duration)
+        const eased = easeInOutQuart(t)
+
+        scroller.scrollLeft = startLeft + distance * eased
+
+        if (t < 1) {
+          scrollRaf = requestAnimationFrame(step)
+        } else {
+          scroller.scrollLeft = targetLeft
+          isProgrammatic = false
+          scrollRaf = null
+        }
+      }
+      scrollRaf = requestAnimationFrame(step)
+    }
+
+    const snapToNearest = () => {
+      if (!snap || isProgrammatic) return
+      const panels = Array.from(scroller.querySelectorAll('.panel')) as HTMLElement[]
+      if (panels.length === 0) return
+
+      const viewportCenter = scroller.scrollLeft + scroller.clientWidth / 2
+      let closestPanel: HTMLElement | null = null
+      let minDistance = Infinity
+
+      panels.forEach((panel) => {
+        const panelCenter = panel.offsetLeft + panel.offsetWidth / 2
+        const distance = Math.abs(viewportCenter - panelCenter)
+        if (distance < minDistance) {
+          minDistance = distance
+          closestPanel = panel
+        }
+      })
+
+      if (closestPanel) {
+        const target =
+          (closestPanel as HTMLElement).offsetLeft +
+          (closestPanel as HTMLElement).offsetWidth / 2 -
+          scroller.clientWidth / 2
+        animateTo(target)
+      }
+    }
 
     const getMaxScrollLeft = () =>
       Math.max(0, scroller.scrollWidth - scroller.clientWidth - endCutoffPx)
@@ -49,18 +112,44 @@ export function useHorizontalWheelScroll(
       const next = scroller.scrollLeft + intent * speed
       const maxScrollLeft = getMaxScrollLeft()
       scroller.scrollLeft = Math.min(maxScrollLeft, Math.max(0, next))
+
+      if (snap) {
+        if (snapTimer != null) clearTimeout(snapTimer)
+        snapTimer = window.setTimeout(snapToNearest, 150)
+      }
     }
 
     const onScroll = () => {
       clampScrollPosition()
+      if (snap && !isProgrammatic && !isMouseDragging && !isTouching) {
+        if (snapTimer != null) clearTimeout(snapTimer)
+        snapTimer = window.setTimeout(snapToNearest, 150)
+      }
+    }
+
+    const onScrollEnd = () => {
+      if (snap && !isProgrammatic && !isMouseDragging && !isTouching) {
+        snapToNearest()
+      }
     }
 
     let isMouseDragging = false
+    let isTouching = false
     let hasActivatedDrag = false
     let suppressNextClick = false
     let dragStartX = 0
     let dragStartScrollLeft = 0
     const dragThresholdPx = 6
+
+    const onTouchStart = () => {
+      isTouching = true
+      if (snapTimer != null) clearTimeout(snapTimer)
+    }
+
+    const onTouchEnd = () => {
+      isTouching = false
+      if (snap) snapToNearest()
+    }
 
     const onMouseDown = (event: MouseEvent) => {
       if (event.button !== 0) return
@@ -103,6 +192,8 @@ export function useHorizontalWheelScroll(
       isMouseDragging = false
       hasActivatedDrag = false
       scroller.classList.remove('is-dragging')
+
+      if (snap) snapToNearest()
     }
 
     const onClickCapture = (event: MouseEvent) => {
@@ -123,6 +214,9 @@ export function useHorizontalWheelScroll(
 
     scroller.addEventListener('wheel', onWheel, { passive: false })
     scroller.addEventListener('scroll', onScroll, { passive: true })
+    scroller.addEventListener('scrollend', onScrollEnd)
+    scroller.addEventListener('touchstart', onTouchStart, { passive: true })
+    scroller.addEventListener('touchend', onTouchEnd, { passive: true })
     scroller.addEventListener('mousedown', onMouseDown)
     scroller.addEventListener('dragstart', onNativeDragStart)
     scroller.addEventListener('click', onClickCapture, true)
@@ -131,12 +225,17 @@ export function useHorizontalWheelScroll(
     return () => {
       scroller.removeEventListener('wheel', onWheel)
       scroller.removeEventListener('scroll', onScroll)
+      scroller.removeEventListener('scrollend', onScrollEnd)
+      scroller.removeEventListener('touchstart', onTouchStart)
+      scroller.removeEventListener('touchend', onTouchEnd)
       scroller.removeEventListener('mousedown', onMouseDown)
       scroller.removeEventListener('dragstart', onNativeDragStart)
       scroller.removeEventListener('click', onClickCapture, true)
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('mouseup', endMouseDrag)
       scroller.classList.remove('is-dragging')
+      if (snapTimer != null) clearTimeout(snapTimer)
+      if (scrollRaf != null) cancelAnimationFrame(scrollRaf)
     }
-  }, [scrollerRef, speed, endCutoffPx])
+  }, [scrollerRef, speed, endCutoffPx, snap])
 }

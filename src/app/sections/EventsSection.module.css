@@ -1,0 +1,15 @@
+.eventsPanel {
+  padding: 8rem 4rem;
+}
+
+.title {
+  font: 600 40px/1 var(--font-display);
+  text-transform: lowercase;
+  margin-bottom: 2rem;
+  color: var(--c-text-light);
+}
+
+.eventsPanel p {
+  font: 400 18px/1.35 var(--font-body);
+  color: var(--c-text-light);
+}

@@ -1,0 +1,96 @@
+.appRoot {
+  width: 100vw;
+  min-height: 100svh;
+  overflow: hidden;
+  position: relative;
+  background:
+    radial-gradient(circle at 10% -20%, rgba(94, 204, 196, 0.2), transparent 36%),
+    radial-gradient(circle at 70% 120%, rgba(33, 109, 103, 0.35), transparent 48%),
+    linear-gradient(135deg, var(--c-bg) 0%, #005853 35%, var(--c-bg-mid) 100%);
+  color: var(--c-text-light);
+}
+
+.panelTrack {
+  transition:
+    opacity 280ms var(--ease-premium),
+    transform 320ms var(--ease-premium),
+    filter 280ms var(--ease-premium);
+}
+
+@keyframes exitDipSpring {
+  0% {
+    transform: none;
+    filter: none;
+  }
+  100% {
+    transform: scale(140%);
+    filter: blur(5px);
+  }
+}
+
+:global(body.is-exiting) .appRoot {
+  pointer-events: none;
+  animation: exitDipSpring 500ms cubic-bezier(0.68, 0, 0.94, 0.18) forwards;
+}
+
+.exitOverlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--c-bg, #006662);
+  opacity: 0;
+  transition: opacity 220ms var(--ease-premium);
+  transition-delay: 280ms;
+}
+
+:global(body.fading-back) .exitOverlay {
+  opacity: 0;
+  transition: opacity 320ms var(--ease-premium);
+  transition-delay: 0ms;
+}
+:global(body.is-exiting) .exitOverlay {
+  opacity: 1;
+}
+
+.horizontalScroller {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.horizontalScroller::-webkit-scrollbar {
+  display: none;
+}
+
+.panelTrack {
+  display: grid;
+  grid-auto-flow: column;
+  gap: var(--space-24);
+  align-items: stretch;
+  width: max-content;
+  height: 100%;
+  min-height: 100%;
+  padding: 121px var(--space-24) var(--space-24) var(--space-24);
+}
+
+/* Ensure sections match the panel styling */
+:global(.panel) {
+  width: calc(100vw - calc(var(--space-24) * 2));
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  position: relative;
+
+  border: 1px solid var(--c-surface-border);
+  background: linear-gradient(180deg, rgba(56, 171, 162, 0.2), rgba(43, 137, 130, 0.16));
+  backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--glass-shadow);
+}

@@ -55,7 +55,7 @@
       "prettier --write"
     ],
     "src/**/*.{js,jsx,ts,tsx}": [
-      "npm run test"
+      "jest --config jest.config.cjs --bail --findRelatedTests --passWithNoTests"
     ]
   },
   "jest": {
