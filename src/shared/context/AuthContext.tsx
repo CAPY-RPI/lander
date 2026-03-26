@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import type { ReactNode } from 'react'
-import { apiClient } from '../services/apiClient'
+import { apiClient, API_VERSION } from '../services/apiClient'
 import type { User, AuthContextType } from '../types/auth'
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -28,7 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [refreshUser])
 
   const login = () => {
-    const ctaHref = '/api/v1/auth/google'
+    const ctaHref = `${API_VERSION}/auth/google`
     const width = 500
     const height = 600
     const left = window.screenX + (window.outerWidth - width) / 2
@@ -54,24 +54,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await apiClient.post('/auth/logout')
     } finally {
       setUser(null)
-
-      // Clear localStorage and sessionStorage
-      localStorage.clear()
-      sessionStorage.clear()
-
-      // Clear accessible cookies
-      document.cookie.split(';').forEach((c) => {
-        document.cookie = c
-          .replace(/^ +/, '')
-          .replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`)
-      })
-
-      // Clear Cache API storage
-      if ('caches' in window) {
-        caches.keys().then((names) => {
-          names.forEach((name) => caches.delete(name))
-        })
-      }
     }
   }
 
