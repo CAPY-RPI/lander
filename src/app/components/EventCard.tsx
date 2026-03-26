@@ -1,4 +1,7 @@
+import { motion } from 'framer-motion'
 import type { AppEvent } from '@/app/data/events'
+import { StaggerWords } from '@/shared/components/StaggerWords'
+import { useRevealProgress } from '@/shared/hooks/useRevealProgress'
 import styles from './EventCard.module.css'
 
 type EventCardProps = {
@@ -19,23 +22,59 @@ function formatEventTime(eventTime: string | null) {
 }
 
 export function EventCard({ event }: EventCardProps) {
+  const [cardRef, { centerDelta, progress }] = useRevealProgress<HTMLElement>(0.45)
+  const delayedProgress = Math.min(1, Math.max(0, progress))
+  const side: 1 | -1 = centerDelta >= 0 ? 1 : -1
+  const outX = side * 48
+  const textInView = delayedProgress > 0.06
+  const style = {
+    opacity: delayedProgress,
+    x: outX * (1 - delayedProgress),
+    y: 10 * (1 - delayedProgress),
+    scale: 0.97 + (1 - 0.97) * delayedProgress,
+    filter: `blur(${(3 * (1 - delayedProgress)).toFixed(2)}px)`,
+  }
+
   return (
-    <article className={styles.eventCard}>
+    <motion.article ref={cardRef} className={styles.eventCard} style={style}>
       <div className={styles.cardHeader}>
-        <h3 className={styles.cardTitle}>{event.title}</h3>
-        <p className={styles.cardDescription}>{event.description}</p>
+        <h3 className={styles.cardTitle}>
+          <StaggerWords text={event.title} inView={textInView} baseDelay={0.05} stagger={0.03} />
+        </h3>
+        <p className={styles.cardDescription}>
+          <StaggerWords
+            text={event.description}
+            inView={textInView}
+            baseDelay={0.12}
+            stagger={0.018}
+          />
+        </p>
       </div>
 
       <dl className={styles.metaList}>
         <div className={styles.metaRow}>
           <dt>Time</dt>
-          <dd>{formatEventTime(event.event_time)}</dd>
+          <dd>
+            <StaggerWords
+              text={formatEventTime(event.event_time)}
+              inView={textInView}
+              baseDelay={0.18}
+              stagger={0.022}
+            />
+          </dd>
         </div>
         <div className={styles.metaRow}>
           <dt>Place</dt>
-          <dd>{event.location}</dd>
+          <dd>
+            <StaggerWords
+              text={event.location}
+              inView={textInView}
+              baseDelay={0.22}
+              stagger={0.02}
+            />
+          </dd>
         </div>
       </dl>
-    </article>
+    </motion.article>
   )
 }

@@ -38,6 +38,38 @@ export const myEvents: AppEvent[] = [
       'Help prep beds for spring planting, then split snacks and starter herbs with the crew.',
     org_id: '2d9b7b44-8cf4-4db5-9863-1f3c2f183333',
   },
+  {
+    title: 'Women in Tech Mixer',
+    location: 'Engineering Atrium',
+    event_time: '2026-04-02T18:00:00Z',
+    description:
+      'Short intros, recruiter chats, and actual conversation prompts instead of awkward hovering.',
+    org_id: '7c4070f3-8fca-4f2e-9dc6-738553204444',
+  },
+  {
+    title: 'Open Mic Basement Sessions',
+    location: 'Commons Basement',
+    event_time: '2026-04-03T20:30:00Z',
+    description:
+      'Poetry, acoustic sets, and low-stakes stage time for anyone testing something new.',
+    org_id: 'edca8c61-ff14-4fbe-8ae6-b8f11f0d5555',
+  },
+  {
+    title: 'Finance Interview Drill Room',
+    location: 'Career Center 118',
+    event_time: '2026-04-04T16:45:00Z',
+    description:
+      'Timed technical rounds and peer feedback for anyone trying to sharpen before recruiting season.',
+    org_id: 'fb9708d9-b6e9-49ae-a181-02617cd76666',
+  },
+  {
+    title: 'Film Club Rooftop Screening',
+    location: 'West Hall Rooftop',
+    event_time: '2026-04-05T19:45:00Z',
+    description:
+      'Bring a blanket, vote on the final cut, and stay for the debate after the credits roll.',
+    org_id: '6df10a82-a297-46a5-8e4d-8bf806e27777',
+  },
 ]
 
 export const recommendedEvents: AppEvent[] = [
@@ -80,5 +112,45 @@ export const recommendedEvents: AppEvent[] = [
     description:
       'Book a quick slot to pressure-test an idea, pricing plan, or pitch with alumni founders.',
     org_id: '27ee52ab-0d70-49d8-9182-2cf94431eeee',
+  },
+  {
+    title: 'Night Market Thrift Swap',
+    location: 'Union Arcade',
+    event_time: '2026-04-06T18:00:00Z',
+    description:
+      'Trade pieces you are done with, browse student racks, and leave with a better jacket.',
+    org_id: '0f4f70bd-e2a8-48c7-a7bf-9a05f44bbbbb',
+  },
+  {
+    title: 'Street Photography Walk',
+    location: 'Downtown Station',
+    event_time: '2026-04-08T17:30:00Z',
+    description:
+      'Golden-hour shooting prompts, editing tips, and a group critique after the walk back.',
+    org_id: 'd3176f00-8224-4302-b7ea-2c2a9476dddd',
+  },
+  {
+    title: 'Campus Food Crawl',
+    location: 'Main Quad Fountain',
+    event_time: '2026-04-10T17:45:00Z',
+    description:
+      'Small groups hit the best late-day food spots on and around campus with zero planning required.',
+    org_id: '8b3c1409-8804-4ff4-a0d1-4d330e4fffff',
+  },
+  {
+    title: 'Chess and Chai Night',
+    location: 'Humanities Lounge',
+    event_time: '2026-04-11T21:00:00Z',
+    description:
+      'Casual blitz games, beginner tables, and enough warm chai to keep the room talking.',
+    org_id: '8b6f25fd-5d8c-4f3f-a101-9071da8a1abc',
+  },
+  {
+    title: 'Late Lab Astronomy Watch',
+    location: 'Troy Roof Observatory',
+    event_time: null,
+    description:
+      'A telescope night for anyone who wants a cleaner sky break after a long week of work.',
+    org_id: '4a21a68d-3f50-40e9-bf4a-2da6c5f344de',
   },
 ]

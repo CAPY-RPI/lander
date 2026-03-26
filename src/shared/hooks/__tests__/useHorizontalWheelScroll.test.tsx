@@ -2,6 +2,7 @@ import { render } from '@testing-library/react'
 import { useHorizontalWheelScroll } from '../useHorizontalWheelScroll'
 import '@testing-library/jest-dom'
 import { useRef } from 'react'
+
 describe('useHorizontalWheelScroll', () => {
   function TestComponent() {
     const ref = useRef<HTMLDivElement>(null)
