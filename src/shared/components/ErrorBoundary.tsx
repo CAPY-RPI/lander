@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import type { ErrorInfo, ReactNode } from 'react'
+import { logger } from '../services/logger'
 
 interface Props {
   children?: ReactNode
@@ -19,7 +20,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught component error:', error, errorInfo)
+    logger.error('Uncaught component error:', error, errorInfo)
   }
 
   public render() {
@@ -37,6 +38,9 @@ export class ErrorBoundary extends Component<Props, State> {
 
       // Hard redirect to the dedicated error page.
       // This ensures a fresh React state.
+      if (window.location.pathname !== '/error') {
+        sessionStorage.setItem('last_attempted_path', window.location.pathname)
+      }
       window.location.assign('/error')
       return null
     }

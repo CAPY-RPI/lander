@@ -1,5 +1,4 @@
-.topNav,
-.panelTrack {
+.topNav {
   transition:
     opacity 280ms var(--ease-premium),
     transform 320ms var(--ease-premium),
@@ -90,7 +89,7 @@
 }
 
 .navPill a.isActive {
-  color: #ffffff;
+  color: var(--c-white);
 }
 
 .navCta {

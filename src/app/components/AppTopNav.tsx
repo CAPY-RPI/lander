@@ -2,6 +2,7 @@ import type { MouseEvent } from 'react'
 import { TopNav } from '@/shared/components/TopNav'
 import { appNavItems } from '@/shared/data/content'
 import { useAuth } from '@/shared/context/AuthContext'
+import { API_VERSION } from '@/shared/services/apiClient'
 
 export function AppTopNav() {
   const { isAuthed, login, logout } = useAuth()
@@ -19,7 +20,7 @@ export function AppTopNav() {
     <TopNav
       items={appNavItems}
       ctaLabel={isAuthed ? 'sign out' : 'sign in'}
-      ctaHref={isAuthed ? '#logout' : '/api/v1/auth/google'}
+      ctaHref={isAuthed ? '#logout' : `${API_VERSION}/auth/google`}
       onCtaClickOverride={onCtaClickOverride}
     />
   )

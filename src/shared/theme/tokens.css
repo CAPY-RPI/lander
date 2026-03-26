@@ -7,6 +7,8 @@
   --c-text-light: #f9fafa;
   --c-text-deep: #00464d;
   --c-accent: rgba(241, 96, 47, 0.95);
+  --c-white: #ffffff;
+  --c-accent-hover: #ffd8c8;
 
   --space-4: 4px;
   --space-8: 8px;

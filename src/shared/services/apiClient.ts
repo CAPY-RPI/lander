@@ -1,3 +1,5 @@
+import { logger } from './logger'
+
 export class ApiClient {
   private baseURL: string
 
@@ -15,13 +17,39 @@ export class ApiClient {
     const config: RequestInit = {
       ...options,
       headers,
+      credentials: 'include',
     }
+
+    logger.debug('Request:', {
+      url,
+      method: config.method || 'GET',
+      body: config.body,
+      headers: config.headers,
+    })
 
     const response = await fetch(url, config)
 
+    logger.debug('Response:', {
+      url,
+      status: response.status,
+      statusText: response.statusText,
+    })
+
     if (!response.ok) {
-      console.error(`API call error: ${response.status} ${response.statusText}`)
-      throw new Error(`API call error: ${response.status} ${response.statusText}`)
+      let errorMessage = `API call error: ${response.status} ${response.statusText}`
+      try {
+        const contentType = response.headers.get('content-type')
+        if (contentType && contentType.includes('application/json')) {
+          const errorBody = await response.json()
+          if (errorBody && (errorBody.message || errorBody.error)) {
+            errorMessage = errorBody.message || errorBody.error
+          }
+        }
+      } catch {
+        // Fallback to default message if parsing fails
+      }
+      logger.error(`API call error: ${response.status} ${response.statusText}`, errorMessage)
+      throw new Error(errorMessage)
     }
 
     const contentType = response.headers.get('content-type')
@@ -57,4 +85,5 @@ export class ApiClient {
   }
 }
 
-export const apiClient = new ApiClient('/api/v1')
+export const API_VERSION = import.meta.env.VITE_API_VERSION || '/api/v1'
+export const apiClient = new ApiClient(API_VERSION)
