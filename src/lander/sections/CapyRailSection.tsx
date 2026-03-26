@@ -1,8 +1,8 @@
-import { AnimatedPanel } from '../../shared/components/AnimatedPanel'
-import { AspectImage } from '../../shared/components/AspectImage'
-import { StaggerWords } from '../../shared/components/StaggerWords'
-import { TypewriterWord } from '../../shared/components/TypewriterWord'
-import { assets } from '../../shared/data/content'
+import { AnimatedPanel } from '@/shared/components/AnimatedPanel'
+import { AspectImage } from '@/shared/components/AspectImage'
+import { StaggerWords } from '@/shared/components/StaggerWords'
+import { TypewriterWord } from '@/shared/components/TypewriterWord'
+import { assets } from '@/shared/data/content'
 import styles from './CapyRailSection.module.css'
 
 const socialAssets = [

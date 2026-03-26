@@ -1,6 +1,6 @@
-import { AnimatedPanel } from '../../shared/components/AnimatedPanel'
-import { GlassCard } from '../../shared/components/GlassCard'
-import { primaryCards } from '../../shared/data/content'
+import { AnimatedPanel } from '@/shared/components/AnimatedPanel'
+import { GlassCard } from '@/shared/components/GlassCard'
+import { primaryCards } from '@/shared/data/content'
 import styles from './FeaturesSection.module.css'
 
 const cardPositions = [

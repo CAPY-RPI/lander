@@ -31,7 +31,7 @@
 }
 
 .subtle {
-  width: 102px;
+  min-width: 102px;
   color: var(--c-text-light);
   border-color: rgba(128, 213, 206, 0.8);
   background: linear-gradient(180deg, rgba(59, 163, 154, 0.32), rgba(46, 125, 120, 0.24));

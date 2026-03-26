@@ -1,5 +1,5 @@
-import { AnimatedPanel } from '../../shared/components/AnimatedPanel'
-import { StaggerWords } from '../../shared/components/StaggerWords'
+import { AnimatedPanel } from '@/shared/components/AnimatedPanel'
+import { StaggerWords } from '@/shared/components/StaggerWords'
 import styles from './ContactSection.module.css'
 
 export function ContactSection() {

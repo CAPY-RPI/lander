@@ -88,10 +88,11 @@
   color: #ffffff;
 }
 
+.navCta {
+  justify-self: end;
+}
+
 @media (max-width: 1200px) {
-  .navCta {
-    justify-self: end;
-  }
   .topNav {
     position: sticky;
     top: 0;
@@ -116,9 +117,5 @@
 
   .navPill a {
     font-size: 16px;
-  }
-
-  .navCta {
-    justify-self: auto;
   }
 }

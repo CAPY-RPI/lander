@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { AnimatedPanel } from '../../shared/components/AnimatedPanel'
-import { useExitNavigation } from '../../shared/hooks/useExitNavigation'
-import { StaggerWords } from '../../shared/components/StaggerWords'
-import { TypewriterWord } from '../../shared/components/TypewriterWord'
-import buttonStyles from '../../shared/components/Button.module.css'
+import { AnimatedPanel } from '@/shared/components/AnimatedPanel'
+import { useExitNavigation } from '@/shared/hooks/useExitNavigation'
+import { StaggerWords } from '@/shared/components/StaggerWords'
+import { TypewriterWord } from '@/shared/components/TypewriterWord'
+import buttonStyles from '@/shared/components/Button.module.css'
 import styles from './HeroSection.module.css'
 
 export function HeroSection() {
