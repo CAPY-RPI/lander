@@ -19,10 +19,31 @@ Premium, horizontal-first React landing page based on Figma design `8:426`.
 
 ## 🚀 Getting Started
 
-```bash
-npm install
-npm run dev
-```
+1.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+2.  **Configure Environment**:
+    Create a `.env.local` file for local development (see [.env.example](.env.example)):
+    ```bash
+    cp .env.example .env.local
+    ```
+3.  **Run development server**:
+    ```bash
+    npm run dev
+    ```
+
+## 🌐 Environment Variables
+
+The application uses Vite's environment variable system. For local development, use `.env.local`.
+
+| Variable            | Description                                                            | Default     |
+| :------------------ | :--------------------------------------------------------------------- | :---------- |
+| `VITE_API_BASE_URL` | The target backend for the dev proxy (e.g., `https://dev.capyrpi.org`) | `undefined` |
+| `VITE_API_VERSION`  | The API version prefix                                                 | `/api/v1`   |
+
+> [!NOTE]
+> If `VITE_API_BASE_URL` is set, Vite will automatically proxy all `/api` requests to that target. This avoids CORS issues and allows for testing against remote backends.
 
 Production build:
 
