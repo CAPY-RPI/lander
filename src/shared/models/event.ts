@@ -7,6 +7,14 @@ export type Event = {
   date_modified?: string
 }
 
+export type EventRegistration = {
+  eid?: string
+  uid?: string
+  is_attending?: boolean
+  date_created?: string
+  date_modified?: string
+}
+
 export type CreateEventPayload = {
   org_id: string
 } & Partial<Pick<Event, 'location' | 'event_time' | 'description'>>

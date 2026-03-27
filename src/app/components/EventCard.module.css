@@ -2,8 +2,10 @@
   display: grid;
   gap: var(--space-16);
   align-content: start;
+  width: 100%;
   min-height: 0;
   padding: 20px;
+  appearance: none;
   border-radius: 28px;
   border: 1px solid rgba(126, 225, 218, 0.28);
   background:
@@ -11,6 +13,24 @@
     rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(var(--glass-blur-soft));
   scroll-snap-align: start;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 180ms var(--ease-premium),
+    border-color 180ms var(--ease-premium),
+    box-shadow 180ms var(--ease-premium);
+}
+
+.eventCard:hover,
+.eventCard:focus-visible {
+  border-color: rgba(241, 96, 47, 0.52);
+  box-shadow: 0 20px 38px rgba(0, 41, 39, 0.24);
+  transform: translateY(-2px);
+}
+
+.eventCard:focus-visible {
+  outline: 2px solid rgba(255, 216, 200, 0.88);
+  outline-offset: 3px;
 }
 
 .cardHeader {

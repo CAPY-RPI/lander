@@ -7,13 +7,14 @@ type EventRailProps = {
   title: string
   events: AppEvent[]
   carouselLabel: string
+  onEventSelect?: (event: AppEvent) => void
 }
 
 function getEventKey(event: AppEvent) {
-  return `${event.org_id}-${event.title}-${event.event_time ?? 'tba'}`
+  return `${event.eid}-${event.title}-${event.event_time ?? 'tba'}`
 }
 
-export function EventRail({ title, events, carouselLabel }: EventRailProps) {
+export function EventRail({ title, events, carouselLabel, onEventSelect }: EventRailProps) {
   const railRef = useRef<HTMLDivElement | null>(null)
   const headingId = `${title.replace(/\s+/g, '-')}-heading`
   const [canScrollBack, setCanScrollBack] = useState(false)
@@ -85,7 +86,7 @@ export function EventRail({ title, events, carouselLabel }: EventRailProps) {
             data-can-scroll-forward={canScrollForward}
           >
             {events.map((event) => (
-              <EventCard key={getEventKey(event)} event={event} />
+              <EventCard key={getEventKey(event)} event={event} onSelect={onEventSelect} />
             ))}
           </div>
 

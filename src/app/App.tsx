@@ -57,6 +57,7 @@ export default function AppMain() {
             <EventsSection
               refreshKey={eventsRefreshKey}
               onCreateEvent={() => setIsCreateEventOpen(true)}
+              onEventsChanged={() => setEventsRefreshKey((current) => current + 1)}
             />
             <OrgsSection />
           </motion.div>

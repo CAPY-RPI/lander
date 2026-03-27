@@ -6,6 +6,7 @@ import styles from './EventCard.module.css'
 
 type EventCardProps = {
   event: AppEvent
+  onSelect?: (event: AppEvent) => void
 }
 
 const eventDateFormatter = new Intl.DateTimeFormat('en-US', {
@@ -21,8 +22,8 @@ function formatEventTime(eventTime: string | null) {
   return eventDateFormatter.format(new Date(eventTime))
 }
 
-export function EventCard({ event }: EventCardProps) {
-  const [cardRef, { centerDelta, progress }] = useRevealProgress<HTMLElement>(0.45)
+export function EventCard({ event, onSelect }: EventCardProps) {
+  const [cardRef, { centerDelta, progress }] = useRevealProgress<HTMLButtonElement>(0.45)
   const delayedProgress = Math.min(1, Math.max(0, progress))
   const side: 1 | -1 = centerDelta >= 0 ? 1 : -1
   const outX = side * 48
@@ -37,7 +38,14 @@ export function EventCard({ event }: EventCardProps) {
   }
 
   return (
-    <motion.article ref={cardRef} className={styles.eventCard} style={style}>
+    <motion.button
+      ref={cardRef}
+      type="button"
+      className={styles.eventCard}
+      style={style}
+      onClick={() => onSelect?.(event)}
+      aria-label={`Open details for ${event.title}`}
+    >
       <div className={styles.cardHeader}>
         <h3 className={styles.cardTitle}>
           <StaggerWords text={event.title} inView={textInView} baseDelay={0.05} stagger={0.03} />
@@ -78,6 +86,6 @@ export function EventCard({ event }: EventCardProps) {
           </div>
         ) : null}
       </dl>
-    </motion.article>
+    </motion.button>
   )
 }
