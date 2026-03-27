@@ -3,6 +3,8 @@ import type { ChangeEvent, FormEvent } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { PillButton } from '@/shared/components/PillButton'
 import { useAuth } from '@/shared/context/AuthContext'
+import { useOrganizations } from '@/shared/hooks/useOrganizations'
+import { useUserOrganizations } from '@/shared/hooks/useUserOrganizations'
 import { createEvent } from '@/shared/services/eventService'
 import styles from './CreateEventModal.module.css'
 
@@ -13,15 +15,15 @@ type CreateEventModalProps = {
 }
 
 type CreateEventFormState = {
+  orgId: string
   title: string
   location: string
   eventTime: string
   description: string
 }
 
-const DEFAULT_ORG_ID = '66168f44-624a-47ad-9b07-7a92121bce01'
-
 const initialFormState: CreateEventFormState = {
+  orgId: '',
   title: '',
   location: '',
   eventTime: '',
@@ -37,10 +39,21 @@ function toEventTimeISOString(value: string) {
 
 /**
  * Dedicated modal for creating an event without leaving the dashboard.
- * The API requires cookie auth and an org admin-scoped org_id.
+ * The API requires cookie auth and an org-scoped org_id, so the form limits
+ * selection to organizations the current user belongs to.
  */
 export function CreateEventModal({ isOpen, onClose, onCreated }: CreateEventModalProps) {
-  const { isAuthed, isLoading: isAuthLoading } = useAuth()
+  const { isAuthed, isLoading: isAuthLoading, user } = useAuth()
+  const {
+    organizations,
+    isLoading: isLoadingOrganizations,
+    error: organizationsError,
+  } = useOrganizations(50, 0, isOpen ? 1 : 0)
+  const {
+    organizations: myOrganizations,
+    isLoading: isLoadingMyOrganizations,
+    error: myOrganizationsError,
+  } = useUserOrganizations(organizations, user?.uid, isAuthed, isOpen ? 1 : 0)
   const [formState, setFormState] = useState<CreateEventFormState>(initialFormState)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -65,9 +78,29 @@ export function CreateEventModal({ isOpen, onClose, onCreated }: CreateEventModa
     }
   }, [isOpen, isSubmitting, onClose])
 
+  useEffect(() => {
+    if (!isOpen || myOrganizations.length === 0) {
+      return
+    }
+
+    setFormState((current) => {
+      if (
+        current.orgId &&
+        myOrganizations.some((organization) => organization.oid === current.orgId)
+      ) {
+        return current
+      }
+
+      return {
+        ...current,
+        orgId: myOrganizations[0].oid,
+      }
+    })
+  }, [isOpen, myOrganizations])
+
   const handleChange =
     (field: keyof CreateEventFormState) =>
-    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       setFormState((current) => ({
         ...current,
         [field]: event.target.value,
@@ -84,12 +117,17 @@ export function CreateEventModal({ isOpen, onClose, onCreated }: CreateEventModa
       return
     }
 
+    if (!formState.orgId) {
+      setError('Join an organization first, then pick it here to create an event.')
+      return
+    }
+
     setIsSubmitting(true)
     setError(null)
 
     try {
       await createEvent({
-        org_id: DEFAULT_ORG_ID,
+        org_id: formState.orgId,
         title: formState.title.trim() || undefined,
         location: formState.location.trim() || undefined,
         event_time: toEventTimeISOString(formState.eventTime),
@@ -149,11 +187,25 @@ export function CreateEventModal({ isOpen, onClose, onCreated }: CreateEventModa
             </div>
 
             <p className={styles.copy}>
-              Submit with the signed-in session cookie. This form posts to the hardcoded org ID `
-              {DEFAULT_ORG_ID}` and still requires org admin access for that org.
+              Submit with the signed-in session cookie. You can only create events for organizations
+              you currently belong to.
             </p>
 
             <form className={styles.form} onSubmit={handleSubmit}>
+              <label className={styles.field}>
+                <span>Organization</span>
+                <select value={formState.orgId} onChange={handleChange('orgId')}>
+                  <option value="" disabled>
+                    {isAuthed ? 'Select an organization' : 'Sign in to load your organizations'}
+                  </option>
+                  {myOrganizations.map((organization) => (
+                    <option key={organization.oid} value={organization.oid}>
+                      {organization.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
               <label className={styles.field}>
                 <span>Title</span>
                 <input
@@ -195,24 +247,47 @@ export function CreateEventModal({ isOpen, onClose, onCreated }: CreateEventModa
                 />
               </label>
 
-              <div className={styles.metaCard}>
-                <span className={styles.metaLabel}>Org ID</span>
-                <code className={styles.metaValue}>{DEFAULT_ORG_ID}</code>
-              </div>
-
               {isAuthLoading ? <p className={styles.status}>Checking session...</p> : null}
+              {isAuthed && isLoadingOrganizations ? (
+                <p className={styles.status}>Loading organizations...</p>
+              ) : null}
+              {isAuthed && isLoadingMyOrganizations ? (
+                <p className={styles.status}>Loading your organizations...</p>
+              ) : null}
               {!isAuthed && !isAuthLoading ? (
                 <p className={styles.status}>
                   Sign in before creating an event. The request is sent with `credentials: include`.
                 </p>
               ) : null}
+              {isAuthed &&
+              !isLoadingOrganizations &&
+              !isLoadingMyOrganizations &&
+              myOrganizations.length === 0 ? (
+                <p className={styles.status}>
+                  You are not in any organizations yet. Join one first to create an event.
+                </p>
+              ) : null}
+              {organizationsError ? <p className={styles.error}>{organizationsError}</p> : null}
+              {myOrganizationsError ? <p className={styles.error}>{myOrganizationsError}</p> : null}
               {error ? <p className={styles.error}>{error}</p> : null}
 
               <div className={styles.actions}>
                 <PillButton type="button" subtle onClick={onClose} disabled={isSubmitting}>
                   cancel
                 </PillButton>
-                <PillButton type="submit" accent disabled={isSubmitting || isAuthLoading}>
+                <PillButton
+                  type="submit"
+                  accent
+                  disabled={
+                    isSubmitting ||
+                    isAuthLoading ||
+                    isLoadingOrganizations ||
+                    isLoadingMyOrganizations ||
+                    !isAuthed ||
+                    myOrganizations.length === 0 ||
+                    formState.orgId.length === 0
+                  }
+                >
                   {isSubmitting ? 'creating...' : 'create event'}
                 </PillButton>
               </div>

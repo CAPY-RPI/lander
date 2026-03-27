@@ -79,9 +79,7 @@
   font: 600 15px/1.3 var(--font-body);
 }
 
-.field input,
-.field select,
-.field textarea {
+.field input {
   width: 100%;
   border: 1px solid rgba(205, 247, 242, 0.22);
   border-radius: 20px;
@@ -96,54 +94,14 @@
     background 180ms var(--ease-premium);
 }
 
-.field textarea {
-  resize: vertical;
-  min-height: 132px;
-}
-
-.field input::placeholder,
-.field textarea::placeholder {
+.field input::placeholder {
   color: rgba(249, 250, 250, 0.44);
 }
 
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
+.field input:focus {
   border-color: rgba(241, 96, 47, 0.72);
   box-shadow: 0 0 0 4px rgba(241, 96, 47, 0.12);
   background: rgba(1, 44, 42, 0.42);
-}
-
-.field select {
-  appearance: none;
-}
-
-.metaCard {
-  display: grid;
-  gap: 6px;
-  padding: 14px 16px;
-  border: 1px solid rgba(205, 247, 242, 0.16);
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.metaLabel {
-  color: rgba(249, 250, 250, 0.72);
-  font: 600 12px/1.2 var(--font-body);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.metaValue {
-  color: var(--c-text-light);
-  font:
-    500 14px/1.45 ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace;
-  word-break: break-all;
 }
 
 .status,
