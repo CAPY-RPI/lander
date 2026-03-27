@@ -19,7 +19,7 @@ type EventsSectionProps = {
 function toAppEvent(event: Event): AppEvent {
   return {
     eid: event.eid,
-    title: event.location || 'Untitled event',
+    title: event.title || 'Untitled event',
     location: event.location || 'Location to be announced',
     event_time: event.event_time,
     description: event.description || 'Event details coming soon.',

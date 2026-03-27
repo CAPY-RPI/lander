@@ -13,6 +13,7 @@ type CreateEventModalProps = {
 }
 
 type CreateEventFormState = {
+  title: string
   location: string
   eventTime: string
   description: string
@@ -21,6 +22,7 @@ type CreateEventFormState = {
 const DEFAULT_ORG_ID = '66168f44-624a-47ad-9b07-7a92121bce01'
 
 const initialFormState: CreateEventFormState = {
+  title: '',
   location: '',
   eventTime: '',
   description: '',
@@ -88,6 +90,7 @@ export function CreateEventModal({ isOpen, onClose, onCreated }: CreateEventModa
     try {
       await createEvent({
         org_id: DEFAULT_ORG_ID,
+        title: formState.title.trim() || undefined,
         location: formState.location.trim() || undefined,
         event_time: toEventTimeISOString(formState.eventTime),
         description: formState.description.trim() || undefined,
@@ -151,6 +154,17 @@ export function CreateEventModal({ isOpen, onClose, onCreated }: CreateEventModa
             </p>
 
             <form className={styles.form} onSubmit={handleSubmit}>
+              <label className={styles.field}>
+                <span>Title</span>
+                <input
+                  type="text"
+                  value={formState.title}
+                  onChange={handleChange('title')}
+                  placeholder="Spring Networking Night"
+                  autoComplete="off"
+                />
+              </label>
+
               <label className={styles.field}>
                 <span>Location</span>
                 <input
