@@ -1,0 +1,88 @@
+.orgCard {
+  display: grid;
+  gap: var(--space-16);
+  align-content: start;
+  width: 100%;
+  min-height: 0;
+  padding: 20px;
+  appearance: none;
+  border-radius: 28px;
+  border: 1px solid rgba(126, 225, 218, 0.28);
+  background:
+    linear-gradient(180deg, rgba(75, 183, 173, 0.24), rgba(35, 111, 107, 0.2)),
+    rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(var(--glass-blur-soft));
+  scroll-snap-align: start;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 180ms var(--ease-premium),
+    border-color 180ms var(--ease-premium),
+    box-shadow 180ms var(--ease-premium);
+}
+
+.orgCard:hover,
+.orgCard:focus-visible {
+  border-color: rgba(241, 96, 47, 0.52);
+  box-shadow: 0 20px 38px rgba(0, 41, 39, 0.24);
+  transform: translateY(-2px);
+}
+
+.orgCard:focus-visible {
+  outline: 2px solid rgba(255, 216, 200, 0.88);
+  outline-offset: 3px;
+}
+
+.cardHeader {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.cardTitle {
+  margin: 0;
+  color: var(--c-text-light);
+  font: 600 24px/1.06 var(--font-display);
+  text-wrap: balance;
+}
+
+.cardDescription {
+  margin: 0;
+  color: rgba(249, 250, 250, 0.82);
+  font: 400 15px/1.35 var(--font-body);
+}
+
+.metaList {
+  display: grid;
+  gap: var(--space-8);
+  margin: 0;
+}
+
+.metaRow {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: var(--space-16);
+  align-items: start;
+}
+
+.metaRow dt {
+  color: rgba(249, 250, 250, 0.54);
+  font: 600 12px/1.2 var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.metaRow dd {
+  margin: 0;
+  color: var(--c-text-light);
+  font: 500 14px/1.3 var(--font-body);
+}
+
+@media (max-width: 720px) {
+  .orgCard {
+    padding: 16px;
+  }
+
+  .cardTitle {
+    font-size: 22px;
+  }
+}

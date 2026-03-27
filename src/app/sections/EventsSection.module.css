@@ -1,15 +1,107 @@
 .eventsPanel {
-  padding: 8rem 4rem;
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, auto);
+  align-content: start;
+  gap: 2rem;
+  padding: 5rem 0 6rem 5rem;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+}
+
+.eventsPanel::-webkit-scrollbar {
+  display: none;
+}
+
+.panelHeader {
+  position: absolute;
+  top: 2.5rem;
+  right: 1.5rem;
+  z-index: 1;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: rgba(249, 250, 250, 0.68);
+  font: 600 0.8rem/1.2 var(--font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .title {
-  font: 600 40px/1 var(--font-display);
-  text-transform: lowercase;
-  margin-bottom: 2rem;
+  margin: 0;
   color: var(--c-text-light);
+  font: 600 40px/0.96 var(--font-display);
+  text-transform: lowercase;
 }
 
-.eventsPanel p {
-  font: 400 18px/1.35 var(--font-body);
-  color: var(--c-text-light);
+.createButton {
+  min-width: 56px;
+  width: 56px;
+  padding: 0;
+  flex: 0 0 auto;
+  font: 500 30px/1 var(--font-display);
+}
+
+.status,
+.error {
+  margin: 0;
+  padding-right: 4rem;
+  color: rgba(249, 250, 250, 0.82);
+  font: 500 1rem/1.4 var(--font-body);
+}
+
+.error {
+  color: #ffb4b4;
+}
+
+@media (max-width: 1200px) {
+  .eventsPanel {
+    gap: 1.75rem;
+    padding: 2.5rem 0 5rem 2.75rem;
+  }
+
+  .panelHeader,
+  .status,
+  .error {
+    padding-right: 2.75rem;
+  }
+
+  .panelHeader {
+    top: 1.75rem;
+    right: 1.1rem;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .eventsPanel {
+    gap: 1.25rem;
+    padding: 2rem 0 2.5rem 1.5rem;
+  }
+
+  .panelHeader,
+  .status,
+  .error {
+    padding-right: 1.5rem;
+  }
+
+  .panelHeader {
+    top: 1.25rem;
+    right: 0.85rem;
+    padding-right: 0;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .createButton {
+    min-width: 48px;
+    width: 48px;
+    font-size: 28px;
+  }
 }

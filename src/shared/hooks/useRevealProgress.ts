@@ -29,13 +29,35 @@ export function useRevealProgress<T extends HTMLElement = HTMLElement>(triggerAm
       const nextProgress = Math.min(1, visibleWidth / triggerDistance)
       setProgress((prev) => (Math.abs(prev - nextProgress) < 0.001 ? prev : nextProgress))
     }
+
     update()
-    const scroller = ref.current?.closest('#scroller') as HTMLElement | null
-    const scrollTarget: HTMLElement | Window = scroller ?? window
-    scrollTarget.addEventListener('scroll', update, { passive: true })
+
+    const node = ref.current
+    const scrollTargets = new Set<HTMLElement | Window>()
+    const revealScroller = node?.closest('[data-reveal-scroller]') as HTMLElement | null
+    const pageScroller = node?.closest('#scroller') as HTMLElement | null
+
+    if (revealScroller) {
+      scrollTargets.add(revealScroller)
+    }
+
+    if (pageScroller) {
+      scrollTargets.add(pageScroller)
+    }
+
+    if (scrollTargets.size === 0) {
+      scrollTargets.add(window)
+    }
+
+    scrollTargets.forEach((target) => {
+      target.addEventListener('scroll', update, { passive: true })
+    })
+
     window.addEventListener('resize', update)
     return () => {
-      scrollTarget.removeEventListener('scroll', update)
+      scrollTargets.forEach((target) => {
+        target.removeEventListener('scroll', update)
+      })
       window.removeEventListener('resize', update)
     }
   }, [triggerAmount])
