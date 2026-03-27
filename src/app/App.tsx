@@ -1,7 +1,8 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 import { AppTopNav } from '@/app/components/AppTopNav'
+import { CreateEventModal } from '@/app/components/CreateEventModal'
 import { ExitOverlay } from '@/shared/components/ExitOverlay'
 import { useHorizontalWheelScroll } from '@/shared/hooks/useHorizontalWheelScroll'
 import { usePageTransition } from '@/shared/hooks/usePageTransition'
@@ -18,6 +19,8 @@ import styles from './App.module.css'
  */
 export default function AppMain() {
   const scrollerRef = useRef<HTMLElement | null>(null)
+  const [isCreateEventOpen, setIsCreateEventOpen] = useState(false)
+  const [eventsRefreshKey, setEventsRefreshKey] = useState(0)
   useHorizontalWheelScroll(scrollerRef, { endCutoffPx: 0 })
 
   usePageTransition()
@@ -51,11 +54,22 @@ export default function AppMain() {
           >
             <ProfileSection />
             <HomeSection />
-            <EventsSection />
+            <EventsSection
+              refreshKey={eventsRefreshKey}
+              onCreateEvent={() => setIsCreateEventOpen(true)}
+            />
             <OrgsSection />
           </motion.div>
         </main>
       </div>
+      <CreateEventModal
+        isOpen={isCreateEventOpen}
+        onClose={() => setIsCreateEventOpen(false)}
+        onCreated={() => {
+          setEventsRefreshKey((current) => current + 1)
+          setIsCreateEventOpen(false)
+        }}
+      />
       <ExitOverlay />
     </>
   )

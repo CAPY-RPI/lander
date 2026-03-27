@@ -1,6 +1,6 @@
 .eventsPanel {
   display: grid;
-  grid-template-rows: repeat(2, minmax(0, auto));
+  grid-template-rows: auto auto minmax(0, auto);
   align-content: start;
   gap: 2rem;
   padding: 5rem 0 6rem 5rem;
@@ -15,10 +15,59 @@
   display: none;
 }
 
+.panelHeader {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-right: 4rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: rgba(249, 250, 250, 0.68);
+  font: 600 0.8rem/1.2 var(--font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  color: var(--c-text-light);
+  font: 600 40px/0.96 var(--font-display);
+  text-transform: lowercase;
+}
+
+.createButton {
+  min-width: 56px;
+  width: 56px;
+  padding: 0;
+  flex: 0 0 auto;
+  font: 500 30px/1 var(--font-display);
+}
+
+.status,
+.error {
+  margin: 0;
+  padding-right: 4rem;
+  color: rgba(249, 250, 250, 0.82);
+  font: 500 1rem/1.4 var(--font-body);
+}
+
+.error {
+  color: #ffb4b4;
+}
+
 @media (max-width: 1200px) {
   .eventsPanel {
     gap: 1.75rem;
     padding: 2.5rem 0 5rem 2.75rem;
+  }
+
+  .panelHeader,
+  .status,
+  .error {
+    padding-right: 2.75rem;
   }
 }
 
@@ -26,5 +75,25 @@
   .eventsPanel {
     gap: 1.25rem;
     padding: 2rem 0 2.5rem 1.5rem;
+  }
+
+  .panelHeader,
+  .status,
+  .error {
+    padding-right: 1.5rem;
+  }
+
+  .panelHeader {
+    align-items: center;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .createButton {
+    min-width: 48px;
+    width: 48px;
+    font-size: 28px;
   }
 }

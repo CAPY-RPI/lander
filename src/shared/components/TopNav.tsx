@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import type { MouseEvent as ReactMouseEvent } from 'react'
+import type { ReactNode } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { StaggerWords } from './StaggerWords'
 import { assets, navItems } from '../data/content'
@@ -15,6 +16,7 @@ interface TopNavProps {
   ctaLabel?: string
   ctaHref?: string
   onCtaClickOverride?: (event: ReactMouseEvent<HTMLAnchorElement>) => void
+  actions?: ReactNode
 }
 
 export function TopNav({
@@ -23,6 +25,7 @@ export function TopNav({
   ctaLabel = "let's go",
   ctaHref = '/app',
   onCtaClickOverride,
+  actions,
 }: TopNavProps) {
   const navigateWithExit = useExitNavigation()
   const navRef = useRef<HTMLElement | null>(null)
@@ -135,21 +138,32 @@ export function TopNav({
         ))}
       </nav>
 
-      {showCta && (
-        <PillButton as="a" accent className={styles.navCta} href={ctaHref} onClick={onAppCtaClick}>
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.span
-              key={ctaLabel}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              style={{ display: 'inline-block' }}
+      {(actions || showCta) && (
+        <div className={styles.navActions}>
+          {actions}
+          {showCta && (
+            <PillButton
+              as="a"
+              accent
+              className={styles.navCta}
+              href={ctaHref}
+              onClick={onAppCtaClick}
             >
-              <StaggerWords text={ctaLabel} baseDelay={0.05} amount={0.1} />
-            </motion.span>
-          </AnimatePresence>
-        </PillButton>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={ctaLabel}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                  style={{ display: 'inline-block' }}
+                >
+                  <StaggerWords text={ctaLabel} baseDelay={0.05} amount={0.1} />
+                </motion.span>
+              </AnimatePresence>
+            </PillButton>
+          )}
+        </div>
       )}
     </motion.header>
   )

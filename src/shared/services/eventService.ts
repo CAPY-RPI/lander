@@ -15,6 +15,10 @@ export function listEvents(limit = 20, offset = 0) {
   return apiClient.get<ListEventsResponse>(`/events?${params.toString()}`, { cache: 'no-store' })
 }
 
+export function listUserEvents(uid: string) {
+  return apiClient.get<ListEventsResponse>(`/users/${uid}/events`, { cache: 'no-store' })
+}
+
 export function getEvent(eid: string) {
   return apiClient.get<Event>(`/events/${eid}`, { cache: 'no-store' })
 }

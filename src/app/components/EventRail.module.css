@@ -29,6 +29,17 @@
   padding-right: 64px;
 }
 
+.emptyState {
+  display: grid;
+  place-items: center;
+  min-height: 276px;
+  padding-right: 64px;
+  color: rgba(249, 250, 250, 0.8);
+  font: 500 20px/1.4 var(--font-body);
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
 .controlButton {
   width: 48px;
   height: 48px;
@@ -108,7 +119,8 @@
 
 @media (max-width: 1200px) {
   .groupHeader,
-  .railShell {
+  .railShell,
+  .emptyState {
     padding-right: 44px;
   }
 }
@@ -129,7 +141,8 @@
   }
 
   .groupHeader,
-  .railShell {
+  .railShell,
+  .emptyState {
     padding-right: 24px;
   }
 
@@ -137,5 +150,10 @@
     --left-edge-fade: 36px;
     --right-edge-fade: 36px;
     grid-auto-columns: minmax(260px, 78vw);
+  }
+
+  .emptyState {
+    min-height: 220px;
+    font-size: 18px;
   }
 }

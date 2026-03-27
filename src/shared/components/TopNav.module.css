@@ -96,6 +96,13 @@
   justify-self: end;
 }
 
+.navActions {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(10px, 1.2vw, 14px);
+}
+
 @media (max-width: 1200px) {
   .topNav {
     position: sticky;
@@ -117,6 +124,10 @@
     justify-self: center;
     padding: 0 var(--space-16);
     gap: var(--space-16);
+  }
+
+  .navActions {
+    gap: 10px;
   }
 
   .navPill a {

@@ -18,6 +18,7 @@ export function EventRail({ title, events, carouselLabel }: EventRailProps) {
   const headingId = `${title.replace(/\s+/g, '-')}-heading`
   const [canScrollBack, setCanScrollBack] = useState(false)
   const [canScrollForward, setCanScrollForward] = useState(false)
+  const hasEvents = events.length > 0
 
   useEffect(() => {
     const rail = railRef.current
@@ -63,40 +64,46 @@ export function EventRail({ title, events, carouselLabel }: EventRailProps) {
         </h2>
       </div>
 
-      <div className={styles.railShell}>
-        <button
-          type="button"
-          className={styles.controlButton}
-          onClick={() => scrollRail('back')}
-          aria-label={`Scroll ${title} backward`}
-          disabled={!canScrollBack}
-        >
-          <span aria-hidden="true">&larr;</span>
-        </button>
+      {hasEvents ? (
+        <div className={styles.railShell}>
+          <button
+            type="button"
+            className={styles.controlButton}
+            onClick={() => scrollRail('back')}
+            aria-label={`Scroll ${title} backward`}
+            disabled={!canScrollBack}
+          >
+            <span aria-hidden="true">&larr;</span>
+          </button>
 
-        <div
-          ref={railRef}
-          className={styles.carousel}
-          data-reveal-scroller
-          aria-label={carouselLabel}
-          data-can-scroll-back={canScrollBack}
-          data-can-scroll-forward={canScrollForward}
-        >
-          {events.map((event) => (
-            <EventCard key={getEventKey(event)} event={event} />
-          ))}
+          <div
+            ref={railRef}
+            className={styles.carousel}
+            data-reveal-scroller
+            aria-label={carouselLabel}
+            data-can-scroll-back={canScrollBack}
+            data-can-scroll-forward={canScrollForward}
+          >
+            {events.map((event) => (
+              <EventCard key={getEventKey(event)} event={event} />
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className={styles.controlButton}
+            onClick={() => scrollRail('forward')}
+            aria-label={`Scroll ${title} forward`}
+            disabled={!canScrollForward}
+          >
+            <span aria-hidden="true">&rarr;</span>
+          </button>
         </div>
-
-        <button
-          type="button"
-          className={styles.controlButton}
-          onClick={() => scrollRail('forward')}
-          aria-label={`Scroll ${title} forward`}
-          disabled={!canScrollForward}
-        >
-          <span aria-hidden="true">&rarr;</span>
-        </button>
-      </div>
+      ) : (
+        <div className={styles.emptyState} aria-live="polite">
+          There are no events available at this time.
+        </div>
+      )}
     </section>
   )
 }

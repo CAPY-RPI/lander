@@ -27,6 +27,7 @@ export function EventCard({ event }: EventCardProps) {
   const side: 1 | -1 = centerDelta >= 0 ? 1 : -1
   const outX = side * 48
   const textInView = delayedProgress > 0.06
+  const shouldShowLocation = event.location.trim().length > 0 && event.location !== event.title
   const style = {
     opacity: delayedProgress,
     x: outX * (1 - delayedProgress),
@@ -63,17 +64,19 @@ export function EventCard({ event }: EventCardProps) {
             />
           </dd>
         </div>
-        <div className={styles.metaRow}>
-          <dt>Place</dt>
-          <dd>
-            <StaggerWords
-              text={event.location}
-              inView={textInView}
-              baseDelay={0.22}
-              stagger={0.02}
-            />
-          </dd>
-        </div>
+        {shouldShowLocation ? (
+          <div className={styles.metaRow}>
+            <dt>Place</dt>
+            <dd>
+              <StaggerWords
+                text={event.location}
+                inView={textInView}
+                baseDelay={0.22}
+                stagger={0.02}
+              />
+            </dd>
+          </div>
+        ) : null}
       </dl>
     </motion.article>
   )
