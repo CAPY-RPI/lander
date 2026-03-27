@@ -1,4 +1,5 @@
 .eventsPanel {
+  position: relative;
   display: grid;
   grid-template-rows: auto auto minmax(0, auto);
   align-content: start;
@@ -16,11 +17,10 @@
 }
 
 .panelHeader {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-right: 4rem;
+  position: absolute;
+  top: 2.5rem;
+  right: 1.5rem;
+  z-index: 1;
 }
 
 .eyebrow {
@@ -69,6 +69,12 @@
   .error {
     padding-right: 2.75rem;
   }
+
+  .panelHeader {
+    top: 1.75rem;
+    right: 1.1rem;
+    padding-right: 0;
+  }
 }
 
 @media (max-width: 720px) {
@@ -84,7 +90,9 @@
   }
 
   .panelHeader {
-    align-items: center;
+    top: 1.25rem;
+    right: 0.85rem;
+    padding-right: 0;
   }
 
   .title {
