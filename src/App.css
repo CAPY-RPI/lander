@@ -186,7 +186,8 @@ body.is-exiting .exitOverlay {
 .horizontalScroller {
   position: relative;
   width: 100vw;
-  height: 100svh;
+  height: calc(100svh - clamp(70px, 8vw, 120px));
+  min-height: 100svh;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
@@ -207,13 +208,14 @@ body.is-exiting .exitOverlay {
   gap: var(--space-24);
   align-items: start;
   width: max-content;
-  height: 100%;
-  min-height: 100%;
+  height: auto;
   padding: 121px var(--space-24) var(--space-24) var(--space-24);
 }
 
 .panel {
-  height: 100%;
+  min-height: auto;
+  height: auto;
+  overflow: visible;
   border-radius: var(--radius-card);
 }
 
@@ -222,7 +224,7 @@ body.is-exiting .exitOverlay {
   border: 1px solid var(--c-surface-border);
   background: linear-gradient(180deg, rgba(56, 171, 162, 0.2), rgba(43, 137, 130, 0.16));
   backdrop-filter: blur(var(--glass-blur));
-  padding: 210px 100px 60px;
+  padding: clamp(100px, 16vh, 210px) clamp(40px, 6vw, 100px) 60px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -241,7 +243,7 @@ body.is-exiting .exitOverlay {
   display: grid;
   gap: var(--space-8);
   font-family: var(--font-display);
-  font-size: 180px;
+  font-size: clamp(72px, 10vw, 180px);
   font-weight: 700;
   letter-spacing: 0.2px;
   line-height: 0.92;
@@ -336,30 +338,26 @@ body.is-exiting .exitOverlay {
 .featuresPanel {
   display: grid;
   grid-template-columns: 525px 710px;
-  grid-template-rows: repeat(6, minmax(0, 1fr));
   gap: var(--space-24);
-  height: 100%;
-  overflow: hidden;
 }
 
 .glassCard {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  align-self: stretch;
-  height: 100%;
+  grid-template-rows: auto 1fr auto;
   border-radius: var(--radius-card);
   border: 1px solid var(--c-surface-border);
   background: linear-gradient(180deg, rgba(72, 176, 167, 0.24), rgba(44, 132, 126, 0.2));
   box-shadow: var(--glass-shadow);
   backdrop-filter: blur(var(--glass-blur));
-  padding: 42px 30% 42px 42px;
-  min-height: 0;
+
+  padding: clamp(20px, 3vh, 42px) clamp(20px, 8vw, 30%) clamp(20px, 3vh, 42px)
+    clamp(20px, 4vw, 42px);
 }
 
 .glassCard h3 {
   margin: 0;
   color: var(--c-text-light);
-  font: 600 40px/1 var(--font-display);
+  font: 600 clamp(24px, 3vw, 40px)/1 var(--font-display);
   max-width: 90%;
 }
 
@@ -372,7 +370,7 @@ body.is-exiting .exitOverlay {
 
 .glassCardBody {
   align-self: end;
-  padding-top: 32px;
+  padding-top: clamp(12px, 2vh, 32px);
 }
 
 .staggerWords {
@@ -425,7 +423,7 @@ body.is-exiting .exitOverlay {
 .contactPanel {
   width: 1143px;
   border: 1px solid var(--c-surface-border);
-  padding: 232px 131px 78px;
+  padding: clamp(110px, 18vh, 232px) clamp(40px, 6vw, 131px) 78px;
 }
 
 .interfacePanel {
@@ -632,6 +630,30 @@ body.is-exiting .exitOverlay {
 }
 
 @media (max-width: 1200px) {
+  .panelTrack {
+    padding-top: 80px;
+  }
+
+  .featuresPanel {
+    grid-template-columns: 1fr;
+    width: min(90vw, 600px);
+    gap: var(--space-24);
+  }
+
+  .card-col1-row1,
+  .card-col2-row1,
+  .card-col2-row2,
+  .card-col1-row2-span2,
+  .card-col2-row3 {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+
+  .glassCard {
+    padding-right: clamp(20px, 5vw, 42px);
+    min-height: min-content;
+  }
+
   .topNav {
     position: sticky;
     top: 0;
@@ -693,6 +715,7 @@ body.is-exiting .exitOverlay {
   .heroPanel {
     grid-template-columns: 1fr;
     min-height: 838px;
+    padding: clamp(120px, 16vh, 210px) clamp(40px, 6vw, 100px) 60px;
   }
 }
 .counter {
