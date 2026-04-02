@@ -1,4 +1,7 @@
 .appRoot {
+  --app-track-padding-top: clamp(72px, 14svh, 121px);
+  --app-track-padding-bottom: clamp(16px, 3svh, var(--space-24));
+  --app-panel-height: calc(100svh - var(--app-track-padding-top) - var(--app-track-padding-bottom));
   width: 100vw;
   min-height: 100svh;
   overflow: hidden;
@@ -36,7 +39,7 @@
 
 .horizontalScroller {
   width: 100vw;
-  height: 100vh;
+  height: 100svh;
   overflow-x: auto;
   overflow-y: hidden;
   display: flex;
@@ -58,12 +61,15 @@
   width: max-content;
   height: 100%;
   min-height: 100%;
-  padding: 121px var(--space-24) var(--space-24) var(--space-24);
+  padding: var(--app-track-padding-top) var(--space-24) var(--app-track-padding-bottom)
+    var(--space-24);
 }
 
 /* Ensure sections match the panel styling */
 .horizontalScroller :global(.panel) {
   width: calc(100vw - calc(var(--space-24) * 2));
+  height: var(--app-panel-height);
+  min-height: var(--app-panel-height);
   flex-shrink: 0;
   scroll-snap-align: center;
   border-radius: var(--radius-card);

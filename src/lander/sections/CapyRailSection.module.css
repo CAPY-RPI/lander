@@ -2,7 +2,7 @@
   position: relative;
   overflow: hidden;
   --rail-mark-vertical-inset: 24px;
-  width: 866px;
+  width: min(866px, calc(100vw - var(--space-24) * 2));
   background: var(--c-surface-light);
   border: 1px solid var(--c-surface-border);
   color: var(--c-text-deep);
@@ -12,22 +12,22 @@
 .railContent {
   position: relative;
   z-index: 1;
-  width: 420px;
-  margin: 40px 0 40px 46px;
-  height: calc(100% - 80px);
+  width: min(420px, calc(100% - 92px));
+  margin: clamp(24px, 4svh, 40px) 0 clamp(24px, 4svh, 40px) clamp(24px, 4vw, 46px);
+  height: calc(100% - clamp(48px, 8svh, 80px));
   display: flex;
   flex-direction: column;
 }
 
 .railTop {
   margin: 0;
-  font: 400 24px/1.25 var(--font-body);
+  font: 400 clamp(20px, 3svh, 24px) / 1.25 var(--font-body);
 }
 
 .verticalMarkWrap {
   position: absolute;
   top: var(--rail-mark-vertical-inset);
-  left: 375px;
+  left: clamp(290px, 43%, 375px);
   transform: none;
   width: 178px;
   height: calc(100% - var(--rail-mark-vertical-inset) * 2);
@@ -38,7 +38,7 @@
 }
 
 .verticalMark {
-  width: 739px;
+  width: clamp(520px, 78svh, 739px);
   height: 178px;
   max-width: none;
   transform: rotate(-90deg) scale(1);
@@ -47,20 +47,20 @@
 
 .railLinks {
   display: grid;
-  gap: 62px;
+  gap: clamp(28px, 7svh, 62px);
   max-width: 380px;
-  margin-top: 132px;
+  margin-top: clamp(40px, 15svh, 132px);
 }
 
 .railLinkRow {
   display: grid;
   grid-template-columns: auto auto;
-  column-gap: 72px;
+  column-gap: clamp(28px, 6vw, 72px);
 }
 
 .railLinkBlock p {
   margin: 0;
-  font: 400 16px/1.5 var(--font-body);
+  font: 400 clamp(14px, 2svh, 16px) / 1.5 var(--font-body);
 }
 
 .columnTitle {
@@ -70,7 +70,7 @@
 .railSocial {
   display: grid;
   gap: 4px;
-  margin-bottom: 42px;
+  margin-bottom: clamp(24px, 5svh, 42px);
 }
 
 .railSocial p {
@@ -93,7 +93,7 @@
 .railStatus,
 .railFoot {
   margin: 0;
-  font: 400 16px/1.4 var(--font-body);
+  font: 400 clamp(14px, 2svh, 16px) / 1.4 var(--font-body);
   max-width: 420px;
 }
 
@@ -105,4 +105,26 @@
 
 .railMeta .railSocial {
   margin-top: 0;
+}
+
+@media (max-height: 760px) {
+  .capyRailPanel {
+    display: grid;
+    align-items: stretch;
+  }
+
+  .railContent {
+    width: min(100% - 48px, 420px);
+    margin-right: 24px;
+  }
+
+  .railLinks {
+    margin-top: 28px;
+  }
+
+  .verticalMarkWrap {
+    left: auto;
+    right: -28px;
+    opacity: 0.28;
+  }
 }
