@@ -1,13 +1,14 @@
 .heroPanel {
-  width: 1415px;
+  width: min(1415px, calc(100vw - var(--space-24) * 2));
   border: 1px solid var(--c-surface-border);
   background: linear-gradient(180deg, rgba(56, 171, 162, 0.2), rgba(43, 137, 130, 0.16));
   backdrop-filter: blur(var(--glass-blur));
-  padding: 210px 100px 60px;
+  padding: clamp(112px, 22svh, 210px) clamp(32px, 7vw, 100px) clamp(32px, 7svh, 60px);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   box-shadow: var(--glass-shadow);
+  overflow: hidden;
 }
 
 .heroRows {
@@ -22,7 +23,7 @@
   display: grid;
   gap: var(--space-8);
   font-family: var(--font-display);
-  font-size: 180px;
+  font-size: clamp(72px, min(14vw, 22svh), 180px);
   font-weight: 700;
   letter-spacing: 0.2px;
   line-height: 0.92;
@@ -36,6 +37,7 @@
 .heroDescription {
   display: flex;
   flex-direction: column;
+  gap: clamp(10px, 1.8svh, 16px);
   width: fit-content;
   max-width: 360px;
   border: 1px solid var(--c-surface-border);
@@ -43,12 +45,12 @@
   box-shadow: var(--glass-shadow);
   backdrop-filter: blur(var(--glass-blur));
   border-radius: var(--radius-card);
-  padding: 36px;
+  padding: clamp(20px, 3.5svh, 36px);
 }
 
 .heroDescription p {
   margin: 0;
-  font: 400 18px/1.35 var(--font-body);
+  font: 400 clamp(16px, 1.9svh, 18px) / 1.35 var(--font-body);
 }
 
 .heroRowBottom {
@@ -56,13 +58,15 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 20px;
+  width: 100%;
 }
 
 .heroCtas {
   display: flex;
+  flex-wrap: wrap;
   gap: 18px;
   justify-content: flex-start;
-  margin: 30px 10px 0;
+  margin: clamp(20px, 3.5svh, 30px) 10px 0;
 }
 
 .howModalBackdrop {
@@ -103,16 +107,40 @@
 }
 
 @media (max-width: 1200px) {
-  .heroRowTitle h1 {
-    font-size: clamp(72px, 18vw, 128px);
-  }
-
   .heroRowTitle h1 span:last-child {
     margin-left: 0;
   }
 
   .heroPanel {
-    grid-template-columns: 1fr;
-    min-height: 838px;
+    width: min(100vw - var(--space-24) * 2, 1120px);
+  }
+}
+
+@media (max-height: 820px) {
+  .heroRows {
+    gap: 16px;
+  }
+
+  .heroRowBottom {
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .heroDescription {
+    max-width: 100%;
+  }
+
+  .heroCtas {
+    margin-inline: 0;
+  }
+}
+
+@media (max-height: 720px) {
+  .heroPanel {
+    padding-top: clamp(88px, 18svh, 140px);
+  }
+
+  .heroRowTitle h1 {
+    line-height: 0.88;
   }
 }

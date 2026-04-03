@@ -8,27 +8,28 @@
   background: linear-gradient(180deg, rgba(72, 176, 167, 0.24), rgba(44, 132, 126, 0.2));
   box-shadow: var(--glass-shadow);
   backdrop-filter: blur(var(--glass-blur));
-  padding: 42px 30% 42px 42px;
+  padding: clamp(24px, 4svh, 42px) clamp(18px, 18%, 30%) clamp(24px, 4svh, 42px)
+    clamp(24px, 4svh, 42px);
   min-height: 0;
 }
 
 .glassCard h3 {
   margin: 0;
   color: var(--c-text-light);
-  font: 600 40px/1 var(--font-display);
+  font: 600 clamp(28px, 5svh, 40px) / 1 var(--font-display);
   max-width: 90%;
 }
 
 .glassCard p {
   margin: 0;
   color: var(--c-text-light);
-  font: 400 18px/1.35 var(--font-body);
+  font: 400 clamp(16px, 2.2svh, 18px) / 1.35 var(--font-body);
   max-width: 96%;
 }
 
 .glassCardBody {
   align-self: end;
-  padding-top: 32px;
+  padding-top: clamp(18px, 3svh, 32px);
 }
 
 @media (max-width: 1200px) {

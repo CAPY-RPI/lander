@@ -1,7 +1,7 @@
 .interfacePanel {
-  width: 1143px;
+  width: min(1143px, calc(100vw - var(--space-24) * 2));
   border: 1px solid var(--c-surface-border);
-  padding: 232px 131px 78px;
+  padding: clamp(104px, 24svh, 232px) clamp(32px, 8vw, 131px) clamp(32px, 7svh, 78px);
   background: var(--c-surface-light);
   color: var(--c-bg-mid);
 }
@@ -13,7 +13,7 @@
   line-height: 1.05;
   color: var(--c-bg-mid);
   max-width: 785px;
-  font-size: 96px;
+  font-size: clamp(48px, min(8vw, 14svh), 96px);
 }
 
 .interfaceContent {
@@ -25,21 +25,34 @@
 .interfaceSub {
   margin-top: 24px;
   color: var(--c-bg-mid);
-  font: 400 36px/1.2 var(--font-display);
+  font: 400 clamp(24px, 4.8svh, 36px) / 1.2 var(--font-display);
 }
 
 .interfaceFoot {
   margin: 0 0 12px;
   text-align: right;
   color: var(--c-text-deep);
-  font: 400 16px/1.2 var(--font-body);
+  font: 400 clamp(14px, 2.1svh, 16px) / 1.2 var(--font-body);
 }
 
 @media (max-width: 1200px) {
-  .interfacePanel h2 {
-    font-size: clamp(48px, 12vw, 72px);
-  }
   .interfaceSub {
     font-size: 26px;
+  }
+}
+
+@media (max-height: 760px) {
+  .interfaceContent {
+    grid-template-rows: auto auto 1fr;
+    gap: 14px;
+  }
+
+  .interfaceSub {
+    margin-top: 0;
+  }
+
+  .interfaceFoot {
+    align-self: start;
+    text-align: left;
   }
 }

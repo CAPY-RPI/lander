@@ -3,8 +3,8 @@
   display: grid;
   grid-template-rows: auto auto minmax(0, auto);
   align-content: start;
-  gap: 2rem;
-  padding: 5rem 0 6rem 5rem;
+  gap: clamp(1.25rem, 3svh, 2rem);
+  padding: clamp(3rem, 8svh, 5rem) 0 clamp(2rem, 9svh, 6rem) clamp(1.5rem, 5vw, 5rem);
   height: 100%;
   box-sizing: border-box;
   overflow-y: auto;
@@ -18,8 +18,8 @@
 
 .panelHeader {
   position: absolute;
-  top: 2.5rem;
-  right: 1.5rem;
+  top: clamp(1.25rem, 4svh, 2.5rem);
+  right: clamp(0.85rem, 2vw, 1.5rem);
   z-index: 1;
 }
 
@@ -34,24 +34,24 @@
 .title {
   margin: 0;
   color: var(--c-text-light);
-  font: 600 40px/0.96 var(--font-display);
+  font: 600 clamp(32px, 5.6svh, 40px) / 0.96 var(--font-display);
   text-transform: lowercase;
 }
 
 .createButton {
-  min-width: 56px;
-  width: 56px;
+  min-width: clamp(48px, 7svh, 56px);
+  width: clamp(48px, 7svh, 56px);
   padding: 0;
   flex: 0 0 auto;
-  font: 500 30px/1 var(--font-display);
+  font: 500 clamp(28px, 4svh, 30px) / 1 var(--font-display);
 }
 
 .status,
 .error {
   margin: 0;
-  padding-right: 4rem;
+  padding-right: clamp(1.5rem, 4vw, 4rem);
   color: rgba(249, 250, 250, 0.82);
-  font: 500 1rem/1.4 var(--font-body);
+  font: 500 clamp(0.95rem, 2svh, 1rem) / 1.4 var(--font-body);
 }
 
 .error {
@@ -103,5 +103,12 @@
     min-width: 48px;
     width: 48px;
     font-size: 28px;
+  }
+}
+
+@media (max-height: 760px) {
+  .eventsPanel {
+    padding-top: clamp(2rem, 5svh, 3rem);
+    padding-bottom: 1.5rem;
   }
 }

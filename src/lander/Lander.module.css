@@ -1,4 +1,9 @@
 .appRoot {
+  --lander-track-padding-top: clamp(72px, 14svh, 121px);
+  --lander-track-padding-bottom: clamp(16px, 3svh, var(--space-24));
+  --lander-panel-height: calc(
+    100svh - var(--lander-track-padding-top) - var(--lander-track-padding-bottom)
+  );
   min-height: 100svh;
   background:
     radial-gradient(circle at 10% -20%, rgba(94, 204, 196, 0.2), transparent 36%),
@@ -57,10 +62,12 @@
   width: max-content;
   height: 100%;
   min-height: 100%;
-  padding: 121px var(--space-24) var(--space-24) var(--space-24);
+  padding: var(--lander-track-padding-top) var(--space-24) var(--lander-track-padding-bottom)
+    var(--space-24);
 }
 
 :global(.panel) {
-  height: 100%;
+  height: var(--lander-panel-height);
+  min-height: var(--lander-panel-height);
   border-radius: var(--radius-card);
 }
