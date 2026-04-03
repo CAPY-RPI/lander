@@ -41,10 +41,12 @@ export function EventsSection({
   } = useUserEvents(user?.uid, isAuthed, refreshKey)
   const [selectedEvent, setSelectedEvent] = useState<AppEvent | null>(null)
   const registeredEventIds = useMemo(() => new Set(myEvents.map((event) => event.eid)), [myEvents])
-  const recommendedEvents = events.map((event) => ({
-    ...toAppEvent(event),
-    isRegistered: registeredEventIds.has(event.eid),
-  }))
+  const recommendedEvents = events
+    .filter((event) => !isAuthed || !registeredEventIds.has(event.eid))
+    .map((event) => ({
+      ...toAppEvent(event),
+      isRegistered: false,
+    }))
   const myEventCards = myEvents.map((event) => ({
     ...toAppEvent(event),
     isRegistered: true,
