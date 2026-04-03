@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import type { AppOrganization } from '@/app/data/organizations'
-import { useHorizontalRailWheelScroll } from '@/shared/hooks/useHorizontalRailWheelScroll'
+import { useSafariHorizontalRailFallback } from '@/shared/hooks/useSafariHorizontalRailFallback'
 import { OrgCard } from './OrgCard'
 import styles from './OrgRail.module.css'
 
@@ -28,7 +28,7 @@ export function OrgRail({
   const [canScrollForward, setCanScrollForward] = useState(false)
   const hasOrganizations = organizations.length > 0
 
-  useHorizontalRailWheelScroll(railRef)
+  useSafariHorizontalRailFallback(railRef)
 
   useEffect(() => {
     const rail = railRef.current

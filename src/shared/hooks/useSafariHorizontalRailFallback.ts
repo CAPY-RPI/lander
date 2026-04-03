@@ -1,19 +1,28 @@
 import { useEffect } from 'react'
 import type { RefObject } from 'react'
 
+function isSafariBrowser() {
+  if (typeof navigator === 'undefined') {
+    return false
+  }
+
+  const userAgent = navigator.userAgent
+  return /Safari/i.test(userAgent) && !/Chrome|Chromium|CriOS|EdgiOS|FxiOS/i.test(userAgent)
+}
+
 /**
- * Handles explicit horizontal wheel input for nested rails.
+ * Adds a Safari-only wheel fallback for nested horizontal rails.
  *
- * This consumes true horizontal deltas (`deltaX`) while allowing vertical wheel
- * input to keep bubbling to the page-level horizontal scroller.
+ * Safari can fail to hand trackpad and wheel gestures to nested horizontal
+ * overflow containers when a parent also participates in scroll handling.
  */
-export function useHorizontalRailWheelScroll(
+export function useSafariHorizontalRailFallback(
   railRef: RefObject<HTMLElement | null>,
   speed = 1,
 ): void {
   useEffect(() => {
     const rail = railRef.current
-    if (!rail) return
+    if (!rail || !isSafariBrowser()) return
 
     const onWheel = (event: WheelEvent) => {
       const maxScrollLeft = Math.max(0, rail.scrollWidth - rail.clientWidth)
@@ -21,22 +30,22 @@ export function useHorizontalRailWheelScroll(
         return
       }
 
-      const horizontalIntent = event.deltaX
-      if (Math.abs(horizontalIntent) < 0.5) {
+      const intent = Math.abs(event.deltaX) > 0 ? event.deltaX : event.deltaY
+      if (intent === 0) {
         return
       }
 
       const isAtStart = rail.scrollLeft <= 0
       const isAtEnd = rail.scrollLeft >= maxScrollLeft
 
-      if ((horizontalIntent < 0 && isAtStart) || (horizontalIntent > 0 && isAtEnd)) {
+      if ((intent < 0 && isAtStart) || (intent > 0 && isAtEnd)) {
         return
       }
 
       event.preventDefault()
       event.stopPropagation()
 
-      const next = rail.scrollLeft + horizontalIntent * speed
+      const next = rail.scrollLeft + intent * speed
       rail.scrollLeft = Math.min(maxScrollLeft, Math.max(0, next))
     }
 

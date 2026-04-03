@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import type { KeyboardEvent } from 'react'
 import type { AppEvent } from '@/app/data/events'
-import { useHorizontalRailWheelScroll } from '@/shared/hooks/useHorizontalRailWheelScroll'
+import { useSafariHorizontalRailFallback } from '@/shared/hooks/useSafariHorizontalRailFallback'
 import { EventCard } from './EventCard'
 import styles from './EventRail.module.css'
 
@@ -23,7 +23,7 @@ export function EventRail({ title, events, carouselLabel, onEventSelect }: Event
   const [canScrollForward, setCanScrollForward] = useState(false)
   const hasEvents = events.length > 0
 
-  useHorizontalRailWheelScroll(railRef)
+  useSafariHorizontalRailFallback(railRef)
 
   useEffect(() => {
     const rail = railRef.current
