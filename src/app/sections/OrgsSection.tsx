@@ -41,10 +41,12 @@ export function OrgsSection({
   const [selectedOrganization, setSelectedOrganization] = useState<AppOrganization | null>(null)
   const recommendedOrganizations = useMemo(
     () =>
-      organizations.map((organization) => ({
-        ...toAppOrganization(organization),
-        isMember: membershipByOrgId[organization.oid] === true,
-      })),
+      organizations
+        .filter((organization) => membershipByOrgId[organization.oid] !== true)
+        .map((organization) => ({
+          ...toAppOrganization(organization),
+          isMember: false,
+        })),
     [organizations, membershipByOrgId],
   )
   const myOrganizationCards = myOrganizations.map((organization) => ({
