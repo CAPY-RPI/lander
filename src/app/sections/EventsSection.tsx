@@ -61,7 +61,10 @@ export function EventsSection({
           aria-label="Create event"
           title="Create event"
         >
-          +
+          <span className={styles.createButtonLabel}>create</span>
+          <span className={styles.createButtonIcon} aria-hidden="true">
+            +
+          </span>
         </PillButton>
       </div>
       {isLoading ? <p className={styles.status}>Loading events...</p> : null}

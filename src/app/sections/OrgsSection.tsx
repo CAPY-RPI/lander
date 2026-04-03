@@ -63,7 +63,10 @@ export function OrgsSection({
           aria-label="Create organization"
           title="Create organization"
         >
-          +
+          <span className={styles.createButtonLabel}>create</span>
+          <span className={styles.createButtonIcon} aria-hidden="true">
+            +
+          </span>
         </PillButton>
       </div>
       {isLoading ? <p className={styles.status}>Loading organizations...</p> : null}

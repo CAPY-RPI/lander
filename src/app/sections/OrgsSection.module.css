@@ -24,11 +24,21 @@
 }
 
 .createButton {
-  min-width: clamp(48px, 7svh, 56px);
-  width: clamp(48px, 7svh, 56px);
-  padding: 0;
+  min-width: clamp(132px, 15svh, 168px);
+  padding: 0 clamp(0.9rem, 2.4svh, 1.1rem);
   flex: 0 0 auto;
-  font: 500 clamp(28px, 4svh, 30px) / 1 var(--font-display);
+  gap: clamp(0.45rem, 1.2svh, 0.75rem);
+  font: 500 clamp(18px, 2.2svh, 22px) / 1 var(--font-display);
+  text-transform: lowercase;
+}
+
+.createButtonLabel {
+  transform: translateY(1px);
+}
+
+.createButtonIcon {
+  font-size: clamp(28px, 4svh, 30px);
+  line-height: 1;
 }
 
 .status,
@@ -81,9 +91,9 @@
   }
 
   .createButton {
-    min-width: 48px;
-    width: 48px;
-    font-size: 28px;
+    min-width: 132px;
+    padding-inline: 0.9rem;
+    font-size: 18px;
   }
 }
 
