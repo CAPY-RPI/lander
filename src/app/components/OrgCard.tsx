@@ -54,6 +54,13 @@ export function OrgCard({ organization, onSelect }: OrgCardProps) {
       style={style}
       onClick={() => onSelect?.(organization)}
       aria-label={`Open details for ${organization.name}`}
+      data-search-key={`org:${organization.oid}`}
+      data-search-label={organization.name}
+      data-search-category="organization"
+      data-search-description={organization.isMember ? 'joined organization' : 'open organization'}
+      data-search-keywords={`${getDescription(organization)} ${organization.date_created} ${organization.date_modified}`}
+      data-search-section="orgs"
+      data-search-action="click"
     >
       <div className={styles.cardHeader}>
         <h3 className={styles.cardTitle}>
