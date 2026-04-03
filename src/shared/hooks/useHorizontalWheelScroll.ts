@@ -4,6 +4,9 @@ import type { RefObject } from 'react'
 type HorizontalWheelOptions = {
   speed?: number
   endCutoffPx?: number
+  releaseOnEdges?: boolean
+  ignoreInteractiveElements?: boolean
+  enableDrag?: boolean
 }
 
 /**
@@ -13,16 +16,75 @@ type HorizontalWheelOptions = {
  * @param options - Configuration options for the scrolling behavior.
  * @param options.speed - The multiplier for scroll speed when using the mouse wheel (default: 1.1).
  * @param options.endCutoffPx - The number of pixels from the end of the scroll width to treat as the maximum scroll threshold (default: 180).
+ * @param options.releaseOnEdges - Allows parent scrollers to receive wheel input once this scroller reaches an edge (default: false).
+ * @param options.ignoreInteractiveElements - Prevents drag-to-scroll from starting on controls like buttons or inputs (default: true).
+ * @param options.enableDrag - Enables mouse drag-to-scroll interactions for the target scroller (default: true).
  */
 export function useHorizontalWheelScroll(
   scrollerRef: RefObject<HTMLElement | null>,
   options: HorizontalWheelOptions = {},
 ): void {
-  const { speed = 1.1, endCutoffPx = 180 } = options
+  const {
+    speed = 1.1,
+    endCutoffPx = 180,
+    releaseOnEdges = false,
+    ignoreInteractiveElements = true,
+    enableDrag = true,
+  } = options
 
   useEffect(() => {
     const scroller = scrollerRef.current
     if (!scroller) return
+
+    const getNestedHorizontalScroller = (event: WheelEvent) => {
+      const eventPath = typeof event.composedPath === 'function' ? event.composedPath() : []
+
+      for (const node of eventPath) {
+        if (!(node instanceof HTMLElement)) {
+          continue
+        }
+
+        if (node === scroller) {
+          break
+        }
+
+        if (node.hasAttribute('data-native-horizontal-scroll')) {
+          return node
+        }
+      }
+
+      const target = event.target as HTMLElement | null
+      const nestedScroller = target?.closest(
+        '[data-native-horizontal-scroll]',
+      ) as HTMLElement | null
+      if (!nestedScroller || nestedScroller === scroller) {
+        return null
+      }
+
+      return nestedScroller
+    }
+
+    const canNestedScrollerConsume = (event: WheelEvent, intent: number) => {
+      const nestedScroller = getNestedHorizontalScroller(event)
+      if (!nestedScroller) {
+        return false
+      }
+
+      const maxScrollLeft = Math.max(0, nestedScroller.scrollWidth - nestedScroller.clientWidth)
+      if (maxScrollLeft <= 0) {
+        return false
+      }
+
+      if (intent < 0) {
+        return nestedScroller.scrollLeft > 0
+      }
+
+      if (intent > 0) {
+        return nestedScroller.scrollLeft < maxScrollLeft
+      }
+
+      return false
+    }
 
     const getMaxScrollLeft = () =>
       Math.max(0, scroller.scrollWidth - scroller.clientWidth - endCutoffPx)
@@ -45,9 +107,21 @@ export function useHorizontalWheelScroll(
       const intent = Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX
       if (intent === 0) return
 
-      event.preventDefault()
-      const next = scroller.scrollLeft + intent * speed
+      if (canNestedScrollerConsume(event, intent)) {
+        return
+      }
+
       const maxScrollLeft = getMaxScrollLeft()
+      const isAtStart = scroller.scrollLeft <= 0
+      const isAtEnd = scroller.scrollLeft >= maxScrollLeft
+
+      if (releaseOnEdges && ((intent < 0 && isAtStart) || (intent > 0 && isAtEnd))) {
+        return
+      }
+
+      event.preventDefault()
+      event.stopPropagation()
+      const next = scroller.scrollLeft + intent * speed
       scroller.scrollLeft = Math.min(maxScrollLeft, Math.max(0, next))
     }
 
@@ -66,7 +140,9 @@ export function useHorizontalWheelScroll(
       if (event.button !== 0) return
 
       const target = event.target as HTMLElement | null
-      if (target?.closest('button, input, textarea, select, label')) return
+      if (ignoreInteractiveElements && target?.closest('button, input, textarea, select, label')) {
+        return
+      }
 
       isMouseDragging = true
       hasActivatedDrag = false
@@ -125,20 +201,27 @@ export function useHorizontalWheelScroll(
 
     scroller.addEventListener('wheel', onWheel, { passive: false })
     scroller.addEventListener('scroll', onScroll, { passive: true })
-    scroller.addEventListener('mousedown', onMouseDown)
-    scroller.addEventListener('dragstart', onNativeDragStart)
-    scroller.addEventListener('click', onClickCapture, true)
-    window.addEventListener('mousemove', onMouseMove, { passive: false })
-    window.addEventListener('mouseup', endMouseDrag)
+    if (enableDrag) {
+      scroller.addEventListener('mousedown', onMouseDown)
+      scroller.addEventListener('dragstart', onNativeDragStart)
+      scroller.addEventListener('click', onClickCapture, true)
+      window.addEventListener('mousemove', onMouseMove, { passive: false })
+      window.addEventListener('mouseup', endMouseDrag)
+    }
+
     return () => {
       scroller.removeEventListener('wheel', onWheel)
       scroller.removeEventListener('scroll', onScroll)
-      scroller.removeEventListener('mousedown', onMouseDown)
-      scroller.removeEventListener('dragstart', onNativeDragStart)
-      scroller.removeEventListener('click', onClickCapture, true)
-      window.removeEventListener('mousemove', onMouseMove)
-      window.removeEventListener('mouseup', endMouseDrag)
+
+      if (enableDrag) {
+        scroller.removeEventListener('mousedown', onMouseDown)
+        scroller.removeEventListener('dragstart', onNativeDragStart)
+        scroller.removeEventListener('click', onClickCapture, true)
+        window.removeEventListener('mousemove', onMouseMove)
+        window.removeEventListener('mouseup', endMouseDrag)
+      }
+
       scroller.classList.remove('is-dragging')
     }
-  }, [scrollerRef, speed, endCutoffPx])
+  }, [scrollerRef, speed, endCutoffPx, releaseOnEdges, ignoreInteractiveElements, enableDrag])
 }

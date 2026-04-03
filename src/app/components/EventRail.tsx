@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
+import type { KeyboardEvent } from 'react'
 import type { AppEvent } from '@/app/data/events'
+import { useHorizontalRailWheelScroll } from '@/shared/hooks/useHorizontalRailWheelScroll'
 import { EventCard } from './EventCard'
 import styles from './EventRail.module.css'
 
@@ -20,6 +22,8 @@ export function EventRail({ title, events, carouselLabel, onEventSelect }: Event
   const [canScrollBack, setCanScrollBack] = useState(false)
   const [canScrollForward, setCanScrollForward] = useState(false)
   const hasEvents = events.length > 0
+
+  useHorizontalRailWheelScroll(railRef)
 
   useEffect(() => {
     const rail = railRef.current
@@ -57,6 +61,34 @@ export function EventRail({ title, events, carouselLabel, onEventSelect }: Event
     })
   }
 
+  const onRailKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'ArrowRight') {
+      event.preventDefault()
+      scrollRail('forward')
+      return
+    }
+
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault()
+      scrollRail('back')
+      return
+    }
+
+    if (event.key === 'Home') {
+      event.preventDefault()
+      railRef.current?.scrollTo({ left: 0, behavior: 'smooth' })
+      return
+    }
+
+    if (event.key === 'End') {
+      const rail = railRef.current
+      if (!rail) return
+
+      event.preventDefault()
+      rail.scrollTo({ left: rail.scrollWidth - rail.clientWidth, behavior: 'smooth' })
+    }
+  }
+
   return (
     <section className={styles.eventGroup} aria-labelledby={headingId}>
       <div className={styles.groupHeader}>
@@ -81,9 +113,12 @@ export function EventRail({ title, events, carouselLabel, onEventSelect }: Event
             ref={railRef}
             className={styles.carousel}
             data-reveal-scroller
+            data-native-horizontal-scroll
             aria-label={carouselLabel}
+            tabIndex={0}
             data-can-scroll-back={canScrollBack}
             data-can-scroll-forward={canScrollForward}
+            onKeyDown={onRailKeyDown}
           >
             {events.map((event) => (
               <EventCard key={getEventKey(event)} event={event} onSelect={onEventSelect} />
