@@ -3,7 +3,7 @@
   display: grid;
   grid-template-rows: auto auto minmax(0, auto);
   align-content: start;
-  gap: clamp(1.25rem, 3svh, 2rem);
+  gap: clamp(0.875rem, 2.2svh, 2rem);
   padding: clamp(3rem, 8svh, 5rem) 0 clamp(2rem, 9svh, 6rem) clamp(1.5rem, 5vw, 5rem);
   height: 100%;
   box-sizing: border-box;
@@ -45,7 +45,7 @@
 
 @media (max-width: 1200px) {
   .orgsPanel {
-    gap: 1.75rem;
+    gap: 1.25rem;
     padding: 2.5rem 0 5rem 2.75rem;
   }
 
@@ -64,7 +64,7 @@
 
 @media (max-width: 720px) {
   .orgsPanel {
-    gap: 1.25rem;
+    gap: 0.875rem;
     padding: 2rem 0 2.5rem 1.5rem;
   }
 
@@ -89,6 +89,7 @@
 
 @media (max-height: 760px) {
   .orgsPanel {
+    gap: 0.875rem;
     padding-top: clamp(2rem, 5svh, 3rem);
     padding-bottom: 1.5rem;
   }
