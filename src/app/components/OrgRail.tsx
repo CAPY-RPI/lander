@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import type { KeyboardEvent } from 'react'
 import type { AppOrganization } from '@/app/data/organizations'
+import { useSafariHorizontalRailFallback } from '@/shared/hooks/useSafariHorizontalRailFallback'
 import { OrgCard } from './OrgCard'
 import styles from './OrgRail.module.css'
 
@@ -25,6 +27,8 @@ export function OrgRail({
   const [canScrollBack, setCanScrollBack] = useState(false)
   const [canScrollForward, setCanScrollForward] = useState(false)
   const hasOrganizations = organizations.length > 0
+
+  useSafariHorizontalRailFallback(railRef)
 
   useEffect(() => {
     const rail = railRef.current
@@ -62,6 +66,34 @@ export function OrgRail({
     })
   }
 
+  const onRailKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'ArrowRight') {
+      event.preventDefault()
+      scrollRail('forward')
+      return
+    }
+
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault()
+      scrollRail('back')
+      return
+    }
+
+    if (event.key === 'Home') {
+      event.preventDefault()
+      railRef.current?.scrollTo({ left: 0, behavior: 'smooth' })
+      return
+    }
+
+    if (event.key === 'End') {
+      const rail = railRef.current
+      if (!rail) return
+
+      event.preventDefault()
+      rail.scrollTo({ left: rail.scrollWidth - rail.clientWidth, behavior: 'smooth' })
+    }
+  }
+
   return (
     <section className={styles.orgGroup} aria-labelledby={headingId}>
       <div className={styles.groupHeader}>
@@ -86,9 +118,12 @@ export function OrgRail({
             ref={railRef}
             className={styles.carousel}
             data-reveal-scroller
+            data-native-horizontal-scroll
             aria-label={carouselLabel}
+            tabIndex={0}
             data-can-scroll-back={canScrollBack}
             data-can-scroll-forward={canScrollForward}
+            onKeyDown={onRailKeyDown}
           >
             {organizations.map((organization) => (
               <OrgCard
