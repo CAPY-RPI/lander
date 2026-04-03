@@ -22,19 +22,30 @@ type CreateEventFormState = {
   description: string
 }
 
-const initialFormState: CreateEventFormState = {
-  orgId: '',
-  title: '',
-  location: '',
-  eventTime: '',
-  description: '',
+function getCurrentDateTimeInputValue() {
+  const now = new Date()
+  now.setSeconds(0, 0)
+
+  const timezoneOffset = now.getTimezoneOffset()
+  const localDate = new Date(now.getTime() - timezoneOffset * 60_000)
+  return localDate.toISOString().slice(0, 16)
+}
+
+function createInitialFormState(): CreateEventFormState {
+  return {
+    orgId: '',
+    title: '',
+    location: '',
+    eventTime: getCurrentDateTimeInputValue(),
+    description: '',
+  }
 }
 
 function toEventTimeISOString(value: string) {
-  if (!value) return undefined
+  if (!value) return null
 
   const date = new Date(value)
-  return Number.isNaN(date.getTime()) ? undefined : date.toISOString()
+  return Number.isNaN(date.getTime()) ? null : date.toISOString()
 }
 
 /**
@@ -54,17 +65,28 @@ export function CreateEventModal({ isOpen, onClose, onCreated }: CreateEventModa
     isLoading: isLoadingMyOrganizations,
     error: myOrganizationsError,
   } = useUserOrganizations(organizations, user?.uid, isAuthed, isOpen ? 1 : 0)
-  const [formState, setFormState] = useState<CreateEventFormState>(initialFormState)
+  const [formState, setFormState] = useState<CreateEventFormState>(() => createInitialFormState())
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!isOpen) {
-      setFormState(initialFormState)
+      setFormState(createInitialFormState())
       setIsSubmitting(false)
       setError(null)
       return
     }
+
+    setFormState((current) => {
+      if (current.eventTime.length > 0) {
+        return current
+      }
+
+      return {
+        ...current,
+        eventTime: getCurrentDateTimeInputValue(),
+      }
+    })
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && !isSubmitting) {

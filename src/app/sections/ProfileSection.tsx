@@ -101,7 +101,16 @@ export function ProfileSection() {
   }
 
   return (
-    <AnimatedPanel className={`panel ${styles.profilePanel}`} id="profile" staggerIndex={1}>
+    <AnimatedPanel
+      className={`panel ${styles.profilePanel}`}
+      id="profile"
+      staggerIndex={1}
+      data-search-key="section:profile"
+      data-search-label="profile"
+      data-search-category="section"
+      data-search-description="your account and profile details"
+      data-search-keywords="profile account user details settings"
+    >
       <div className={styles.shell}>
         {isAuthed && user ? (
           <section className={styles.formStack}>
@@ -117,39 +126,50 @@ export function ProfileSection() {
             <div className={styles.formGrid}>
               <ProfileField
                 label="First Name"
+                searchKey="profile:first_name"
                 value={form.first_name}
                 onChange={handleFieldChange('first_name')}
               />
               <ProfileField
                 label="Last Name"
+                searchKey="profile:last_name"
                 value={form.last_name}
                 onChange={handleFieldChange('last_name')}
               />
               <ProfileField
                 label="Graduation Year"
+                searchKey="profile:grad_year"
                 type="number"
                 value={form.grad_year}
                 onChange={handleFieldChange('grad_year')}
               />
               <ProfileField
                 label="Personal Email"
+                searchKey="profile:personal_email"
                 type="email"
                 value={form.personal_email}
                 onChange={handleFieldChange('personal_email')}
               />
               <ProfileField
                 label="School Email"
+                searchKey="profile:school_email"
                 type="email"
                 value={form.school_email}
                 onChange={handleFieldChange('school_email')}
               />
               <ProfileField
                 label="Phone"
+                searchKey="profile:phone"
                 type="tel"
                 value={form.phone}
                 onChange={handleFieldChange('phone')}
               />
-              <ProfileField label="Role" value={form.role} onChange={handleFieldChange('role')} />
+              <ProfileField
+                label="Role"
+                searchKey="profile:role"
+                value={form.role}
+                onChange={handleFieldChange('role')}
+              />
               {isDirty ? (
                 <div className={`${styles.confirmBar} ${styles.fieldWide}`}>
                   <span className={styles.confirmText}>Unsaved changes</span>

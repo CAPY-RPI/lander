@@ -41,10 +41,12 @@ export function OrgsSection({
   const [selectedOrganization, setSelectedOrganization] = useState<AppOrganization | null>(null)
   const recommendedOrganizations = useMemo(
     () =>
-      organizations.map((organization) => ({
-        ...toAppOrganization(organization),
-        isMember: membershipByOrgId[organization.oid] === true,
-      })),
+      organizations
+        .filter((organization) => membershipByOrgId[organization.oid] !== true)
+        .map((organization) => ({
+          ...toAppOrganization(organization),
+          isMember: false,
+        })),
     [organizations, membershipByOrgId],
   )
   const myOrganizationCards = myOrganizations.map((organization) => ({
@@ -53,7 +55,16 @@ export function OrgsSection({
   }))
 
   return (
-    <AnimatedPanel className={`panel ${styles.orgsPanel}`} id="orgs" staggerIndex={3}>
+    <AnimatedPanel
+      className={`panel ${styles.orgsPanel}`}
+      id="orgs"
+      staggerIndex={3}
+      data-search-key="section:orgs"
+      data-search-label="orgs"
+      data-search-category="section"
+      data-search-description="organizations you can join or manage"
+      data-search-keywords="organizations clubs groups"
+    >
       <div className={styles.panelHeader}>
         <PillButton
           type="button"
@@ -62,8 +73,18 @@ export function OrgsSection({
           onClick={onCreateOrganization}
           aria-label="Create organization"
           title="Create organization"
+          data-search-key="action:create-org"
+          data-search-label="create organization"
+          data-search-category="action"
+          data-search-description="open the create organization form"
+          data-search-keywords="new org new organization add club"
+          data-search-section="orgs"
+          data-search-action="click"
         >
-          +
+          <span className={styles.createButtonLabel}>create</span>
+          <span className={styles.createButtonIcon} aria-hidden="true">
+            +
+          </span>
         </PillButton>
       </div>
       {isLoading ? <p className={styles.status}>Loading organizations...</p> : null}

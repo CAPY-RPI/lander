@@ -45,6 +45,13 @@ export function EventCard({ event, onSelect }: EventCardProps) {
       style={style}
       onClick={() => onSelect?.(event)}
       aria-label={`Open details for ${event.title}`}
+      data-search-key={`event:${event.eid}`}
+      data-search-label={event.title}
+      data-search-category="event"
+      data-search-description={event.location || 'event'}
+      data-search-keywords={`${event.description} ${event.location} ${event.event_time ?? ''}`}
+      data-search-section="events"
+      data-search-action="click"
     >
       <div className={styles.cardHeader}>
         <h3 className={styles.cardTitle}>

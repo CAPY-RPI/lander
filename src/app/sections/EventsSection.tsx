@@ -41,17 +41,28 @@ export function EventsSection({
   } = useUserEvents(user?.uid, isAuthed, refreshKey)
   const [selectedEvent, setSelectedEvent] = useState<AppEvent | null>(null)
   const registeredEventIds = useMemo(() => new Set(myEvents.map((event) => event.eid)), [myEvents])
-  const recommendedEvents = events.map((event) => ({
-    ...toAppEvent(event),
-    isRegistered: registeredEventIds.has(event.eid),
-  }))
+  const recommendedEvents = events
+    .filter((event) => !isAuthed || !registeredEventIds.has(event.eid))
+    .map((event) => ({
+      ...toAppEvent(event),
+      isRegistered: false,
+    }))
   const myEventCards = myEvents.map((event) => ({
     ...toAppEvent(event),
     isRegistered: true,
   }))
 
   return (
-    <AnimatedPanel className={`panel ${styles.eventsPanel}`} id="events" staggerIndex={2}>
+    <AnimatedPanel
+      className={`panel ${styles.eventsPanel}`}
+      id="events"
+      staggerIndex={2}
+      data-search-key="section:events"
+      data-search-label="events"
+      data-search-category="section"
+      data-search-description="browse and manage campus events"
+      data-search-keywords="events recommended my events"
+    >
       <div className={styles.panelHeader}>
         <PillButton
           type="button"
@@ -60,8 +71,18 @@ export function EventsSection({
           onClick={onCreateEvent}
           aria-label="Create event"
           title="Create event"
+          data-search-key="action:create-event"
+          data-search-label="create event"
+          data-search-category="action"
+          data-search-description="open the create event form"
+          data-search-keywords="new event add event"
+          data-search-section="events"
+          data-search-action="click"
         >
-          +
+          <span className={styles.createButtonLabel}>create</span>
+          <span className={styles.createButtonIcon} aria-hidden="true">
+            +
+          </span>
         </PillButton>
       </div>
       {isLoading ? <p className={styles.status}>Loading events...</p> : null}
