@@ -2,7 +2,7 @@ export type Event = {
   eid: string
   title: string
   location: string
-  event_time: string
+  event_time: string | null
   description: string
   date_created?: string
   date_modified?: string
@@ -18,10 +18,12 @@ export type EventRegistration = {
 
 export type CreateEventPayload = {
   org_id: string
-} & Partial<Pick<Event, 'title' | 'location' | 'event_time' | 'description'>>
+} & Partial<Pick<Event, 'title' | 'location' | 'description'>> & {
+    event_time?: Event['event_time']
+  }
 
-export type UpdateEventPayload = Partial<
-  Pick<Event, 'title' | 'location' | 'event_time' | 'description'>
->
+export type UpdateEventPayload = Partial<Pick<Event, 'title' | 'location' | 'description'>> & {
+  event_time?: Event['event_time']
+}
 
 export type ListEventsResponse = Event[]
