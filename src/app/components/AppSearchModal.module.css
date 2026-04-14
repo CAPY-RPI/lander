@@ -47,9 +47,9 @@
   border: 1px solid rgba(168, 243, 237, 0.24);
 }
 
-.searchIcon svg {
-  width: 20px;
-  height: 20px;
+.searchGlyph {
+  width: 24px;
+  height: 24px;
 }
 
 .headerText {
