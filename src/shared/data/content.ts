@@ -1,6 +1,7 @@
 export type NavItem = {
   label: string
   href: string
+  title?: string
 }
 
 export type FeatureCardModel = {
@@ -28,10 +29,10 @@ export const navItems: NavItem[] = [
 ]
 
 export const appNavItems: NavItem[] = [
-  { label: 'profile', href: '#profile' },
-  { label: 'home', href: '#home' },
-  { label: 'events', href: '#events' },
-  { label: 'orgs', href: '#orgs' },
+  { label: 'profile', href: '#profile', title: 'Profile (P)' },
+  { label: 'home', href: '#home', title: 'Home (H)' },
+  { label: 'events', href: '#events', title: 'Events (E)' },
+  { label: 'orgs', href: '#orgs', title: 'Organizations (O)' },
 ]
 
 export const primaryCards: FeatureCardModel[] = [

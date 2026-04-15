@@ -33,7 +33,7 @@ export function AppTopNav({ onOpenSearch }: AppTopNavProps) {
           className={styles.searchButton}
           onClick={onOpenSearch}
           aria-label="Open search"
-          title="Search"
+          title="Search (CTRL+k)"
         >
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path

@@ -13,11 +13,7 @@ function isTypingInInput(target: EventTarget | null) {
 
   const tag = target.tagName.toLowerCase()
 
-  return (
-    tag === 'input' ||
-    tag === 'textarea' ||
-    target.isContentEditable
-  )
+  return tag === 'input' || tag === 'textarea' || target.isContentEditable
 }
 
 export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
@@ -25,7 +21,7 @@ export function useKeyboardShortcuts(handlers: ShortcutHandlers) {
     const onKeyDown = (event: KeyboardEvent) => {
       if (isTypingInInput(event.target)) return
 
-      if (event.key === '/') {
+      if (event.ctrlKey && event.key === 'k') {
         event.preventDefault()
         handlers.openSearch()
         return
