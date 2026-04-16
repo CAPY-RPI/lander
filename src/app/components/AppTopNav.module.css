@@ -30,10 +30,10 @@
   outline-offset: 3px;
 }
 
-.searchButton svg {
+.searchGlyph {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
 }
 
 @media (max-width: 1200px) {
