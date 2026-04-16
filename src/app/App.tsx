@@ -55,33 +55,33 @@ export default function AppMain() {
       }
     }
   }, [])
-  
+
   useKeyboardShortcuts({
-  switchHome: () => {
-    const section = document.getElementById('home')
-    if (section) scrollSectionIntoView(section)
-  },
+    switchHome: () => {
+      const section = document.getElementById('home')
+      if (section) scrollSectionIntoView(section)
+    },
 
-  switchEvents: () => {
-    const section = document.getElementById('events')
-    if (section) scrollSectionIntoView(section)
-  },
+    switchEvents: () => {
+      const section = document.getElementById('events')
+      if (section) scrollSectionIntoView(section)
+    },
 
-  switchOrgs: () => {
-    const section = document.getElementById('orgs')
-    if (section) scrollSectionIntoView(section)
-  },
+    switchOrgs: () => {
+      const section = document.getElementById('orgs')
+      if (section) scrollSectionIntoView(section)
+    },
 
-  switchProfile: () => {
-    const section = document.getElementById('profile')
-    if (section) scrollSectionIntoView(section)
-  },
+    switchProfile: () => {
+      const section = document.getElementById('profile')
+      if (section) scrollSectionIntoView(section)
+    },
 
-  openSearch: () => {
-    setSearchSessionKey((k) => k + 1)
-    setIsSearchOpen(true)
-  },
-})
+    openSearch: () => {
+      setSearchSessionKey((k) => k + 1)
+      setIsSearchOpen(true)
+    },
+  })
 
   const scrollSectionIntoView = (section: HTMLElement) => {
     const scroller = scrollerRef.current
