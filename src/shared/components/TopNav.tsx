@@ -126,6 +126,7 @@ export function TopNav({
           <a
             key={item.label}
             href={item.href}
+            title={item.title}
             ref={(node) => {
               linkRefs.current[item.href] = node
             }}

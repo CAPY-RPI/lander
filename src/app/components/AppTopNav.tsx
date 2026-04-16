@@ -34,7 +34,7 @@ export function AppTopNav({ onOpenSearch }: AppTopNavProps) {
           className={styles.searchButton}
           onClick={onOpenSearch}
           aria-label="Open search"
-          title="Search"
+          title="Search (CTRL+k)"
         >
           <SearchIcon className={styles.searchGlyph} />
         </button>
