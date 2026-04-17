@@ -190,130 +190,135 @@ export function CreateEventModal({ isOpen, onClose, onCreated }: CreateEventModa
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             onClick={(event) => event.stopPropagation()}
           >
-            <div className={styles.header}>
-              <div>
-                <p className={styles.eyebrow}>new event</p>
-                <h2 className={styles.title} id="create-event-title">
-                  create an event
-                </h2>
-              </div>
-              <button
-                type="button"
-                className={styles.closeButton}
-                onClick={onClose}
-                aria-label="Close create event form"
-                disabled={isSubmitting}
-              >
-                x
-              </button>
-            </div>
-
-            <p className={styles.copy}>
-              Submit with the signed-in session cookie. You can only create events for organizations
-              you currently belong to.
-            </p>
-
-            <form className={styles.form} onSubmit={handleSubmit}>
-              <label className={styles.field}>
-                <span>Organization</span>
-                <select value={formState.orgId} onChange={handleChange('orgId')}>
-                  <option value="" disabled>
-                    {isAuthed ? 'Select an organization' : 'Sign in to load your organizations'}
-                  </option>
-                  {myOrganizations.map((organization) => (
-                    <option key={organization.oid} value={organization.oid}>
-                      {organization.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className={styles.field}>
-                <span>Title</span>
-                <input
-                  type="text"
-                  value={formState.title}
-                  onChange={handleChange('title')}
-                  placeholder="Spring Networking Night"
-                  autoComplete="off"
-                />
-              </label>
-
-              <label className={styles.field}>
-                <span>Location</span>
-                <input
-                  type="text"
-                  value={formState.location}
-                  onChange={handleChange('location')}
-                  placeholder="Engineering Building, Room 210"
-                  autoComplete="off"
-                />
-              </label>
-
-              <label className={styles.field}>
-                <span>Event time</span>
-                <input
-                  type="datetime-local"
-                  value={formState.eventTime}
-                  onChange={handleChange('eventTime')}
-                />
-              </label>
-
-              <label className={styles.field}>
-                <span>Description</span>
-                <textarea
-                  value={formState.description}
-                  onChange={handleChange('description')}
-                  placeholder="Spring networking night for students and alumni"
-                  rows={5}
-                />
-              </label>
-
-              {isAuthLoading ? <p className={styles.status}>Checking session...</p> : null}
-              {isAuthed && isLoadingOrganizations ? (
-                <p className={styles.status}>Loading organizations...</p>
-              ) : null}
-              {isAuthed && isLoadingMyOrganizations ? (
-                <p className={styles.status}>Loading your organizations...</p>
-              ) : null}
-              {!isAuthed && !isAuthLoading ? (
-                <p className={styles.status}>
-                  Sign in before creating an event. The request is sent with `credentials: include`.
-                </p>
-              ) : null}
-              {isAuthed &&
-              !isLoadingOrganizations &&
-              !isLoadingMyOrganizations &&
-              myOrganizations.length === 0 ? (
-                <p className={styles.status}>
-                  You are not in any organizations yet. Join one first to create an event.
-                </p>
-              ) : null}
-              {organizationsError ? <p className={styles.error}>{organizationsError}</p> : null}
-              {myOrganizationsError ? <p className={styles.error}>{myOrganizationsError}</p> : null}
-              {error ? <p className={styles.error}>{error}</p> : null}
-
-              <div className={styles.actions}>
-                <PillButton type="button" subtle onClick={onClose} disabled={isSubmitting}>
-                  cancel
-                </PillButton>
-                <PillButton
-                  type="submit"
-                  accent
-                  disabled={
-                    isSubmitting ||
-                    isAuthLoading ||
-                    isLoadingOrganizations ||
-                    isLoadingMyOrganizations ||
-                    !isAuthed ||
-                    myOrganizations.length === 0 ||
-                    formState.orgId.length === 0
-                  }
+            <div className={styles.content}>
+              <div className={styles.header}>
+                <div>
+                  <p className={styles.eyebrow}>new event</p>
+                  <h2 className={styles.title} id="create-event-title">
+                    create an event
+                  </h2>
+                </div>
+                <button
+                  type="button"
+                  className={styles.closeButton}
+                  onClick={onClose}
+                  aria-label="Close create event form"
+                  disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'creating...' : 'create event'}
-                </PillButton>
+                  x
+                </button>
               </div>
-            </form>
+
+              <p className={styles.copy}>
+                Submit with the signed-in session cookie. You can only create events for
+                organizations you currently belong to.
+              </p>
+
+              <form className={styles.form} onSubmit={handleSubmit}>
+                <label className={styles.field}>
+                  <span>Organization</span>
+                  <select value={formState.orgId} onChange={handleChange('orgId')}>
+                    <option value="" disabled>
+                      {isAuthed ? 'Select an organization' : 'Sign in to load your organizations'}
+                    </option>
+                    {myOrganizations.map((organization) => (
+                      <option key={organization.oid} value={organization.oid}>
+                        {organization.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className={styles.field}>
+                  <span>Title</span>
+                  <input
+                    type="text"
+                    value={formState.title}
+                    onChange={handleChange('title')}
+                    placeholder="Spring Networking Night"
+                    autoComplete="off"
+                  />
+                </label>
+
+                <label className={styles.field}>
+                  <span>Location</span>
+                  <input
+                    type="text"
+                    value={formState.location}
+                    onChange={handleChange('location')}
+                    placeholder="Engineering Building, Room 210"
+                    autoComplete="off"
+                  />
+                </label>
+
+                <label className={styles.field}>
+                  <span>Event time</span>
+                  <input
+                    type="datetime-local"
+                    value={formState.eventTime}
+                    onChange={handleChange('eventTime')}
+                  />
+                </label>
+
+                <label className={styles.field}>
+                  <span>Description</span>
+                  <textarea
+                    value={formState.description}
+                    onChange={handleChange('description')}
+                    placeholder="Spring networking night for students and alumni"
+                    rows={5}
+                  />
+                </label>
+
+                {isAuthLoading ? <p className={styles.status}>Checking session...</p> : null}
+                {isAuthed && isLoadingOrganizations ? (
+                  <p className={styles.status}>Loading organizations...</p>
+                ) : null}
+                {isAuthed && isLoadingMyOrganizations ? (
+                  <p className={styles.status}>Loading your organizations...</p>
+                ) : null}
+                {!isAuthed && !isAuthLoading ? (
+                  <p className={styles.status}>
+                    Sign in before creating an event. The request is sent with `credentials:
+                    include`.
+                  </p>
+                ) : null}
+                {isAuthed &&
+                !isLoadingOrganizations &&
+                !isLoadingMyOrganizations &&
+                myOrganizations.length === 0 ? (
+                  <p className={styles.status}>
+                    You are not in any organizations yet. Join one first to create an event.
+                  </p>
+                ) : null}
+                {organizationsError ? <p className={styles.error}>{organizationsError}</p> : null}
+                {myOrganizationsError ? (
+                  <p className={styles.error}>{myOrganizationsError}</p>
+                ) : null}
+                {error ? <p className={styles.error}>{error}</p> : null}
+
+                <div className={styles.actions}>
+                  <PillButton type="button" subtle onClick={onClose} disabled={isSubmitting}>
+                    cancel
+                  </PillButton>
+                  <PillButton
+                    type="submit"
+                    accent
+                    disabled={
+                      isSubmitting ||
+                      isAuthLoading ||
+                      isLoadingOrganizations ||
+                      isLoadingMyOrganizations ||
+                      !isAuthed ||
+                      myOrganizations.length === 0 ||
+                      formState.orgId.length === 0
+                    }
+                  >
+                    {isSubmitting ? 'creating...' : 'create event'}
+                  </PillButton>
+                </div>
+              </form>
+            </div>
           </motion.div>
         </motion.div>
       ) : null}

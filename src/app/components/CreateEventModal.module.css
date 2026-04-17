@@ -12,16 +12,25 @@
 }
 
 .dialog {
+  display: flex;
   width: min(100%, 640px);
   max-height: min(90vh, 840px);
   overflow-y: auto;
-  padding: clamp(24px, 3vw, 32px);
+  padding: clamp(24px, 3vw, 32px) 16px clamp(24px, 3vw, 32px) clamp(24px, 3vw, 32px);
   border: 1px solid rgba(128, 213, 206, 0.42);
   border-radius: 32px;
   background:
     linear-gradient(180deg, rgba(23, 115, 109, 0.92), rgba(8, 77, 73, 0.95)),
     rgba(255, 255, 255, 0.04);
   box-shadow: 0 26px 64px rgba(0, 28, 27, 0.42);
+  overflow: hidden;
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 16px;
 }
 
 .header {
