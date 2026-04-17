@@ -29,10 +29,10 @@ export const navItems: NavItem[] = [
 ]
 
 export const appNavItems: NavItem[] = [
-  { label: 'profile', href: '#profile', title: 'Profile (P)' },
-  { label: 'home', href: '#home', title: 'Home (H)' },
-  { label: 'events', href: '#events', title: 'Events (E)' },
-  { label: 'orgs', href: '#orgs', title: 'Organizations (O)' },
+  { label: 'profile', href: '#profile', title: 'Profile (p)' },
+  { label: 'home', href: '#home', title: 'Home (h)' },
+  { label: 'events', href: '#events', title: 'Events (e)' },
+  { label: 'orgs', href: '#orgs', title: 'Organizations (o)' },
 ]
 
 export const primaryCards: FeatureCardModel[] = [
