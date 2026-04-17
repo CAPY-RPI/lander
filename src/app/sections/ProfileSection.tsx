@@ -170,20 +170,22 @@ export function ProfileSection() {
                 value={form.role}
                 onChange={handleFieldChange('role')}
               />
-              {isDirty ? (
-                <div className={`${styles.confirmBar} ${styles.fieldWide}`}>
-                  <span className={styles.confirmText}>Unsaved changes</span>
-                  <PillButton
-                    type="button"
-                    accent
-                    className={styles.confirmButton}
-                    onClick={handleSave}
-                    disabled={isSaving}
-                  >
-                    {isSaving ? 'saving...' : 'confirm'}
-                  </PillButton>
-                </div>
-              ) : null}
+              <div
+                className={`${styles.confirmBar} ${styles.fieldWide} ${
+                  isDirty ? styles.confirmVisible : styles.confirmHidden
+                }`}
+              >
+                <span className={styles.confirmText}>Unsaved changes</span>
+                <PillButton
+                  type="button"
+                  accent
+                  className={styles.confirmButton}
+                  onClick={handleSave}
+                  disabled={isSaving}
+                >
+                  {isSaving ? 'saving...' : 'confirm'}
+                </PillButton>
+              </div>
               {saveError ? (
                 <p className={`${styles.errorText} ${styles.fieldWide}`}>{saveError}</p>
               ) : null}

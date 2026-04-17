@@ -132,6 +132,17 @@
   border-radius: 24px;
   border: 1px solid rgba(255, 190, 164, 0.22);
   background: rgba(241, 96, 47, 0.12);
+  min-height: 56px;
+  transition: opacity 0.2s ease;
+}
+
+.confirmHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.confirmVisible {
+  opacity: 1;
 }
 
 .confirmText {
