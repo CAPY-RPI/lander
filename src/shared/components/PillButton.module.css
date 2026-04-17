@@ -25,6 +25,12 @@
   box-shadow: 0 2px 8px rgba(99, 30, 7, 0.18);
 }
 
+.pillButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .pillButton:hover,
 .pillButton:focus-visible {
   transform: translateY(-1px);
