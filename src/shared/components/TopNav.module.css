@@ -113,7 +113,7 @@
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    padding: 18px var(--space-16);
+    padding: calc(18px + env(safe-area-inset-top)) var(--space-16) 18px;
     margin: 0;
     background: rgba(0, 102, 98, 0.88);
     backdrop-filter: blur(14px);
@@ -132,5 +132,33 @@
 
   .navPill a {
     font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .topNav {
+    grid-template-columns: auto 1fr auto;
+    padding: 12px var(--space-16);
+    gap: var(--space-8);
+  }
+
+  .brandLogo {
+    width: 96px;
+  }
+
+  .navPill {
+    padding: 0 var(--space-8);
+    gap: var(--space-8);
+    min-height: 44px;
+  }
+
+  .navPill a {
+    font-size: 14px;
+    padding: 0 10px;
+    min-height: 32px;
+  }
+
+  .navActions {
+    gap: 8px;
   }
 }

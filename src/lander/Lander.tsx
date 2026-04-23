@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { TopNav } from '@/shared/components/TopNav'
 import { ExitOverlay } from '@/shared/components/ExitOverlay'
@@ -12,6 +12,8 @@ import { InterfaceSection } from './sections/InterfaceSection'
 import { Helmet } from 'react-helmet-async'
 import styles from './Lander.module.css'
 
+const MOBILE_QUERY = '(max-width: 768px)'
+
 /**
  * The main Lander component.
  * Serves as the landing page for capy, featuring scrolling sections and product details.
@@ -19,7 +21,19 @@ import styles from './Lander.module.css'
  */
 function Lander() {
   const scrollerRef = useRef<HTMLElement | null>(null)
-  useHorizontalWheelScroll(scrollerRef, { endCutoffPx: 300 })
+  const disabledRef = useRef<HTMLElement | null>(null)
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(MOBILE_QUERY).matches,
+  )
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_QUERY)
+    const handler = (event: MediaQueryListEvent) => setIsMobile(event.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+
+  useHorizontalWheelScroll(isMobile ? disabledRef : scrollerRef, { endCutoffPx: 300 })
 
   usePageTransition()
 
@@ -33,22 +47,31 @@ function Lander() {
         />
       </Helmet>
       <div className={styles.appRoot}>
-        <TopNav />
-
-        <main className={styles.horizontalScroller} ref={scrollerRef} id="scroller">
-          <motion.div
-            className={styles.panelTrack}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-          >
+        {isMobile ? (
+          <main className={styles.mobileSnapScroller}>
             <HeroSection />
             <FeaturesSection />
-            <InterfaceSection />
-            <ContactSection />
             <CapyRailSection />
-          </motion.div>
-        </main>
+          </main>
+        ) : (
+          <>
+            <TopNav />
+            <main className={styles.horizontalScroller} ref={scrollerRef} id="scroller">
+              <motion.div
+                className={styles.panelTrack}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6 }}
+              >
+                <HeroSection />
+                <FeaturesSection />
+                <InterfaceSection />
+                <ContactSection />
+                <CapyRailSection />
+              </motion.div>
+            </main>
+          </>
+        )}
       </div>
       <ExitOverlay />
     </>

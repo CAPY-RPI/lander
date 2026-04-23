@@ -70,3 +70,36 @@
     margin-top: 18px;
   }
 }
+
+@media (max-width: 768px) {
+  .contactPanel {
+    width: 100%;
+    height: 100dvh;
+    padding: calc(var(--space-50) + env(safe-area-inset-top)) var(--space-24)
+      calc(var(--space-32) + env(safe-area-inset-bottom));
+    backdrop-filter: none;
+  }
+
+  .contactPanel h2 {
+    font-size: clamp(36px, 9vw, 52px);
+  }
+
+  .contactContent {
+    min-height: 100%;
+    gap: var(--space-16);
+  }
+
+  .contactLead {
+    font-size: 22px;
+    margin-top: var(--space-16);
+  }
+
+  .emailPill {
+    margin-top: var(--space-16);
+    width: 100%;
+  }
+
+  .contactMeta {
+    margin-top: var(--space-16);
+  }
+}

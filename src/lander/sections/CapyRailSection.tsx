@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { AnimatedPanel } from '@/shared/components/AnimatedPanel'
 import { AspectImage } from '@/shared/components/AspectImage'
 import { StaggerWords } from '@/shared/components/StaggerWords'
@@ -15,6 +16,22 @@ const socialAssets = [
 ]
 
 export function CapyRailSection() {
+  useEffect(() => {
+    const el = document.getElementById('more')
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        document.body.classList.toggle('rail-active', entry.intersectionRatio >= 0.85)
+      },
+      { threshold: [0, 0.85, 1] },
+    )
+    observer.observe(el)
+    return () => {
+      observer.disconnect()
+      document.body.classList.remove('rail-active')
+    }
+  }, [])
+
   return (
     <AnimatedPanel className={`panel ${styles.capyRailPanel}`} id="more" staggerIndex={4}>
       <div className={styles.verticalMarkWrap} aria-hidden="true">

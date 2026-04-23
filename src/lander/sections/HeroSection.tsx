@@ -5,6 +5,7 @@ import { useExitNavigation } from '@/shared/hooks/useExitNavigation'
 import { StaggerWords } from '@/shared/components/StaggerWords'
 import { TypewriterWord } from '@/shared/components/TypewriterWord'
 import { PillButton } from '@/shared/components/PillButton'
+import { assets } from '@/shared/data/content'
 import styles from './HeroSection.module.css'
 
 export function HeroSection() {
@@ -40,10 +41,11 @@ export function HeroSection() {
   return (
     <>
       <AnimatedPanel className={`panel ${styles.heroPanel}`} id="home" staggerIndex={0}>
+        <img src={assets.logo} alt="CAPY" className={styles.heroLogoMark} aria-hidden="true" />
         <div className={styles.heroRows}>
           <div className={styles.heroRowTitle}>
             <h1>
-              <span>
+              <span className={styles.heroTitleLead}>
                 more <TypewriterWord words={HERO_WORDS} />
               </span>
               <span>
