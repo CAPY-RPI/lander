@@ -17,6 +17,13 @@ body {
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  html,
+  body {
+    background: var(--c-bg);
+  }
+}
+
 body {
   font-family: var(--font-body);
   font-synthesis: none;
