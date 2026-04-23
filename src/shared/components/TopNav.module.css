@@ -113,7 +113,7 @@
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    padding: 18px var(--space-16);
+    padding: calc(18px + env(safe-area-inset-top)) var(--space-16) 18px;
     margin: 0;
     background: rgba(0, 102, 98, 0.88);
     backdrop-filter: blur(14px);

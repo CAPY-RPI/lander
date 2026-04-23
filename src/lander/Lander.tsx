@@ -51,8 +51,6 @@ function Lander() {
           <main className={styles.mobileSnapScroller}>
             <HeroSection />
             <FeaturesSection />
-            <InterfaceSection />
-            <ContactSection />
             <CapyRailSection />
           </main>
         ) : (

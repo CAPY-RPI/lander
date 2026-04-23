@@ -37,3 +37,10 @@
     font-size: 34px;
   }
 }
+
+@media (max-width: 768px) {
+  .glassCard {
+    border: none;
+    backdrop-filter: none;
+  }
+}
