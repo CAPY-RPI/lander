@@ -87,14 +87,11 @@ export function HomeSection({
       data-search-description="dashboard home overview"
       data-search-keywords="welcome campus life dashboard my events my orgs"
     >
-      <div className={styles.intro}>
-        <h1 className={styles.title}>home</h1>
-        <p className={styles.description}>
-          {isAuthed
-            ? 'Your events and orgs, all in one place.'
-            : 'Sign in to see your events and orgs here.'}
-        </p>
-      </div>
+      {!isAuthed ? (
+        <div className={styles.signInPrompt}>
+          <p className={styles.signInText}>Sign in to see your events and orgs here.</p>
+        </div>
+      ) : null}
 
       {isAuthed ? (
         <>
