@@ -1,19 +1,85 @@
 .homePanel {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: clamp(3rem, 12svh, 8rem) clamp(1.5rem, 5vw, 4rem);
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, auto);
+  align-content: start;
+  gap: clamp(1rem, 2.4svh, 2rem);
+  padding: clamp(3rem, 8svh, 5rem) 0 clamp(2rem, 9svh, 6rem) clamp(1.5rem, 5vw, 5rem);
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: none;
+}
+
+.homePanel::-webkit-scrollbar {
+  display: none;
+}
+
+.intro {
+  padding-right: clamp(1.5rem, 4vw, 4rem);
 }
 
 .title {
-  font: 600 clamp(32px, 5.6svh, 40px) / 1 var(--font-display);
-  text-transform: lowercase;
-  margin-bottom: clamp(1rem, 3svh, 2rem);
+  margin: 0 0 clamp(0.5rem, 1.4svh, 1rem);
   color: var(--c-text-light);
+  font: 600 clamp(32px, 5.6svh, 40px) / 0.96 var(--font-display);
+  text-transform: lowercase;
 }
 
 .description {
+  margin: 0;
   max-width: 600px;
-  font: 400 clamp(16px, 2.2svh, 18px) / 1.35 var(--font-body);
-  color: var(--c-text-light);
+  color: rgba(249, 250, 250, 0.82);
+  font: 400 clamp(15px, 2svh, 17px) / 1.4 var(--font-body);
+}
+
+.status,
+.error {
+  margin: 0;
+  padding-right: clamp(1.5rem, 4vw, 4rem);
+  color: rgba(249, 250, 250, 0.82);
+  font: 500 clamp(0.95rem, 2svh, 1rem) / 1.4 var(--font-body);
+}
+
+.error {
+  color: #ffb4b4;
+}
+
+@media (max-width: 1200px) {
+  .homePanel {
+    gap: 1.25rem;
+    padding: 2.5rem 0 5rem 2.75rem;
+  }
+
+  .intro,
+  .status,
+  .error {
+    padding-right: 2.75rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .homePanel {
+    gap: 0.875rem;
+    padding: 2rem 0 2.5rem 1.5rem;
+  }
+
+  .intro,
+  .status,
+  .error {
+    padding-right: 1.5rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-height: 760px) {
+  .homePanel {
+    gap: 0.875rem;
+    padding-top: clamp(2rem, 5svh, 3rem);
+    padding-bottom: 1.5rem;
+  }
 }

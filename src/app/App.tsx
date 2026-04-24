@@ -215,7 +215,12 @@ export default function AppMain() {
             transition={{ duration: 0.6 }}
           >
             <ProfileSection />
-            <HomeSection />
+            <HomeSection
+              eventsRefreshKey={eventsRefreshKey}
+              organizationsRefreshKey={organizationsRefreshKey}
+              onEventsChanged={() => setEventsRefreshKey((current) => current + 1)}
+              onOrganizationsChanged={() => setOrganizationsRefreshKey((current) => current + 1)}
+            />
             <EventsSection
               refreshKey={eventsRefreshKey}
               onCreateEvent={() => setIsCreateEventOpen(true)}
