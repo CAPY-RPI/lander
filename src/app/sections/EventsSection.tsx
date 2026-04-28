@@ -33,7 +33,7 @@ export function EventsSection({
   onEventsChanged,
 }: EventsSectionProps) {
   const { isAuthed, user } = useAuth()
-  const { events, isLoading, error } = useEvents(20, 0, refreshKey)
+  const { events, isLoading, error } = useEvents(100, 0, refreshKey)
   const {
     events: myEvents,
     isLoading: isLoadingMyEvents,
