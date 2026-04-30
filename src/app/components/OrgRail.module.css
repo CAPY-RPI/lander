@@ -1,0 +1,183 @@
+.orgGroup {
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: start;
+  gap: clamp(10px, 1.8svh, 14px);
+  overflow: hidden;
+  padding-bottom: 12px;
+  min-height: clamp(280px, 48svh, 390px);
+}
+
+.groupHeader {
+  display: grid;
+  gap: 0;
+  padding-right: clamp(24px, 4vw, 64px);
+}
+
+.groupTitle {
+  margin: 0;
+  color: var(--c-text-light);
+  font: 600 clamp(24px, 3.8svh, 28px) / 1 var(--font-display);
+  text-transform: lowercase;
+}
+
+.railShell {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-16);
+  padding-right: clamp(24px, 4vw, 64px);
+}
+
+.emptyState {
+  display: grid;
+  place-items: center;
+  min-height: clamp(200px, 32svh, 276px);
+  padding-right: clamp(24px, 4vw, 64px);
+  color: rgba(249, 250, 250, 0.8);
+  font: 500 clamp(18px, 2.8svh, 20px) / 1.4 var(--font-body);
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.controlButton {
+  width: clamp(42px, 6.2svh, 48px);
+  height: clamp(42px, 6.2svh, 48px);
+  border: 1px solid rgba(249, 250, 250, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--c-text-light);
+  font: 700 clamp(20px, 3svh, 22px) / 1 var(--font-display);
+  backdrop-filter: blur(var(--glass-blur-soft));
+  transition:
+    background 180ms var(--ease-premium),
+    border-color 180ms var(--ease-premium),
+    transform 180ms var(--ease-premium),
+    opacity 180ms var(--ease-premium);
+}
+
+.controlButton:not(:disabled) {
+  cursor: pointer;
+}
+
+.controlButton:not(:disabled):hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(249, 250, 250, 0.42);
+  transform: translateY(-1px);
+}
+
+.controlButton:disabled {
+  opacity: 0.38;
+}
+
+.carousel {
+  --left-edge-fade: 72px;
+  --right-edge-fade: 72px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(260px, 32vw, 440px);
+  gap: var(--space-24);
+  overflow-x: auto;
+  overflow-y: visible;
+  width: 100%;
+  padding: 4px 0 12px;
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  align-items: stretch;
+  outline: none;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pinch-zoom;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    rgba(0, 0, 0, 0.9) var(--left-edge-fade),
+    #000 calc(100% - var(--right-edge-fade)),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    rgba(0, 0, 0, 0.9) var(--left-edge-fade),
+    #000 calc(100% - var(--right-edge-fade)),
+    transparent 100%
+  );
+}
+
+.carousel:focus-visible {
+  box-shadow: inset 0 0 0 1px rgba(249, 250, 250, 0.28);
+}
+
+.carousel[data-can-scroll-back='false'] {
+  --left-edge-fade: 0px;
+}
+
+.carousel[data-can-scroll-forward='false'] {
+  --right-edge-fade: 0px;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .carousel {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .groupHeader,
+  .railShell,
+  .emptyState {
+    padding-right: 44px;
+  }
+}
+
+@media (max-width: 720px) {
+  .orgGroup {
+    min-height: auto;
+  }
+
+  .groupTitle {
+    font-size: 24px;
+  }
+
+  .controlButton {
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+  }
+
+  .groupHeader,
+  .railShell,
+  .emptyState {
+    padding-right: 24px;
+  }
+
+  .carousel {
+    --left-edge-fade: 36px;
+    --right-edge-fade: 36px;
+    grid-auto-columns: minmax(260px, 78vw);
+  }
+
+  .emptyState {
+    min-height: 220px;
+    font-size: 18px;
+  }
+}
+
+@media (max-height: 760px) {
+  .groupHeader,
+  .railShell,
+  .emptyState {
+    padding-right: 24px;
+  }
+
+  .carousel {
+    --left-edge-fade: 36px;
+    --right-edge-fade: 36px;
+    grid-auto-columns: clamp(240px, 30vw, 360px);
+  }
+}

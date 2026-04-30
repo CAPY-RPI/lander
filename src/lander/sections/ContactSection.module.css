@@ -1,0 +1,105 @@
+.contactPanel {
+  width: min(1143px, calc(100vw - var(--space-24) * 2));
+  border: 1px solid var(--c-surface-border);
+  padding: clamp(104px, 24svh, 232px) clamp(32px, 8vw, 131px) clamp(32px, 7svh, 78px);
+  background: linear-gradient(180deg, rgba(57, 172, 163, 0.24), rgba(45, 133, 127, 0.16));
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+.contactPanel h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.05;
+  font-size: clamp(48px, min(8vw, 14svh), 96px);
+  color: var(--c-text-light);
+}
+
+.contactContent {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.contactPrimary {
+  display: flex;
+  flex-direction: column;
+}
+
+.contactLead {
+  margin-top: var(--space-24);
+  color: var(--c-text-light);
+  font: 400 clamp(24px, 4.8svh, 36px) / 1.3 var(--font-body);
+}
+
+.emailPill {
+  margin-top: 31px;
+  width: min(288px, 100%);
+  min-height: clamp(48px, 7svh, 60px);
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(154, 215, 210, 0.8);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--c-bg-mid);
+  text-decoration: none;
+  background: linear-gradient(180deg, rgba(244, 248, 246, 0.95), rgba(218, 243, 240, 0.9));
+  font: 400 clamp(18px, 3svh, 24px) / 1 var(--font-body);
+}
+
+.contactMeta {
+  margin: 0 0 12px;
+  font: 400 clamp(14px, 2.1svh, 16px) / 1.35 var(--font-body);
+}
+
+@media (max-width: 1200px) {
+  .contactLead {
+    font-size: 26px;
+  }
+}
+
+@media (max-height: 760px) {
+  .contactContent {
+    grid-template-rows: auto auto;
+    gap: 16px;
+  }
+
+  .contactLead,
+  .emailPill {
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contactPanel {
+    width: 100%;
+    height: 100dvh;
+    padding: calc(var(--space-50) + env(safe-area-inset-top)) var(--space-24)
+      calc(var(--space-32) + env(safe-area-inset-bottom));
+    backdrop-filter: none;
+  }
+
+  .contactPanel h2 {
+    font-size: clamp(36px, 9vw, 52px);
+  }
+
+  .contactContent {
+    min-height: 100%;
+    gap: var(--space-16);
+  }
+
+  .contactLead {
+    font-size: 22px;
+    margin-top: var(--space-16);
+  }
+
+  .emailPill {
+    margin-top: var(--space-16);
+    width: 100%;
+  }
+
+  .contactMeta {
+    margin-top: var(--space-16);
+  }
+}

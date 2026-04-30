@@ -1,0 +1,35 @@
+:root {
+  --c-bg: #006662;
+  --c-bg-mid: #007a75;
+  --c-surface: rgba(51, 155, 146, 0.2);
+  --c-surface-border: #339b92;
+  --c-surface-light: #f4f8f6;
+  --c-text-light: #f9fafa;
+  --c-text-deep: #00464d;
+  --c-accent: rgba(241, 96, 47, 0.95);
+  --c-white: #ffffff;
+  --c-accent-hover: #ffd8c8;
+
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-50: 50px;
+
+  --radius-pill: 30px;
+  --radius-card: 40px;
+
+  --font-display: 'Nunito', 'Segoe UI', sans-serif;
+  --font-body: 'Asap', 'Segoe UI', sans-serif;
+
+  --glass-blur: 16px;
+  --glass-blur-soft: 10px;
+  --glass-highlight: rgba(255, 255, 255, 0.18);
+  --glass-shadow:
+    0 28px 70px rgba(0, 46, 44, 0.35), 0 2px 0 rgba(255, 255, 255, 0.15) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.05) inset;
+
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}

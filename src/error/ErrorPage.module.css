@@ -1,0 +1,54 @@
+.appRoot {
+  min-height: 100svh;
+  background:
+    radial-gradient(circle at 10% -20%, rgba(94, 204, 196, 0.2), transparent 36%),
+    radial-gradient(circle at 70% 120%, rgba(33, 109, 103, 0.35), transparent 48%),
+    linear-gradient(135deg, var(--c-bg) 0%, #005853 35%, var(--c-bg-mid) 100%);
+  color: var(--c-text-light);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-24);
+  position: relative;
+  z-index: 1;
+}
+
+.errorCard {
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+  align-self: center;
+  padding: var(--space-40);
+}
+
+.errorContent {
+  text-align: center;
+  padding: var(--space-16) 0;
+}
+
+.errorIcon {
+  font-size: 64px;
+  margin-bottom: var(--space-24);
+  filter: drop-shadow(0 0 20px rgba(149, 243, 234, 0.3));
+  display: block;
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-16);
+  justify-content: center;
+  margin-top: var(--space-40);
+}
+
+@media (max-width: 480px) {
+  .actions {
+    flex-direction: column;
+  }
+}

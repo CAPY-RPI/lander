@@ -1,0 +1,87 @@
+.interfacePanel {
+  width: min(1143px, calc(100vw - var(--space-24) * 2));
+  border: 1px solid var(--c-surface-border);
+  padding: clamp(104px, 24svh, 232px) clamp(32px, 8vw, 131px) clamp(32px, 7svh, 78px);
+  background: var(--c-surface-light);
+  color: var(--c-bg-mid);
+}
+
+.interfacePanel h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--c-bg-mid);
+  max-width: 785px;
+  font-size: clamp(48px, min(8vw, 14svh), 96px);
+}
+
+.interfaceContent {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+}
+
+.interfaceSub {
+  margin-top: 24px;
+  color: var(--c-bg-mid);
+  font: 400 clamp(24px, 4.8svh, 36px) / 1.2 var(--font-display);
+}
+
+.interfaceFoot {
+  margin: 0 0 12px;
+  text-align: right;
+  color: var(--c-text-deep);
+  font: 400 clamp(14px, 2.1svh, 16px) / 1.2 var(--font-body);
+}
+
+@media (max-width: 1200px) {
+  .interfaceSub {
+    font-size: 26px;
+  }
+}
+
+@media (max-height: 760px) {
+  .interfaceContent {
+    grid-template-rows: auto auto 1fr;
+    gap: 14px;
+  }
+
+  .interfaceSub {
+    margin-top: 0;
+  }
+
+  .interfaceFoot {
+    align-self: start;
+    text-align: left;
+  }
+}
+
+@media (max-width: 768px) {
+  .interfacePanel {
+    width: 100%;
+    height: 100dvh;
+    padding: calc(var(--space-50) + env(safe-area-inset-top)) var(--space-24)
+      calc(var(--space-32) + env(safe-area-inset-bottom));
+  }
+
+  .interfacePanel h2 {
+    font-size: clamp(36px, 9vw, 52px);
+  }
+
+  .interfaceContent {
+    min-height: 100%;
+    gap: var(--space-16);
+  }
+
+  .interfaceSub {
+    font-size: 22px;
+    margin-top: var(--space-16);
+  }
+
+  .interfaceFoot {
+    text-align: left;
+    align-self: start;
+    margin-top: var(--space-16);
+  }
+}

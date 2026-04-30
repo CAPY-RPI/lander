@@ -1,0 +1,195 @@
+.heroPanel {
+  position: relative;
+  width: min(1415px, calc(100vw - var(--space-24) * 2));
+  border: 1px solid var(--c-surface-border);
+  background: linear-gradient(180deg, rgba(56, 171, 162, 0.2), rgba(43, 137, 130, 0.16));
+  backdrop-filter: blur(var(--glass-blur));
+  padding: clamp(112px, 22svh, 210px) clamp(32px, 7vw, 100px) clamp(32px, 7svh, 60px);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: var(--glass-shadow);
+  overflow: hidden;
+}
+
+.heroLogoMark {
+  display: none;
+}
+
+.heroRows {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.heroRowTitle h1 {
+  margin: 0;
+  display: grid;
+  gap: var(--space-8);
+  font-family: var(--font-display);
+  font-size: clamp(72px, min(14vw, 22svh), 180px);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 0.92;
+}
+
+.heroTitleLead {
+  white-space: nowrap;
+}
+
+.heroRowTitle h1 span:last-child {
+  justify-self: end;
+  text-align: right;
+}
+
+.heroDescription {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.8svh, 16px);
+  width: fit-content;
+  max-width: 360px;
+  border: 1px solid var(--c-surface-border);
+  background: linear-gradient(180deg, rgba(72, 176, 167, 0.24), rgba(44, 132, 126, 0.2));
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--radius-card);
+  padding: clamp(20px, 3.5svh, 36px);
+}
+
+.heroDescription p {
+  margin: 0;
+  font: 400 clamp(16px, 1.9svh, 18px) / 1.35 var(--font-body);
+}
+
+.heroRowBottom {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+}
+
+.heroCtas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: flex-start;
+  margin: clamp(20px, 3.5svh, 30px) 10px 0;
+}
+
+.howModalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 32, 30, 0.58);
+  backdrop-filter: blur(6px);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.howModalCard {
+  width: min(640px, calc(100vw - 40px));
+  border-radius: 28px;
+  border: 1px solid rgba(140, 222, 215, 0.55);
+  background: linear-gradient(180deg, rgba(17, 97, 92, 0.95), rgba(9, 75, 71, 0.95));
+  box-shadow: 0 24px 60px rgba(0, 20, 18, 0.45);
+  padding: 26px;
+  color: var(--c-text-light);
+}
+
+.howModalText {
+  margin: 0;
+  font: 400 clamp(17px, 2.2vw, 22px) / 1.45 var(--font-body);
+}
+
+.howModalText a {
+  color: var(--c-accent);
+  text-decoration: none;
+}
+
+.howModalText a:hover,
+.howModalText a:focus-visible {
+  color: var(--c-accent-hover);
+  text-decoration: none;
+}
+
+@media (max-width: 1200px) {
+  .heroRowTitle h1 span:last-child {
+    margin-left: 0;
+  }
+
+  .heroPanel {
+    width: min(100vw - var(--space-24) * 2, 1120px);
+  }
+}
+
+@media (max-height: 820px) {
+  .heroRows {
+    gap: 16px;
+  }
+
+  .heroRowBottom {
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .heroDescription {
+    max-width: 100%;
+  }
+
+  .heroCtas {
+    margin-inline: 0;
+  }
+}
+
+@media (max-height: 720px) {
+  .heroPanel {
+    padding-top: clamp(88px, 18svh, 140px);
+  }
+
+  .heroRowTitle h1 {
+    line-height: 0.88;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroPanel {
+    width: 100%;
+    height: 100dvh;
+    padding: calc(var(--space-50) + env(safe-area-inset-top)) var(--space-24)
+      calc(var(--space-32) + env(safe-area-inset-bottom));
+    justify-content: center;
+    backdrop-filter: none;
+    border: none;
+    background: transparent;
+  }
+
+  .heroLogoMark {
+    display: block;
+    position: absolute;
+    top: calc(var(--space-24) + env(safe-area-inset-top));
+    right: var(--space-24);
+    width: clamp(72px, 22vw, 112px);
+    height: auto;
+    pointer-events: none;
+  }
+
+  .heroRowTitle h1 {
+    font-size: clamp(42px, 13vw, 68px);
+  }
+
+  .heroDescription {
+    max-width: 100%;
+  }
+
+  .heroRowBottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .heroCtas {
+    margin: var(--space-16) 0 0;
+  }
+}

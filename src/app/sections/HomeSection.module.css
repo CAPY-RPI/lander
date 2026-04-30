@@ -1,0 +1,19 @@
+.homePanel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(3rem, 12svh, 8rem) clamp(1.5rem, 5vw, 4rem);
+}
+
+.title {
+  font: 600 clamp(32px, 5.6svh, 40px) / 1 var(--font-display);
+  text-transform: lowercase;
+  margin-bottom: clamp(1rem, 3svh, 2rem);
+  color: var(--c-text-light);
+}
+
+.description {
+  max-width: 600px;
+  font: 400 clamp(16px, 2.2svh, 18px) / 1.35 var(--font-body);
+  color: var(--c-text-light);
+}
